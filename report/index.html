@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AEO 인용 추적 리포트</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+  :root { --bg:#0f1117; --card:#1a1d27; --text:#e6e8ee; --muted:#9aa1b2; --accent:#5b8def; }
+  body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif;
+         margin:0; padding:24px; max-width:1100px; margin-inline:auto; }
+  h1 { font-size:1.5rem; } h2 { font-size:1.15rem; margin-top:32px; }
+  .meta { color:var(--muted); font-size:.85rem; }
+  .decision { background:var(--card); border-left:4px solid var(--accent); padding:16px 20px;
+              border-radius:8px; margin:20px 0; }
+  .decision .verdict { font-size:1.3rem; font-weight:700; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; }
+  .card { background:var(--card); border-radius:10px; padding:16px 20px; }
+  .kpi { display:flex; gap:24px; flex-wrap:wrap; margin:8px 0; }
+  .kpi div { text-align:center; }
+  .kpi .num { font-size:1.6rem; font-weight:700; color:var(--accent); }
+  .kpi .label { font-size:.75rem; color:var(--muted); }
+  table { width:100%; border-collapse:collapse; font-size:.85rem; }
+  th,td { text-align:left; padding:6px 8px; border-bottom:1px solid #2a2e3c; }
+  th { color:var(--muted); font-weight:600; }
+  .tag { font-size:.7rem; padding:2px 8px; border-radius:10px; background:#2a2e3c; }
+  .tag.ugc { background:#1f4d2e; } .tag.media { background:#4d3a1f; }
+  .tag.official_data { background:#1f3a4d; }
+  canvas { max-height:280px; }
+</style>
+</head>
+<body>
+<h1>AEO 인용 추적 리포트</h1>
+<p class="meta">생성: 2026-06-12 23:52 UTC · 데이터: 성공 응답 0건 · 의사결정 규칙은 사전 등록 (브리프 3.3)</p>
+<div class="decision">
+  <div class="label">현재 데이터 기준 판정</div>
+  <div class="verdict">데이터 부족 (버티컬 2개 필요)</div>
+  <div class="meta"></div>
+</div>
+<div id="app"></div>
+<script>
+const METRICS = {"verticals": {}, "decision": {"verdict": "데이터 부족 (버티컬 2개 필요)", "rule": null}};
+
+const TYPE_LABELS = {ugc:'UGC', media:'대형 미디어', official_data:'공식/데이터', other:'기타'};
+const app = document.getElementById('app');
+
+// 버티컬 비교 차트
+app.insertAdjacentHTML('beforeend', `
+  <h2>버티컬 비교</h2>
+  <div class="grid">
+    <div class="card"><canvas id="cmpGap"></canvas></div>
+    <div class="card"><canvas id="cmpType"></canvas></div>
+  </div>`);
+
+const vNames = Object.keys(METRICS.verticals);
+new Chart(document.getElementById('cmpGap'), {
+  type:'bar',
+  data:{ labels:vNames, datasets:[
+    {label:'공백률 (%)', data:vNames.map(v=>METRICS.verticals[v].gap_rate), backgroundColor:'#5b8def'},
+    {label:'상위3 도메인 점유율 (%)', data:vNames.map(v=>METRICS.verticals[v].top3_share), backgroundColor:'#e0639a'},
+  ]},
+  options:{ plugins:{title:{display:true,text:'공백률 vs 인용 집중도',color:'#e6e8ee'},
+    legend:{labels:{color:'#9aa1b2'}}},
+    scales:{x:{ticks:{color:'#9aa1b2'}},y:{ticks:{color:'#9aa1b2'},beginAtZero:true,max:100}} }
+});
+new Chart(document.getElementById('cmpType'), {
+  type:'bar',
+  data:{ labels:vNames, datasets: ['ugc','media','official_data','other'].map((t,i)=>({
+    label:TYPE_LABELS[t],
+    data:vNames.map(v=>METRICS.verticals[v].type_distribution[t]),
+    backgroundColor:['#4caf7d','#e0a548','#5b8def','#6c7283'][i],
+  }))},
+  options:{ plugins:{title:{display:true,text:'도메인 유형 분포 (%)',color:'#e6e8ee'},
+    legend:{labels:{color:'#9aa1b2'}}},
+    scales:{x:{stacked:true,ticks:{color:'#9aa1b2'}},
+            y:{stacked:true,ticks:{color:'#9aa1b2'},beginAtZero:true,max:100}} }
+});
+
+// 버티컬별 상세
+for (const [v, d] of Object.entries(METRICS.verticals)) {
+  const safe = v.replace(/[^a-z0-9]/gi,'_');
+  app.insertAdjacentHTML('beforeend', `
+    <h2>${v}</h2>
+    <div class="kpi card">
+      <div><div class="num">${d.gap_rate}%</div><div class="label">공백률</div></div>
+      <div><div class="num">${d.top3_share}%</div><div class="label">상위3 점유율</div></div>
+      <div><div class="num">${d.hhi}</div><div class="label">HHI</div></div>
+      <div><div class="num">${d.engine_jaccard ?? '-'}</div><div class="label">엔진간 Jaccard</div></div>
+      <div><div class="num">${d.responses}</div><div class="label">응답 수</div></div>
+    </div>
+    <div class="grid">
+      <div class="card"><canvas id="daily_${safe}"></canvas></div>
+      <div class="card">
+        <h3 style="margin-top:0;font-size:.95rem">엔진별 공백률</h3>
+        <table><tr><th>엔진</th><th>공백률</th></tr>
+        ${Object.entries(d.engine_gap_rates).map(([e,g])=>`<tr><td>${e}</td><td>${g}%</td></tr>`).join('')}
+        </table>
+      </div>
+    </div>
+    <div class="grid" style="margin-top:16px">
+      <div class="card">
+        <h3 style="margin-top:0;font-size:.95rem">인용 Top 도메인</h3>
+        <table><tr><th>#</th><th>도메인</th><th>유형</th><th>인용수</th></tr>
+        ${d.top_domains.map((t,i)=>`<tr><td>${i+1}</td><td>${t.domain}</td>
+          <td><span class="tag ${t.type}">${TYPE_LABELS[t.type]}</span></td><td>${t.count}</td></tr>`).join('')}
+        </table>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0;font-size:.95rem">공백률 높은 쿼리 Top (→ 콘텐츠 공장 생산 주제)</h3>
+        <table><tr><th>쿼리</th><th>공백률</th><th>주요 인용</th></tr>
+        ${d.top_gap_queries.map(q=>`<tr><td>${q.query}</td><td>${q.gap_rate}%</td>
+          <td class="meta">${q.top_domains.join(', ') || '-'}</td></tr>`).join('')}
+        </table>
+      </div>
+    </div>`);
+  new Chart(document.getElementById('daily_'+safe), {
+    type:'line',
+    data:{ labels:d.daily_gap_rate.map(x=>x.date),
+      datasets:[{label:'일별 공백률 (%)', data:d.daily_gap_rate.map(x=>x.gap_rate),
+        borderColor:'#5b8def', tension:.2}]},
+    options:{ plugins:{legend:{labels:{color:'#9aa1b2'}}},
+      scales:{x:{ticks:{color:'#9aa1b2'}},y:{ticks:{color:'#9aa1b2'},beginAtZero:true,max:100}} }
+  });
+}
+</script>
+</body>
+</html>
