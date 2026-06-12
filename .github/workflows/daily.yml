@@ -1,0 +1,57 @@
+name: daily-citation-tracking
+
+on:
+  schedule:
+    - cron: "20 22 * * *" # 07:20 KST
+  workflow_dispatch:
+    inputs:
+      query_limit:
+        description: "버티컬당 쿼리 수 제한 (비우면 전체)"
+        required: false
+        default: ""
+
+# 동시 실행 방지 (수동 + 크론 겹침)
+concurrency:
+  group: daily-tracking
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Collect citations
+        env:
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          QUERY_LIMIT: ${{ inputs.query_limit }}
+        run: python -m aeo_tracker.runner
+
+      - name: Generate report
+        run: python -m aeo_tracker.report
+
+      - name: Commit results
+        run: |
+          git config user.name "citation-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/ report/
+          if git diff --cached --quiet; then
+            echo "변경 없음"
+          else
+            git commit -m "data: daily citation tracking $(date -u +%Y-%m-%d)"
+            git pull --rebase origin main || true
+            git push
+          fi
