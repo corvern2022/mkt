@@ -1,0 +1,1536 @@
+diff --git a/ait-app/skill-review.html b/ait-app/skill-review.html
+new file mode 100644
+index 0000000..b368539
+--- /dev/null
++++ b/ait-app/skill-review.html
+@@ -0,0 +1,26 @@
++<!doctype html>
++<html lang="ko">
++<head>
++<meta charset="UTF-8">
++<meta name="viewport" content="width=device-width,initial-scale=1">
++<title>영웅 스킬 검수</title>
++<link rel="icon" href="data:,">
++</head>
++<body class="skill-review">
++<div class="sr-shell">
++  <section class="sr-picker" id="sr-picker" aria-label="영웅 선택"></section>
++  <section class="sr-skill" id="sr-skill" aria-label="스킬 설명"></section>
++  <section class="sr-battle" aria-label="실제 필드 전투">
++    <div class="sr-toolbar" id="sr-toolbar"></div>
++    <main id="app"></main>
++    <div class="sr-controls" id="sr-controls"></div>
++  </section>
++  <div class="sr-side">
++    <section class="sr-meter" id="sr-meter" aria-label="피해 미터"></section>
++    <section class="sr-inspector" id="sr-inspector" aria-label="이벤트 검사"></section>
++  </div>
++</div>
++<script type="module" src="/battle/approved-motion-review-v1/web/bootstrap.mjs"></script>
++<script type="module" src="/src/poc/skillReview.ts"></script>
++</body>
++</html>
+diff --git a/ait-app/src/data/heroSkillV9.json b/ait-app/src/data/heroSkillV9.json
+new file mode 100644
+index 0000000..f3bde8c
+--- /dev/null
++++ b/ait-app/src/data/heroSkillV9.json
+@@ -0,0 +1,940 @@
++{
++ "source": "heroes-v9.json (v9 기획 텍스트)",
++ "heroes": {
++  "yeo": {
++   "name": "여포냥",
++   "rarity": "SSR",
++   "classKo": "물리 근접",
++   "faction": "군웅",
++   "basic": "반원",
++   "s0": "넓은 범위의 적에게 도약해 내려찍어 주변 적에게 공격력의 480% 피해. 착지 지점에 4초간 용암 지대를 만들어 초당 40% 피해",
++   "s3": "피해 입은 적에게 화상(초당 20%, 3초)",
++   "s5": "스킬 사용 후 5초간 자신의 치명타 확률 +20%, 치명타 피해 +40%",
++   "note": "480+용암160+화상60; 5성 자기 치명 버프 미반영"
++  },
++  "gwan": {
++   "name": "관우냥",
++   "rarity": "SSR",
++   "classKo": "물리 근접",
++   "faction": "촉",
++   "basic": "반원",
++   "s0": "전방으로 돌진하며 3번 베어, 경로의 적에게 공격력의 총 600% 피해",
++   "s3": "피해 입은 적은 5초간 방어력 -20%",
++   "s5": "방어력이 감소한 적에게 주는 피해 +30%. 마지막 일격에 맞은 적의 강화 효과 2개 해제 (보호막 우선)",
++   "note": "600×1.3(방깎 대상); 돌진 경로 ~3명; 방깎20×3"
++  },
++  "je": {
++   "name": "제갈냥",
++   "rarity": "SSR",
++   "classKo": "지원형",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "적 전체를 한곳으로 끌어모아 2초간 묶음 (보스는 이동속도 -60%). 6초간 적 방어력 -20%, 아군 스킬 피해 +15%",
++   "s3": "제갈이 살아 있는 동안 적 전체가 받는 피해 +8%",
++   "s5": "아군 전체 기력 20 회복, 적 강화 효과 2개 해제",
++   "note": "방깎20×5+스킬피해15×5+받는피해8×5; 기력20·해제 미반영"
++  },
++  "hwangchung": {
++   "name": "황충냥",
++   "rarity": "SSR",
++   "classKo": "물리 원거리",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "2초간 조준한 뒤 거대한 화살로 공격력의 500% 피해. 체력이 적은 적일수록 피해 증가 (최대 +50%)",
++   "s3": "스킬로 적을 처치하면 기력 50 회복",
++   "s5": "보스에게 주는 피해 +30%",
++   "note": "저체력 최대 +50%, 보스 +30% 미반영(보스 650)"
++  },
++  "juyu": {
++   "name": "주유냥",
++   "rarity": "SSR",
++   "classKo": "마법",
++   "faction": "오",
++   "basic": "소범위",
++   "s0": "넓은 범위에 불덩이를 떨어뜨려 공격력의 200% 피해. 4초간 불바다를 만들어 초당 50% 피해",
++   "s3": "불바다 크기 +50%",
++   "s5": "불바다 안의 적은 화상 피해를 25% 더 받음",
++   "note": "200+불바다50×4; 5성 화상 증폭은 타 화상 의존"
++  },
++  "hahudon": {
++   "name": "하후돈냥",
++   "rarity": "SSR",
++   "classKo": "물리 근접",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "8초간 광폭화. 공격속도 +50%. 일반 공격이 주변 적도 휩쓸어 공격력의 50% 피해",
++   "s3": "광폭화 중 체력이 낮을수록 공격력 증가 (최대 +60%)",
++   "s5": "광폭화 중 체력 10% 이하가 되면 5초간 무적 보호막 (30초에 1회)",
++   "note": "문서 값(340~540, 5명 약 2,400) 사용; 무적 보호막은 생존 10으로 가정"
++  },
++  "joun": {
++   "name": "조운냥",
++   "rarity": "SSR",
++   "classKo": "물리 근접",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "가까운 적 최대 3명에게 창을 3번씩 찔러 1번당 공격력의 140% 피해 (적이 1명이면 그 적에게 집중)",
++   "s3": "스킬로 적을 처치하면 기력 30 회복",
++   "s5": "스킬 사용 후 5초간 공격력 +25%",
++   "note": "140×3 최대 3명; 5성 자기 공격력 +25% 미반영"
++  },
++  "jang": {
++   "name": "장비냥",
++   "rarity": "SSR",
++   "classKo": "탱커",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "크게 포효해 주변 적에게 공격력의 160% 피해, 3초간 도발. 4초간 자신이 받는 피해 -25%",
++   "s3": "도발된 적의 공격력 -15%",
++   "s5": "10초간 분신 소환. 소환 시 주변 적 1초 기절, 분신 일반 공격 80%. 분신이 사라지면 장비가 최대 체력 10% 회복",
++   "note": "160+분신 80%×5회(0.5회/초 가정); 피해감소25+회복10; 도발 적 공격력 -15%×5"
++  },
++  "jo": {
++   "name": "조조냥",
++   "rarity": "SSR",
++   "classKo": "지원형",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "5초간 아군 전체 공격력 +18%, 치명타 피해 +30%. 체력이 가장 높은 적에게 6초간 표식 (받는 피해 +10%)",
++   "s3": "표식 대상이 쓰러지면 다음 적에게 표식이 옮겨감",
++   "s5": "[진영 보너스·위] 위 아군 치명타 확률 +4/8/12% (위 1/2/3명 이상). 위 3명 이상이면 전투 시작 기력 +10",
++   "note": "공격력18×5=90 + 치피30×0.12×5=18 + 표식10 + 위 치확12×0.5×3=18 (치확→×0.5, 치피→×기본치확0.12 환산)"
++  },
++  "hwata": {
++   "name": "화타냥",
++   "rarity": "SSR",
++   "classKo": "지원형",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "체력이 가장 낮은 아군부터 3번 연쇄 치유, 1번당 최대 체력의 25% 회복",
++   "s3": "치유받은 아군의 해로운 효과 1개 제거",
++   "s5": "연쇄 5번. 5번째에는 아군 전체 10% 회복",
++   "note": "25×5연쇄+전체10×5; 해로운 효과 제거"
++  },
++  "sama": {
++   "name": "사마냥",
++   "rarity": "SSR",
++   "classKo": "마법",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "체력이 가장 낮은 적에게 공격력의 320% 피해. 스킬로 처치하면 가까운 적에게 80% 추가 피해",
++   "s3": "스킬로 적을 처치하면 기력 30 회복",
++   "s5": "스킬 사용마다 스킬 피해 +5% (최대 10중첩, 전투 중 유지)",
++   "note": "320×1.5(10중첩); 처치 시 추가 80"
++  },
++  "janggak": {
++   "name": "장각냥",
++   "rarity": "SSR",
++   "classKo": "마법",
++   "faction": "군웅",
++   "basic": "연쇄",
++   "s0": "체력이 가장 높은 적에게 번개로 공격력의 240% 피해. 주변 적 4명에게 번개가 튀어 150% 피해",
++   "s3": "최초 대상 1초 기절 (보스는 면역, 대신 공격속도 -15% 2초)",
++   "s5": "연쇄 대상 5명, 연쇄 피해 +20%",
++   "note": "240 + 연쇄 150×1.2=180 ×4(5명 중 나머지)"
++  },
++  "dong": {
++   "name": "동탁냥",
++   "rarity": "SSR",
++   "classKo": "탱커",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "자신에게 최대 체력 35% 보호막 (5초). 넓은 범위의 적을 끌어당긴 뒤 3초간 도발",
++   "s3": "보호막이 깨지면 주변 적에게 동탁 최대 체력의 5% 피해",
++   "s5": "보호막 유지 중 받는 피해 -10%. 보호막 폭발 피해 5% → 10%",
++   "note": "보호막35 + 5성 피해감소10×5/4; 보호막 폭발(동탁 최대 체력 10%)은 공격력 단위로 환산 안 함"
++  },
++  "daegyo": {
++   "name": "대교냥",
++   "rarity": "SSR",
++   "classKo": "지원형",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "아군 전체에 최대 체력 12% 보호막 (5초), 3초간 초당 3% 회복. 보호막이 있는 아군은 화상 피해 -50%",
++   "s3": "보호막이 깨지면 그 아군이 5% 회복",
++   "s5": "쓰러진 아군 1명을 체력 30%로 부활 (전투당 1회)",
++   "note": "보호막12×5=support; 회복 3×3×5=45 + 깨짐5×5=25 + 부활30"
++  },
++  "macho": {
++   "name": "마초냥",
++   "rarity": "SSR",
++   "classKo": "물리 근접",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "화면 끝까지 돌진해 경로의 적에게 공격력의 300% 피해. 일반 적은 뒤로 밀쳐냄. 제자리로 복귀",
++   "s3": "복귀 후 5초간 공격속도 +20%",
++   "s5": "돌진 경로에 3초간 흙먼지 (이동속도 -20%, 초당 30% 피해)",
++   "note": "300+흙먼지30×3; 경로 ~3명"
++  },
++  "taesaja": {
++   "name": "태사자냥",
++   "rarity": "SSR",
++   "classKo": "물리 원거리",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "체력이 가장 높은 적에게 화살 2발, 총 300% 피해. 2발 모두 맞으면 기력 30 회복",
++   "s3": "2발 모두 맞은 적은 5초간 방어력 -15%",
++   "s5": "스킬 사용 후 3초간 공격속도 +30%. 직전과 같은 대상이면 2발째 피해 +20%",
++   "note": "300+2발째 +20%(30); 방깎15 단일"
++  },
++  "sonchaek": {
++   "name": "손책냥",
++   "rarity": "SSR",
++   "classKo": "탱커",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "체력이 가장 높은 적에게 공격력의 180% 피해와 6초간 결투 표식 (표식 대상은 손책만 공격). 자신에게 최대 체력 20% 보호막 (5초)",
++   "s3": "결투 대상 방어력 -15%",
++   "s5": "결투 대상에게 주는 아군 피해 +10%",
++   "note": "결투 대상 방깎15 + 아군 +10%×5"
++  },
++  "choseon": {
++   "name": "초선냥",
++   "rarity": "SSR",
++   "classKo": "지원형",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "공격력이 높은 적 2명을 3초간 매혹 (보스 면역). 매혹이 끝나면 대상 최대 체력 8% 피해",
++   "s3": "초선이 살아 있는 동안 아군 공격속도 +12%",
++   "s5": "매혹 대상은 5초간 받는 피해 +30%, 공격력 -10%",
++   "note": "공속12×5 + 매혹 대상 받는피해30×2 + 공격력-10×2; 대상 최대 체력 8% 피해 미환산"
++  },
++  "gyeonhui": {
++   "name": "견희냥",
++   "rarity": "SSR",
++   "classKo": "마법",
++   "faction": "위",
++   "basic": "소범위",
++   "s0": "넓은 범위에 3초간 눈보라, 초당 40% 피해와 동상(이동속도 -30%, 4초)",
++   "s3": "동상이 끝날 때 폭발해 100% 피해",
++   "s5": "아군 전체가 동상 걸린 적에게 주는 피해 +25%",
++   "note": "40×3+폭발100; 5성 아군 +25%×5"
++  },
++  "hahuyeon": {
++   "name": "하후연",
++   "rarity": "SSR",
++   "classKo": "물리 원거리",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "넓은 원형 범위에 3초간 화살비, 초당 80% 피해",
++   "s3": "화살비 안의 적은 이동속도 -20%",
++   "s5": "화살비 지속시간 +2초",
++   "note": "80×5초(3+2)"
++  },
++  "yu": {
++   "name": "유비냥",
++   "rarity": "SSR",
++   "classKo": "지원형",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "아군 전체 최대 체력의 15% 회복. 4초간 받는 피해 -20%",
++   "s3": "유비가 살아 있는 동안 아군 방어력 +12% (받는 피해 -12%)",
++   "s5": "[진영 보너스·촉] 촉 아군 받는 피해 -4/8/12% (촉 1/2/3명 이상). 촉 3명 이상이면 전투 시작 기력 +10",
++   "note": "회복15×5; 피해감소20×5+12×5+촉12×3; 자신 20+12+12"
++  },
++  "songwon": {
++   "name": "손권냥",
++   "rarity": "SSR",
++   "classKo": "지원형",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "4초간 아군 전체 치명타 확률 +15%. 2초간 새로 걸리는 해로운 효과 차단",
++   "s3": "해로운 효과를 막을 때마다 아군 기력 3 회복",
++   "s5": "[진영 보너스·오] 오 아군 최대 체력 +4/8/12%, 상태이상 저항 +7/14/20% (오 1/2/3명 이상). 오 3명 이상이면 전투 시작 기력 +10",
++   "note": "치확15×0.5×5=37.5 + 오 체력12×3=36; 해로운 효과 차단·저항 미반영"
++  },
++  "jeonwi": {
++   "name": "전위냥",
++   "rarity": "SSR",
++   "classKo": "탱커",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "땅을 내리찍어 주변 적에게 공격력의 150% 피해, 3초간 도발. 4초간 받는 피해 -35%",
++   "s3": "도발 중 공격받을 때마다 기력 2 회복",
++   "s5": "도발 중 받은 피해의 20%를 공격한 적에게 되돌려줌 (1회 최대 전위 공격력의 300%)",
++   "note": "피해감소35(4초); 반사 피해(최대 300%) 미반영"
++  },
++  "bangtong": {
++   "name": "방통냥",
++   "rarity": "SSR",
++   "classKo": "지원형",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "가까운 적 3명을 3초간 사슬로 연결, 이동속도 -40%",
++   "s3": "연결된 적이 받은 피해의 20%를 나머지도 받음",
++   "s5": "최대 5명 연결. 연결된 적이 받는 피해 +12%",
++   "note": "받는피해12×5 + 피해 공유20%×4(집중 대상 기준) 가정"
++  },
++  "jangryo": {
++   "name": "장료냥",
++   "rarity": "SR",
++   "classKo": "물리 근접",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "가장 뒤에 있는 적(후열) 뒤로 순간이동해 공격력의 280% 피해",
++   "s3": "적을 처치하면 기력 20 회복",
++   "s5": "처치하면 다음 후열 적에게 한 번 더 순간이동해 180% 피해",
++   "note": "5성 처치 시 다음 후열 +180"
++  },
++  "gamnyeong": {
++   "name": "감녕냥",
++   "rarity": "SR",
++   "classKo": "물리 근접",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "뒤쪽 적에게 공격력의 260% 피해. 보호막에는 2배 피해. 준 피해의 35%만큼 자신에게 보호막 (최대 체력 15% 상한)",
++   "s3": "피해 받은 적은 4초간 받는 피해 +10%",
++   "s5": "적의 보호막을 모두 없애고 (보스는 40%), 없앤 양을 아군 전체가 나눠 받음 (1인당 최대 체력 8% 상한)",
++   "note": "보호막엔 2배; 받는피해+10 단일 + 아군 보호막 8×5"
++  },
++  "yuksun": {
++   "name": "육손냥",
++   "rarity": "SR",
++   "classKo": "마법",
++   "faction": "오",
++   "basic": "소범위",
++   "s0": "앞쪽 적에게 공격력의 100% 피해와 화상 (초당 30%, 3초). 화상 걸린 적이 쓰러지면 옆 적에게 불이 옮겨붙음",
++   "s3": "불이 최대 4번까지 옮겨붙음",
++   "s5": "옮겨붙은 불의 지속시간이 처음부터 다시 시작",
++   "note": "100+화상30×3; 4회 전파×화상90 (처치 전제)"
++  },
++  "gwakga": {
++   "name": "곽가냥",
++   "rarity": "SR",
++   "classKo": "지원형",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "체력이 가장 높은 적에게 4초간 공격력 -20%, 받는 피해 +12%",
++   "s3": "보스에게는 지속시간 +2초",
++   "s5": "받는 피해 증가 +20%로 강화",
++   "note": "단일 적 공격력-20 + 받는피해+20"
++  },
++  "sunuk": {
++   "name": "순욱냥",
++   "rarity": "SR",
++   "classKo": "지원형",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "공격력이 가장 높은 아군의 기력을 모두 채움 (자신 제외)",
++   "s3": "그 아군의 공격력 5초간 +15%",
++   "s5": "그 아군의 치명타 확률 5초간 +20%",
++   "note": "대상 1명 공격력15 + 치확20×0.5; 기력 전부 채움(스킬 1회 추가) 미환산"
++  },
++  "heo": {
++   "name": "허저냥",
++   "rarity": "SR",
++   "classKo": "탱커",
++   "faction": "위",
++   "basic": "반원",
++   "s0": "땅을 내려쳐 주변 적에게 공격력의 160% 피해. 자신에게 최대 체력 15% 보호막 (4초)",
++   "s3": "공격받을 때 20% 확률로 60% 반격",
++   "s5": "맞은 적 1초 기절 (보스 면역). 보호막 15% → 25%",
++   "note": "보호막25; 반격 20%×60 미반영"
++  },
++  "son": {
++   "name": "손상냥",
++   "rarity": "SR",
++   "classKo": "물리 원거리",
++   "faction": "오",
++   "basic": "관통",
++   "s0": "일직선으로 꿰뚫는 화살, 맞은 모든 적에게 공격력의 240% 피해",
++   "s3": "맞힌 적 1명당 기력 5 회복",
++   "s5": "뒤쪽 적에게 주는 피해 +20%",
++   "note": "일직선 ~3명, 뒤쪽 2명 +20%"
++  },
++  "sr_anryang": {
++   "name": "안량냥",
++   "rarity": "SR",
++   "classKo": "물리 근접",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "가까운 적에게 공격력의 220% 피해, 3초간 방어력 -15%. 정예·보스에게는 방어력 감소 2배",
++   "s3": "문추와 함께 있으면 공격속도 +10%",
++   "s5": "방어력 감소 -25%, 6초로 강화",
++   "note": "방깎25 단일(정예·보스 50)"
++  },
++  "sr_ugil": {
++   "name": "우길냥",
++   "rarity": "SR",
++   "classKo": "마법",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "적 2명을 4초간 저주. 회복을 막고 초당 30% 피해",
++   "s3": "저주받은 적이 쓰러지면 옆 적에게 저주가 옮겨감",
++   "s5": "우길이 쓰러지면 적 전체를 3초간 저주",
++   "note": "저주 2명×30×4; 전파·사망 시 전체 저주 미반영; 회복 봉쇄"
++  },
++  "sr_wonsul": {
++   "name": "원술냥",
++   "rarity": "SR",
++   "classKo": "지원형",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "공격력이 가장 높은 아군 1명 (자신 제외)의 공격력 +24% (4초)",
++   "s3": "대상이 군웅이면 +30%",
++   "s5": "대상의 치명타 피해 +30%",
++   "note": "군웅 대상 공격력30 + 치피30×0.12"
++  },
++  "nosuk": {
++   "name": "노숙냥",
++   "rarity": "SR",
++   "classKo": "지원형",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "아군 전체 공격력 +10% (4초), 기력 8 회복 (조조 하위판, 시트 원래 구성)",
++   "s3": "버프 지속시간 +1초",
++   "s5": "기력 회복 12로 증가",
++   "note": "공격력10×5; 기력12 미반영"
++  },
++  "sr_gongsonchan": {
++   "name": "공손찬냥",
++   "rarity": "SR",
++   "classKo": "물리 원거리",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "화살로 공격력의 150% 피해. 6초간 백마 병사 1기 소환. 병사는 가까운 적 1명을 1초간 도발하고 공격력의 30%로 공격",
++   "s3": "병사가 있는 동안 자신의 공격속도 +10%",
++   "s5": "병사 2기, 소환 시간 +2초",
++   "note": "150 + 병사2×(8초×0.5회)×30"
++  },
++  "hwaung": {
++   "name": "화웅냥",
++   "rarity": "SR",
++   "classKo": "탱커",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "함성으로 주변 적의 공격력 -20% (4초), 3초간 도발",
++   "s3": "자신에게 최대 체력 20% 보호막 (4초)",
++   "s5": "아군 전체 방어력 +20% (4초)",
++   "note": "적 공격력-20×5 + 5성 아군 방어+20×5; 자신 보호막20+방어20"
++  },
++  "hwang": {
++   "name": "황개냥",
++   "rarity": "SR",
++   "classKo": "물리 원거리",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "불타는 배를 전방으로 밀어 경로의 적에게 공격력의 160% 피해와 화상 (초당 20%, 3초)",
++   "s3": "화상 지속시간 +1초",
++   "s5": "배가 끝에 닿으면 폭발해 주변에 100% 피해",
++   "note": "160+화상20×4 + 5성 폭발100; 경로 ~3명 + 폭발 3명 가정"
++  },
++  "sogyo": {
++   "name": "소교냥",
++   "rarity": "SR",
++   "classKo": "지원형",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "아군 전체 공격속도 +15% (4초), 최대 체력 6% 회복",
++   "s3": "대교와 함께 있으면 회복 +2%",
++   "s5": "공격속도 증가 +20%로 강화",
++   "note": "공속20×5; 회복6×5(대교 동반 시 8×5)"
++  },
++  "sr_chukyung": {
++   "name": "축융냥",
++   "rarity": "SR",
++   "classKo": "물리 원거리",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "적 발밑에 불덫 3개 설치. 밟은 적은 공격력의 90% 피해, 2초간 이동속도 -30%",
++   "s3": "느려진 적에게 주는 피해 +10%",
++   "s5": "불덫 5개",
++   "note": "덫 5개×90×1.1; 단일 대상은 덫 2개 밟는다고 가정"
++  },
++  "sr_munchu": {
++   "name": "문추냥",
++   "rarity": "SR",
++   "classKo": "물리 근접",
++   "faction": "군웅",
++   "basic": "반원",
++   "s0": "3초간 회전하며 주변 적에게 초당 70% 피해 (총 210%). 끝날 때 밀쳐냄",
++   "s3": "안량과 함께 있으면 공격속도 +10%",
++   "s5": "회전 5초. 안량과 함께 있으면 공격력 +20%",
++   "note": "70×5초; 안량 동반 시 +20% 미반영"
++  },
++  "wonso": {
++   "name": "원소냥",
++   "rarity": "SR",
++   "classKo": "지원형",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "앞쪽 아군 3명에게 최대 체력 15% 보호막 (5초)",
++   "s3": "첫 스킬의 보호막 +20%",
++   "s5": "보호막을 받은 아군은 3초간 받는 피해 -8%",
++   "note": "보호막15×3 + 피해감소8×3; 첫 스킬 +20% 미반영"
++  },
++  "sr_maenghoek": {
++   "name": "맹획냥",
++   "rarity": "SR",
++   "classKo": "탱커",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "자신에게 최대 체력 20% 보호막 (5초), 주변 적 3초간 도발",
++   "s3": "도발 중 공격력 +15%",
++   "s5": "체력 10% 이하가 되면 50% 회복 (전투당 1회)",
++   "note": "보호막20 + 저체력 50% 회복(전투당 1회)"
++  },
++  "sr_yupyo": {
++   "name": "유표냥",
++   "rarity": "SR",
++   "classKo": "지원형",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "체력이 낮은 아군 2명에게 최대 체력 10% 보호막 (4초)",
++   "s3": "보호막을 줄 때 기력 5 회복",
++   "s5": "보호막을 받은 아군은 3초간 받는 피해 -5%",
++   "note": "보호막10×2 + 피해감소5×2"
++  },
++  "m3": {
++   "name": "호야냥",
++   "rarity": "R",
++   "classKo": "물리 근접",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "전열 적에게 5연타, 총 200% 피해. 대상이 쓰러지면 남은 타격은 옆 적에게",
++   "s3": "대상이 잃은 체력에 비례해 피해 증가 (최대 +15%)",
++   "s5": "[진영 보너스·군웅] 군웅 아군 공격력 +4/8/12% (군웅 1/2/3명 이상). 군웅 3명 이상이면 전투 시작 기력 +10",
++   "note": "200×1.15(최대); 군웅 공격력12×3"
++  },
++  "r_yohwa": {
++   "name": "요화냥",
++   "rarity": "R",
++   "classKo": "물리 근접",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "4초간 팽이처럼 돌며 이동해 닿는 적에게 초당 50% 피해",
++   "s3": "적을 처치하면 회전 시간 +0.5초",
++   "s5": "회전 중 이동속도 +30%, 범위 증가",
++   "note": "50×4초, 5성 범위 증가로 5명 가정"
++  },
++  "r_iyu": {
++   "name": "이유냥",
++   "rarity": "R",
++   "classKo": "지원형",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "체력이 가장 낮은 아군 15% 회복, 독·화상 1개 해제",
++   "s3": "회복량 +10%",
++   "s5": "독·화상을 2개까지 해제하고, 해제한 아군은 3초간 화상·독 면역",
++   "note": "15+10 (가산 가정); 독·화상 해제·면역"
++  },
++  "m1": {
++   "name": "태산냥",
++   "rarity": "R",
++   "classKo": "탱커",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "자신에게 최대 체력 18% 보호막 (4초), 2초간 도발",
++   "s3": "체력 50% 미만이면 보호막 +20%",
++   "s5": "[채광 담당] 편성 시 채광량 +25% (기존 유지)",
++   "note": "보호막18 (저체력 +20% 미반영)"
++  },
++  "r_hahueun": {
++   "name": "하후은냥",
++   "rarity": "R",
++   "classKo": "물리 근접",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "가까운 적에게 2연타, 총 160% 피해",
++   "s3": "하후돈과 함께 있으면 공격력 +20%",
++   "s5": "피해 입은 적은 2초간 공격력 -15% ('혼란'을 직관적인 효과로 교체)",
++   "note": "하후돈 동반 +20% 미반영; 공격력-15 단일"
++  },
++  "r_ijeon": {
++   "name": "이전냥",
++   "rarity": "R",
++   "classKo": "물리 원거리",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "뒤로 물러나며 연막을 터뜨리고 화살로 공격력의 140% 피해. 연막 안 적은 3초간 명중 -30%",
++   "s3": "공격속도 +10%",
++   "s5": "연막 지속시간 +2초",
++   "note": "연막 명중-30 ×~3명 가정"
++  },
++  "r_jangryang": {
++   "name": "장량냥",
++   "rarity": "R",
++   "classKo": "마법",
++   "faction": "군웅",
++   "basic": "소범위",
++   "s0": "적 2명에게 공격력의 70% 피해와 독 (초당 25%, 4초)",
++   "s3": "독 걸린 적이 쓰러지면 옆 적에게 독이 옮겨감",
++   "s5": "독 걸린 적은 아군에게 받는 피해 +8%",
++   "note": "70+독25×4, 2명; 전파 미반영; 받는피해8×2"
++  },
++  "m5": {
++   "name": "단아냥",
++   "rarity": "R",
++   "classKo": "지원형",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "체력이 가장 낮은 아군 22% 회복, 기력 8 회복",
++   "s3": "대상 체력이 50% 미만이면 4% 추가 회복",
++   "s5": "[채집 담당] 편성 시 약초 채집량 +25% (기존 유지)",
++   "note": "22+저체력 4"
++  },
++  "r_gwanpyeong": {
++   "name": "관평냥",
++   "rarity": "R",
++   "classKo": "물리 근접",
++   "faction": "촉",
++   "basic": "관통",
++   "s0": "일직선 적 2명에게 공격력의 150% 피해, 3초간 방어력 -10%",
++   "s3": "관우와 함께 있으면 공격력 +10%",
++   "s5": "일직선 적 3명",
++   "note": "일직선 3명; 방깎10×3"
++  },
++  "r_gosun": {
++   "name": "고순냥",
++   "rarity": "R",
++   "classKo": "탱커",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "앞쪽 적에게 공격력의 130% 피해, 4초간 자신 방어력 +20%",
++   "s3": "군웅 아군과 함께 있으면 받는 피해 -8%",
++   "s5": "방어력 증가 +30%로 강화",
++   "note": "방어+30 + 군웅 동반 -8"
++  },
++  "r_handang": {
++   "name": "한당냥",
++   "rarity": "R",
++   "classKo": "물리 원거리",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "적 사이를 4번 튕기는 화살, 1번당 공격력의 55% 피해",
++   "s3": "같은 적을 두 번 맞히면 기력 5 회복",
++   "s5": "튕기는 횟수 6번",
++   "note": "55×6튕김; 단일은 2회 적중 가정"
++  },
++  "r_jangbo": {
++   "name": "장보냥",
++   "rarity": "R",
++   "classKo": "마법",
++   "faction": "군웅",
++   "basic": "연쇄",
++   "s0": "적이 많은 곳에 부적진을 깔고 2초 뒤 번개 기둥으로 공격력의 160% 피해",
++   "s3": "번개에 맞은 적이 3명 이상이면 기력 5 회복",
++   "s5": "부적진 범위 +50%",
++   "note": "범위 5명"
++  },
++  "r_chaemo": {
++   "name": "채모냥",
++   "rarity": "R",
++   "classKo": "물리 근접",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "가까운 적에게 공격력의 150% 피해, 3초간 이동속도 -20%",
++   "s3": "느려진 적은 아군에게 받는 피해 +8%",
++   "s5": "이동속도 감소 -35%",
++   "note": "받는피해+8 단일"
++  },
++  "r_juchang": {
++   "name": "주창냥",
++   "rarity": "R",
++   "classKo": "탱커",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "주변 적에게 공격력의 120% 피해, 2초간 도발",
++   "s3": "도발 중 받는 피해 -10%",
++   "s5": "관우와 함께 있으면 관우가 받는 피해의 15%를 대신 받음",
++   "note": "피해감소10×2/4; 관우 피해 15% 대신 받음 미반영"
++  },
++  "r_wangrang": {
++   "name": "왕랑냥",
++   "rarity": "R",
++   "classKo": "지원형",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "공격력이 가장 높은 적의 공격력 -12% (4초)",
++   "s3": "지속시간 +1초",
++   "s5": "받는 피해 +8% 추가",
++   "note": "단일 적 공격력-12 + 받는피해+8"
++  },
++  "r_sunugyeong": {
++   "name": "순우경냥",
++   "rarity": "R",
++   "classKo": "탱커",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "자신에게 최대 체력 12% 보호막 (4초), 방어력 감소 해제",
++   "s3": "보호막이 있는 동안 받는 피해 -8%",
++   "s5": "체력이 가장 낮은 아군에게도 8% 보호막",
++   "note": "보호막12 + 피해감소8; 아군 보호막8"
++  },
++  "r_jeongbo": {
++   "name": "정보냥",
++   "rarity": "R",
++   "classKo": "탱커",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "자신에게 10%, 체력이 가장 낮은 아군에게 8% 보호막 (4초)",
++   "s3": "보호막을 줄 때 기력 3 회복",
++   "s5": "오 아군 3명 이상이면 보호막 지속 +1초",
++   "note": "자신10, 아군8"
++  },
++  "n_hopyo": {
++   "name": "호표기냥",
++   "rarity": "N",
++   "classKo": "물리 근접",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "말을 타고 적진을 가로질러 경로의 적에게 공격력의 140% 피해. 보스가 소환한 적에게는 +30%",
++   "s3": "적을 처치하면 기력 5 회복",
++   "s5": "돌진 경로의 적은 1초간 이동속도 -30%",
++   "note": "경로 ~3명; 소환된 적 +30% 미반영"
++  },
++  "n_pirate": {
++   "name": "강동 해적냥",
++   "rarity": "N",
++   "classKo": "물리 근접",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "가까운 적에게 공격력의 140% 피해. 보호막에는 2배 피해",
++   "s3": "보호막을 깨면 기력 5 회복",
++   "s5": "깬 보호막의 30%를 자신이 얻음 (최대 체력 10% 상한)",
++   "note": "보호막엔 2배; 흡수 보호막 최대10"
++  },
++  "n_cavalry": {
++   "name": "서량 기병냥",
++   "rarity": "N",
++   "classKo": "물리 근접",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "가까운 적에게 공격력의 140% 피해, 크게 밀쳐냄",
++   "s3": "공격속도 +8%",
++   "s5": "밀쳐낸 적 1초간 이동속도 -30%",
++   "note": null
++  },
++  "n_snake": {
++   "name": "독사냥",
++   "rarity": "N",
++   "classKo": "마법",
++   "faction": "군웅",
++   "basic": "소범위",
++   "s0": "가까운 적에게 공격력의 60% 피해와 독 (초당 20%, 4초). 독에 걸린 적은 받는 회복 -50%",
++   "s3": "독 걸린 적에게 주는 피해 +8%",
++   "s5": "독 지속시간 +2초",
++   "note": "60×1.08+독20×6; 회복 -50%"
++  },
++  "n_hyeongju": {
++   "name": "형주 수군 궁수냥",
++   "rarity": "N",
++   "classKo": "물리 원거리",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "가까운 적에게 불화살로 공격력의 80% 피해와 화상 (초당 20%, 3초). 이 화상은 보호막을 무시하고 체력에 들어감",
++   "s3": "사거리 +1",
++   "s5": "화상 지속시간 +2초",
++   "note": "80+화상20×5"
++  },
++  "n_giant": {
++   "name": "황건 역사냥",
++   "rarity": "N",
++   "classKo": "물리 근접",
++   "faction": "군웅",
++   "basic": "반원",
++   "s0": "주변 적 3명에게 공격력의 110% 피해",
++   "s3": "공격력 +6%",
++   "s5": "대상 4명 + [채광 담당] 채광량 +15%",
++   "note": "4명"
++  },
++  "n_bear": {
++   "name": "곰냥",
++   "rarity": "N",
++   "classKo": "탱커",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "주변 적 3명에게 공격력의 120% 피해, 2초간 도발. 도발된 적은 주민·성문을 공격하지 않음",
++   "s3": "체력 50% 미만이면 받는 피해 -10%",
++   "s5": "도발 +1초, 자신에게 최대 체력 10% 보호막",
++   "note": "3명; 보호막10 + 저체력 피해감소 일부"
++  },
++  "n_wolf": {
++   "name": "늑대냥",
++   "rarity": "N",
++   "classKo": "물리 근접",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "새끼 늑대 2마리를 6초간 불러 함께 싸움 (늑대는 공격력의 35%로 공격)",
++   "s3": "공격속도 +10%",
++   "s5": "늑대 3마리 + [채집 담당] 약초 채집량 +15%",
++   "note": "늑대3×(6초×0.5회)×35"
++  },
++  "n_guard": {
++   "name": "위 방패 대장냥",
++   "rarity": "N",
++   "classKo": "탱커",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "주변 적에게 공격력의 120% 피해, 2초간 도발. 4초간 주변 주민(보호 대상)이 받는 피해 -30%",
++   "s3": "도발 중 받는 피해 -8%",
++   "s5": "도발 중 주변 아군이 받는 피해 -5%",
++   "note": "주변 5명 가정; 아군 피해감소5×5; 주민 보호 미반영"
++  },
++  "n_boar": {
++   "name": "멧돼지냥",
++   "rarity": "N",
++   "classKo": "물리 근접",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "가까운 적에게 공격력의 120% 피해, 0.5초 기절. 보스는 기절 대신 강타 예고 시간 +1초 (피할 시간이 늘어남)",
++   "s3": "첫 스킬 피해 +15%",
++   "s5": "기절 1초, 보스 강타 예고 +1.5초",
++   "note": "첫 스킬 +15% 미반영; 기절1초"
++  },
++  "n_shaman": {
++   "name": "산월 주술사냥",
++   "rarity": "N",
++   "classKo": "지원형",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "가까운 적의 공격력 -12% (4초). 보스에게는 -20%",
++   "s3": "지속시간 +1초",
++   "s5": "대상 2명",
++   "note": "2명 공격력-12 (보스 -20)"
++  },
++  "n_deunggap": {
++   "name": "남만 등갑병냥",
++   "rarity": "N",
++   "classKo": "탱커",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "4초간 받는 피해 -20%. 독 피해 -50% (남만 독지대 출신)",
++   "s3": "체력 +10%",
++   "s5": "피해 감소 지속시간 +2초, 주변 아군도 독 피해 -30%",
++   "note": "피해감소20×6/4=30 + 체력10"
++  },
++  "c_cheongju": {
++   "name": "청주병냥",
++   "rarity": "C",
++   "classKo": "물리 근접",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "가까운 적에게 공격력의 120% 피해. 스킬로 처치하면 기력 15 회복 (잡몹 연속 처치)",
++   "s3": "체력 +8%",
++   "s5": "스킬 피해 +15%",
++   "note": "120×1.15"
++  },
++  "c_baeki": {
++   "name": "백이병냥",
++   "rarity": "C",
++   "classKo": "물리 근접",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "가까운 적에게 공격력의 120% 피해 (체력 50% 이하 적에게 +20%)",
++   "s3": "적을 처치하면 3초간 공격속도 +10%",
++   "s5": "체력 50% 이하 적 추가 피해 +40%",
++   "note": "체력 50% 이하 적 +60% 미반영(192)"
++  },
++  "c_hwanggeon": {
++   "name": "황건 궁수냥",
++   "rarity": "C",
++   "classKo": "물리 원거리",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "가까운 적에게 공격력의 120% 피해",
++   "s3": "공격력 +5%",
++   "s5": "처음 맞힌 적 2초간 이동속도 -20%",
++   "note": null
++  },
++  "c_heuksan": {
++   "name": "흑산적냥",
++   "rarity": "C",
++   "classKo": "물리 원거리",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "가장 먼 적에게 도끼를 던져 공격력의 120% 피해",
++   "s3": "아군이 쓰러지면 5초간 공격력 +10%",
++   "s5": "도끼가 대상 뒤의 적 1명에게도 맞음",
++   "note": "5성 뒤 1명 추가"
++  },
++  "c_wi_archer": {
++   "name": "위 궁노병냥",
++   "rarity": "C",
++   "classKo": "물리 원거리",
++   "faction": "위",
++   "basic": "관통",
++   "s0": "일직선으로 쇠뇌를 쏴 맞은 모든 적에게 공격력의 100% 피해",
++   "s3": "사거리 +0.5",
++   "s5": "관통 피해 +20%",
++   "note": "100×1.2, 일직선 ~3명"
++  },
++  "c_sugun": {
++   "name": "수군 궁수냥",
++   "rarity": "C",
++   "classKo": "물리 원거리",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "적 2명에게 화살을 1발씩, 1발당 공격력의 70% 피해",
++   "s3": "사거리 +1",
++   "s5": "3발로 증가",
++   "note": "3명에게 1발씩"
++  },
++  "c_danyang": {
++   "name": "단양병냥",
++   "rarity": "C",
++   "classKo": "물리 근접",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "앞쪽 적 2명에게 공격력의 100% 피해",
++   "s3": "공격력 +5%",
++   "s5": "대상 3명 + [채광 담당] 채광량 +10%",
++   "note": "3명"
++  },
++  "c_sanwol": {
++   "name": "산월 전사냥",
++   "rarity": "C",
++   "classKo": "물리 근접",
++   "faction": "오",
++   "basic": "단일",
++   "s0": "가까운 적에게 공격력의 110% 피해. 체력이 높을수록 피해 증가 (적 체력 80% 이상이면 +30%) — 첫 타격 담당",
++   "s3": "공격속도 +8%",
++   "s5": "스킬 사용 후 3초간 공격속도 +15%",
++   "note": "고체력 적 +30% 미반영"
++  },
++  "c_mudang": {
++   "name": "무당비군냥",
++   "rarity": "C",
++   "classKo": "물리 근접",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "바위를 굴려 일직선 적에게 공격력의 100% 피해, 0.5초 기절 (보스 면역)",
++   "s3": "공격속도 +8%",
++   "s5": "기절 1초",
++   "note": "일직선 ~3명"
++  },
++  "c_heochang": {
++   "name": "허창 수비병냥",
++   "rarity": "C",
++   "classKo": "탱커",
++   "faction": "위",
++   "basic": "단일",
++   "s0": "자신에게 최대 체력 12% 보호막 (4초). 성문 방어전에서는 성문 체력 3% 수리",
++   "s3": "방어력 +8%",
++   "s5": "보호막 15%, 성문 수리 5%",
++   "note": "보호막15 + 방어8; 성문 수리"
++  },
++  "c_seoryang": {
++   "name": "서량 보병냥",
++   "rarity": "C",
++   "classKo": "탱커",
++   "faction": "군웅",
++   "basic": "단일",
++   "s0": "자신에게 최대 체력 12% 보호막 (4초), 가까운 적을 밀쳐냄",
++   "s3": "체력 +8%",
++   "s5": "밀친 적 0.5초 기절 (보스 면역)",
++   "note": "보호막12 + 체력8"
++  },
++  "c_ikju": {
++   "name": "익주 둔전병냥",
++   "rarity": "C",
++   "classKo": "탱커",
++   "faction": "촉",
++   "basic": "단일",
++   "s0": "자신에게 최대 체력 12% 보호막 (4초)",
++   "s3": "체력 50% 미만이면 최대 체력 6% 회복 (전투당 1회)",
++   "s5": "보호막 15% + [채집 담당] 약초 채집량 +10%",
++   "note": "보호막15 + 1회 회복6"
++  }
++ }
++}
+\ No newline at end of file
+diff --git a/ait-app/src/poc/skillReview.css b/ait-app/src/poc/skillReview.css
+new file mode 100644
+index 0000000..c6510b9
+--- /dev/null
++++ b/ait-app/src/poc/skillReview.css
+@@ -0,0 +1,62 @@
++/* 영웅 스킬 검수 화면 전용. field.css(body 중앙 정렬, #app 폭)를 이 페이지에서만 덮어쓴다. */
++body.skill-review{display:block;min-height:100svh;margin:0;color:#f5ecd8;font-family:var(--game-font,system-ui,sans-serif);background:radial-gradient(ellipse at 50% 0%,#2f3b31,#141a17 70%) fixed}
++.skill-review *{box-sizing:border-box}
++.sr-shell{display:grid;gap:14px;padding:14px;max-width:1500px;margin:0 auto;grid-template-columns:minmax(260px,330px) minmax(340px,440px) minmax(320px,1fr);grid-template-areas:"picker battle side" "skill battle side";align-items:start}
++.sr-side{grid-area:side;display:grid;gap:14px;min-width:0}
++.sr-picker{grid-area:picker}.sr-skill{grid-area:skill}.sr-battle{grid-area:battle;min-width:0}
++.sr-picker,.sr-skill,.sr-inspector,.sr-meter{background:#1d2a22e8;border:1px solid #5f6f5a66;border-radius:14px;padding:12px;min-width:0}
++.skill-review h1{font-size:18px;margin:0 0 8px}.skill-review h1 small,.skill-review h2 small,.skill-review h3 small{font-size:11px;font-weight:400;color:#b9c3a8;margin-left:6px}
++.skill-review h2{font-size:15px;margin:0 0 8px}.skill-review h3{font-size:13px;margin:12px 0 6px;color:#e8d49c}
++.chip{display:inline-block;font-size:11px;line-height:1;padding:4px 6px;border-radius:999px;background:#33473b;border:1px solid #6d8166;color:#e9efdc;white-space:nowrap}
++.chip.sm{font-size:10px;padding:3px 5px}.chip.faction{background:#3d3528;border-color:#8b7650}
++.chip.r-SSR{background:#7a4a14;border-color:#f0c35d;color:#ffe6a6}.chip.r-SR{background:#4d2a6b;border-color:#b98be0}.chip.r-R{background:#1f4a6b;border-color:#6fb2e0}.chip.r-N{background:#2f4a31;border-color:#7fb27a}.chip.r-C{background:#444;border-color:#999}
++.sr-current{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px}.sr-current strong{font-size:16px}.sr-current code{font-size:11px;color:#aab79a}
++.skill-review input[type=search]{width:100%;padding:9px 10px;border-radius:9px;border:1px solid #6d8166;background:#10201a;color:#fff;font:inherit;font-size:14px}
++.sr-filter,.sr-stage{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0}
++.skill-review button{font:inherit;font-size:13px;color:#f5ecd8;background:#29463a;border:1px solid #8b9d74;border-radius:9px;padding:8px 10px;cursor:pointer;min-height:36px}
++.skill-review button[aria-pressed=true]{background:#826342;border-color:#efd194}
++.skill-review button.primary{background:#9a5b22;border-color:#f3c46b;font-weight:700}
++.sr-filter button{padding:5px 9px;min-height:30px;font-size:12px}
++.sr-list{list-style:none;margin:0;padding:0;max-height:34vh;overflow:auto;display:grid;gap:3px}
++.sr-list a{display:flex;align-items:center;gap:6px;padding:6px 7px;border-radius:8px;color:inherit;text-decoration:none;background:#22332a}
++.sr-list a:hover{background:#2d4537}.sr-list a[aria-current=true]{outline:2px solid #efd194;background:#4a3b25}
++.sr-list .nm{flex:1;font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
++.sr-stage button{flex:1;font-size:15px;font-weight:700}
++.sr-note{font-size:11.5px;line-height:1.55;color:#c3cbb4;margin:6px 0}.sr-note.warn{color:#ffd39a}
++.sr-tiers{list-style:none;margin:0;padding:0;display:grid;gap:6px}
++.sr-tiers li{display:grid;grid-template-columns:38px 1fr;gap:2px 8px;padding:8px;border-radius:9px;border:1px solid #5f6f5a66;background:#17231d;font-size:12.5px;line-height:1.55}
++.sr-tiers li b{grid-row:span 2;color:#e8d49c}.sr-tiers li em{font-style:normal;font-size:10.5px;color:#9fb08f}
++.sr-tiers li.on{border-color:#d9b866;background:#2c3320;box-shadow:inset 3px 0 0 #f0c35d}.sr-tiers li.on em{color:#ffe08a}
++.sr-tiers li.off{opacity:.5}
++.sr-tiers.current li.on{border-color:#7fb2c9;box-shadow:inset 3px 0 0 #7fc6e8;background:#1d2c31}
++.sr-upg{margin:6px 0 0;padding-left:18px;font-size:12px;color:#c9d2bb}.skill-review details summary{cursor:pointer;font-size:12px;color:#c9d2bb;margin-top:8px}
++.sr-toolbar{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:12.5px;margin-bottom:8px}
++.sr-toolbar select{font:inherit;font-size:13px;padding:6px;border-radius:8px;background:#202a23;color:#fff;border:1px solid #6d8166}
++.sr-toolbar label{display:inline-flex;align-items:center;gap:4px}
++.sr-battle #app{width:100%;padding:0}
++.sr-battle #app .controls,.sr-battle #app .footnote{display:none}
++.sr-battle #app .intro{padding:0 3px 8px}
++.sr-controls .row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
++.sr-controls .row.main button{flex:1 1 calc(25% - 6px);min-width:80px}
++.sr-controls #sr-status{font-size:11.5px;color:#c3cbb4;flex:1 1 100%}
++.sr-rec{border:1px solid #5f6f5a66;border-radius:10px;padding:9px;margin-bottom:8px;background:#17231d;font-size:12.5px}
++.sr-rec header{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.sr-rec header span{color:#aab79a;font-size:11.5px}
++.sr-rec .sum{margin:6px 0;color:#ffe08a}
++.sr-rec table{width:100%;border-collapse:collapse;font-size:12px}.sr-rec th,.sr-rec td{text-align:left;padding:4px;border-bottom:1px solid #ffffff14;vertical-align:top}.sr-rec th{color:#aab79a;font-weight:400}
++.sr-rec td small{color:#aab79a}
++.sr-rec ul{margin:6px 0 0;padding-left:16px}.sr-rec li{margin:2px 0;line-height:1.45}.sr-rec code{font-size:10.5px;color:#9fb08f}
++.sr-rec .chk{list-style:none;padding:6px;border-radius:8px;background:#10201a}
++.sr-rec .chk .mark{display:inline-block;width:16px;font-weight:700}.sr-rec .chk .ok .mark{color:#7fe08a}.sr-rec .chk .ng .mark{color:#ff7d6e}.sr-rec .chk .na .mark{color:#ccc}
++.sr-empty{color:#9fb08f;font-size:12px}
++.sr-meter ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
++.sr-meter li{display:grid;grid-template-columns:70px 1fr 64px;gap:2px 8px;align-items:center;font-size:12px}
++.sr-meter li small{grid-column:1/-1;color:#9fb08f;font-size:10.5px}
++.sr-meter li.me .nm{color:#ffe08a;font-weight:700}
++.sr-meter .bar{height:8px;background:#0f1a14;border-radius:5px;overflow:hidden}.sr-meter .bar i{display:block;height:100%;background:linear-gradient(90deg,#d08a3a,#f0c35d)}
++.sr-meter .v{text-align:right;font-variant-numeric:tabular-nums}
++@media (max-width:1100px){.sr-shell{grid-template-columns:minmax(260px,330px) minmax(340px,1fr);grid-template-areas:"picker battle" "skill battle" "side side"}}
++@media (max-width:760px){
++ .sr-shell{grid-template-columns:minmax(0,1fr);grid-template-areas:"picker" "battle" "side" "skill";padding:10px 8px;gap:10px}
++ .sr-list{max-height:150px}
++ .sr-battle #app .intro{display:none}
++}
+diff --git a/ait-app/src/poc/skillReview.ts b/ait-app/src/poc/skillReview.ts
+new file mode 100644
+index 0000000..0f62abf
+--- /dev/null
++++ b/ait-app/src/poc/skillReview.ts
+@@ -0,0 +1,483 @@
++// 영웅별 스킬·모션 검수 화면 (개발 서버 전용, 저장 반영 없음).
++// 실제 필드 렌더러(mountField)와 실제 전투 엔진(stepFieldBattle → castFieldSkill → contentBattle.cast)을 그대로 사용한다.
++// 이 파일은 검수용 장면 구성(적 배치·기력 보류·속도 조절)과 이벤트 기록만 담당하며 게임 데이터·로직은 바꾸지 않는다.
++import './skillReview.css'
++import {mountField} from './fieldView'
++import {loadProductionRigRenderer} from './productionRigRenderer'
++import {loadApprovedFrameRenderer,FRAME_CONTRACTS,type AuthoredHero} from './approvedFrameRenderer'
++import {YELLOW_TURBAN_RECRUIT_ART} from './yellowTurbanArt'
++import {portrait} from '../ui/dom/approvedPortrait'
++import {createFieldEncounter} from '../engine/fieldEncounter'
++import {fieldSkillTiming} from '../engine/fieldSkillTiming'
++import {promotionDamage,promotionSupport} from '../engine/heroGrowth'
++import {V3_CHARACTERS,V3_CHARACTER_BY_ID,classRole,type V3Character} from '../data/v3Characters'
++import V9 from '../data/heroSkillV9.json'
++import type {FieldBattle,FieldEffect,FieldUnit,FieldRole} from '../types/fieldPoc'
++import type {RigRenderer} from '../../public/battle/approved-motion-review-v1/web/runtime'
++
++// ───────────────────────── 기본 데이터 ─────────────────────────
++type Stage=0|3|5
++type V9Hero={name:string;rarity:string;classKo:string;faction:string;basic:string;s0:string;s3:string;s5:string;note?:string}
++const V9_HEROES=(V9 as unknown as {heroes:Record<string,V9Hero>}).heroes
++const STARTERS=new Set(['m1','m3','m5'])
++const LOBBY_ART=new Set(['n_bear','n_wolf','n_boar','n_snake','n_guard','sr_munchu','sr_anryang','sr_ugil','sr_chukyung','sr_maenghoek','sr_yupyo','sr_gongsonchan','sr_wonsul','r_wangrang','r_gosun','r_iyu','r_jangryang','r_jangbo','r_chaemo','r_handang','r_jeongbo','r_yohwa','r_juchang','r_gwanpyeong','r_ijeon','r_sunugyeong','r_hahueun','c_sanwol','c_sugun','c_danyang','c_ikju','c_mudang','c_baeki','c_heochang','c_cheongju','c_wi_archer','n_cavalry','n_hopyo','c_seoryang','c_heuksan','n_pirate','n_shaman','n_deunggap','n_hyeongju'])
++const RARITY_ORDER:Record<string,number>={SSR:0,SR:1,R:2,N:3,C:4}
++const FIELD_ROLES:Record<string,FieldRole>={'방패':'tank','기병':'rogue','도사':'healer','책사':'healer','궁수':'archer'}
++const STATUS_KO:Record<string,string>={sonchaekChallenge:'도전 표식',moveSpeed:'이동속도 강화',rangeBonus:'사거리 증가',hahuyeonRivalSpeed:'공격속도 추가 강화',redirect:'피해 분담',push:'밀림',chain:'사슬 연결',accuracyDown:'명중 감소',frost:'동상',attack:'공격 강화',speed:'공격속도 강화',reduction:'피해 감소',immune:'상태이상 면역',invulnerable:'무적',crit:'치명 강화',critDamage:'치명 피해 강화',healing:'회복 증폭',burn:'화상',poison:'중독',bleed:'출혈',hot:'지속 회복',attackDown:'공격 약화',defenseDown:'방어 약화',healDown:'회복 감소',vulnerable:'받는 피해 증가',sleep:'수면',attackSlow:'공격속도 감소',stun:'기절',charm:'매혹',confusion:'혼란',slow:'둔화',taunt:'도발',armor:'방어력 강화',energyRegen:'기력 지속 회복',spin:'회전 공격',skillPower:'스킬 피해 강화',statusResistance:'상태이상 저항',tauntGuard:'도발 방어',bind:'속박',energy:'기력 회복',joMark:'조조 표식',summon:'소환',revive:'부활',critical:'치명타'}
++const statusKo=(key:string):string=>key.startsWith('immuneBlocked:')?`면역으로 막힘(${statusKo(key.slice(14))})`:STATUS_KO[key]??key
++
++const params=new URLSearchParams(location.search)
++const heroId=params.get('hero')&&V3_CHARACTER_BY_ID[params.get('hero')!]?params.get('hero')!:'yeo'
++const parseStage=(v:string|null):Stage=>v==='5'?5:v==='3'?3:0
++let stage:Stage=parseStage(params.get('star'))
++type EnemySetup='dummy'|'cluster'|'boss'
++let enemySetup:EnemySetup=(['dummy','cluster','boss'] as const).find(v=>v===params.get('enemy'))??'dummy'
++let allyHp=Number(params.get('allyHp'))||60
++if(![100,60,30].includes(allyHp))allyHp=60
++let enemyLow=params.get('enemyHp')==='low'
++let withCompanions=params.get('allies')!=='0'
++let autoSkill=params.get('auto')==='1'
++let basicOnly=false
++let skillRequested=false
++const hero=V3_CHARACTER_BY_ID[heroId]
++const v9=V9_HEROES[heroId]
++
++function fieldRoleOf(h:V3Character):FieldRole{return h.id==='songwon'?'guard':FIELD_ROLES[classRole(h.role,h.attackStyle)]??'rogue'}
++const roleAttack=(r:FieldRole)=>r==='rogue'?9:r==='tank'?7:8
++const roleHpDenominator=(id:string)=>id==='m1'?15300:id==='m5'?9450:8550
++/** 실제 엔진 snapshot()과 같은 공식으로 시전자 공격력을 계산한다. */
++const casterAttack=(u:FieldUnit)=>(u.role==='rogue'?49:u.role==='tank'?31:24)*(u.attackScale??1)
++const companionIds=()=>['m1','m3','m5'].filter(id=>id!==heroId).slice(0,2)
++
++// ───────────────────────── 재생 속도(가상 시계) ─────────────────────────
++// fieldView는 1/1.5/2배속만 지원하므로, 이 화면에서만 rAF 타임스탬프를 가상 시계로 바꿔 0.25×·0.5×·정지를 만든다.
++// 시뮬레이션 단위(1/60초)와 판정 타이밍은 그대로이며, 화면 시간이 느리게 흐를 뿐이다.
++let playRate=Number(params.get('speed'))||1
++if(![.25,.5,1].includes(playRate))playRate=1
++let pausedByUser=false
++{
++ const realRaf=window.requestAnimationFrame.bind(window)
++ let virtualNow=performance.now(),lastReal=0
++ window.requestAnimationFrame=(cb:FrameRequestCallback)=>realRaf(t=>{
++  if(t!==lastReal){if(lastReal)virtualNow+=(t-lastReal)*(pausedByUser?0:playRate);lastReal=t}
++  cb(virtualNow)
++ })
++}
++
++// ───────────────────────── 기록(이벤트 검사) ─────────────────────────
++type HitRow={amount:number;pct:number;critical:boolean;phase?:string;time:number}
++type StatusRow={key:string;targetId:string;targetName:string;ally:boolean;value?:number;duration?:number;time:number}
++type SupportRow={kind:'heal'|'shield';targetId:string;targetName:string;amount:number;pctMaxHp:number;time:number;phase?:string}
++type CastRecord={no:number;kind:'skill'|'basic';start:number;stage:Stage;attack:number;targets:Map<string,{name:string;ally:boolean;direct:HitRow[];ticks:HitRow[]}>;statuses:StatusRow[];support:SupportRow[];summons:Set<string>}
++let records:CastRecord[]=[]
++let castNo=0
++const meter=new Map<string,{name:string;damage:number;healing:number;shield:number;casts:number}>()
++let dirty=true
++
++function ownerOf(state:FieldBattle,sourceId:string|undefined){
++ if(!sourceId)return undefined
++ const u=state.units.find(v=>v.id===sourceId)
++ return u?.abilitySummonOwner??sourceId
++}
++function newRecord(kind:'skill'|'basic',state:FieldBattle){
++ const caster=state.units.find(u=>u.id===heroId)
++ const r:CastRecord={no:++castNo,kind,start:state.time,stage,attack:caster?casterAttack(caster):1,targets:new Map(),statuses:[],support:[],summons:new Set()}
++ records.unshift(r)
++ // 평타 기록은 최근 것만, 스킬 기록은 최근 8회까지 유지
++ const skills=records.filter(x=>x.kind==='skill').slice(0,8),basics=records.filter(x=>x.kind==='basic').slice(0,14)
++ records=records.filter(x=>skills.includes(x)||basics.includes(x))
++ dirty=true
++ return r
++}
++function onActions(actions:readonly {unit:FieldUnit;skill:boolean}[],state:FieldBattle){
++ for(const {unit,skill} of actions){
++  if(unit.ally&&!unit.abilitySummonOwner){const m=meterRow(state,unit.id);if(skill)m.casts++}
++  if(unit.id!==heroId)continue
++  if(skill){newRecord('skill',state);skillRequested=false}
++  else newRecord('basic',state)
++ }
++}
++function meterRow(state:FieldBattle,id:string){
++ let row=meter.get(id)
++ if(!row){const u=state.units.find(v=>v.id===id);row={name:V3_CHARACTER_BY_ID[id]?.name??u?.name??id,damage:0,healing:0,shield:0,casts:0};meter.set(id,row)}
++ return row
++}
++function onEffects(effects:readonly FieldEffect[],state:FieldBattle){
++ for(const e of effects){
++  const owner=ownerOf(state,e.sourceId)
++  const ownerUnit=state.units.find(u=>u.id===owner)
++  // 피해 미터: 아군(소환수 포함) 누적
++  if(ownerUnit?.ally&&owner){
++   const m=meterRow(state,owner)
++   const target=state.units.find(u=>u.id===e.targetId)
++   if((e.kind==='hit'||e.kind==='shot')&&target&&!target.ally)m.damage+=e.amount
++   if(e.kind==='heal')m.healing+=e.amount
++   if(e.kind==='shield')m.shield+=e.amount
++   dirty=true
++  }
++  if(owner!==heroId)continue
++  if(e.sourceId&&e.sourceId!==heroId)records.find(r=>r.kind==='skill')?.summons.add(e.sourceId)
++  const isSkill=e.skill||e.phase==='dot'||e.phase==='zoneTick'
++  let rec=records.find(r=>r.kind===(isSkill?'skill':'basic'))
++  if(!rec||(rec.kind==='basic'&&state.time-rec.start>2.5)||(rec.kind==='skill'&&state.time-rec.start>20))rec=newRecord(isSkill?'skill':'basic',state)
++  const target=state.units.find(u=>u.id===e.targetId)
++  const targetName=target?(V3_CHARACTER_BY_ID[target.appearanceId??target.id]&&target.ally?V3_CHARACTER_BY_ID[target.appearanceId??target.id].name:target.name):(e.targetId??'?')
++  if(e.kind==='hit'||e.kind==='shot'){
++   if(!target)continue
++   let t=rec.targets.get(target.id)
++   if(!t){t={name:targetName,ally:target.ally,direct:[],ticks:[]};rec.targets.set(target.id,t)}
++   const row={amount:e.amount,pct:e.amount/rec.attack*100,critical:!!e.critical,phase:e.phase,time:state.time}
++   if(e.phase==='dot'||e.phase==='zoneTick')t.ticks.push(row);else t.direct.push(row)
++  }else if(e.kind==='heal'||e.kind==='shield'){
++   rec.support.push({kind:e.kind,targetId:e.targetId??'',targetName,amount:e.amount,pctMaxHp:target?e.amount/target.maxHp*100:0,time:state.time,phase:e.phase??e.label})
++  }else if(e.kind==='buff'||e.kind==='debuff'){
++   const key=e.label??'?'
++   const fx=target?.skillState?.effects?.find(x=>x.key===key&&x.source===e.sourceId&&x.until>state.time)
++   rec.statuses.push({key,targetId:e.targetId??'',targetName,ally:!!target?.ally,value:fx?.value??(key==='energy'?e.amount:undefined),duration:fx?fx.until-state.time:undefined,time:state.time})
++  }
++  dirty=true
++ }
++}
++
++// ───────────────────────── 기대값(spec) — 있으면 사용 ─────────────────────────
++// src/data/heroSkillSpec.v9.json(별도 패치)이 있으면 자동으로 읽는다. 없으면 실제 결과만 보여 준다.
++type SpecEffect={kind:string;coef?:number;perTick?:number;unit?:string;targets?:number|null;select?:string;side?:string;growth?:boolean|'either';status?:string;statusAny?:string[];value?:number;duration?:number|null;ticks?:number;hitsPerTarget?:number;pulses?:number;range?:[number,number];accept?:number[];ambiguous?:boolean;observable?:boolean;absent?:boolean;probe?:boolean;aura?:boolean;maxHpBonus?:boolean;startEnergy?:boolean;note?:string;amount?:number;count?:number;attackCoef?:number}
++type SpecCase={id:string;scenario?:Record<string,unknown>;expect:SpecEffect[];damageChecks?:boolean}
++type SpecFile={version?:string;growth?:{stageMultiplier?:Record<string,number>};tolerance?:{coefRelative?:number;durationSeconds?:number;valueAbsolute?:number};heroes:Record<string,{stages?:Record<string,{text?:string;cases?:SpecCase[]}>}>}
++let spec:SpecFile|null=null
++const specModules=import.meta.glob('../data/heroSkillSpec.v9.json',{import:'default'})
++const specLoad=Object.values(specModules)[0]?.().then(v=>{const s=v as SpecFile;if(s&&typeof s==='object'&&s.heroes)spec=s;else console.warn('heroSkillSpec.v9.json 형식이 예상과 다릅니다')}).catch(error=>{console.warn('heroSkillSpec.v9.json을 읽지 못했습니다',error)})
++const LAYOUTS:Record<EnemySetup,string[]>={dummy:['single','pair'],cluster:['cluster','cluster7','line','spread'],boss:['boss']}
++const LAYOUT_KO:Record<string,string>={single:'단일',pair:'2명',cluster:'밀집 5',cluster7:'밀집 7',line:'일렬 5',spread:'흩어진 5',boss:'보스'}
++/** 이 화면에서 재현 가능한 케이스인지: 배치가 맞고, 특수 조건(체력 비율·버프 사전 부여·피격 프로브 등)이 없어야 한다. */
++function caseApplies(c:SpecCase){
++ const sc=c.scenario??{}
++ const extra=Object.keys(sc).filter(k=>k!=='layout'&&k!=='window')
++ if(extra.length)return {ok:false,why:`특수 조건(${extra.join(', ')})`}
++ const layout=typeof sc.layout==='string'?sc.layout:undefined
++ // 아군 대상 효과(회복·보호막·버프 등)만 있는 케이스는 적 배치와 무관하므로 그대로 판정한다.
++ const enemyDependent=c.expect.some(e=>e.side==='enemy'||['damage','zone','dot','debuff','stun','taunt','charm','slow','dispel','displace'].includes(e.kind))
++ if(layout&&enemyDependent&&!LAYOUTS[enemySetup].includes(layout))return {ok:false,why:`배치 ${LAYOUT_KO[layout]??layout} 필요`}
++ return {ok:true,why:''}
++}
++function specCases(id:string,st:Stage){return spec?.heroes?.[id]?.stages?.[String(st)]?.cases??null}
++
++type Actual={maxTargetPct:number;totalPct:number;targetsHit:number;dot:{perTick:number;ticks:number;span:number}|null;zone:{perTick:number;ticks:number}|null;statuses:StatusRow[];shieldPct:number;healPct:number;heals:number;crits:number}
++function summarize(r:CastRecord):Actual{
++ const foes=[...r.targets.values()].filter(t=>!t.ally)
++ const per=foes.map(t=>t.direct.reduce((a,h)=>a+h.pct,0))
++ const dots=foes.flatMap(t=>t.ticks.filter(h=>h.phase==='dot')),zones=foes.flatMap(t=>t.ticks.filter(h=>h.phase==='zoneTick'))
++ const perTarget=foes.map(t=>t.ticks.filter(h=>h.phase==='dot')).filter(l=>l.length).map(l=>({n:l.length,span:l[l.length-1].time-l[0].time+1}))
++ const zonePer=foes.map(t=>t.ticks.filter(h=>h.phase==='zoneTick').length)
++ return {maxTargetPct:Math.max(0,...per),totalPct:per.reduce((a,b)=>a+b,0),targetsHit:foes.filter(t=>t.direct.length||t.ticks.length).length,
++  dot:dots.length?{perTick:dots.reduce((a,h)=>a+h.pct,0)/dots.length,ticks:Math.max(...perTarget.map(p=>p.n)),span:Math.max(...perTarget.map(p=>p.span))}:null,
++  zone:zones.length?{perTick:zones.reduce((a,h)=>a+h.pct,0)/zones.length,ticks:Math.max(...zonePer)}:null,
++  statuses:r.statuses,shieldPct:Math.max(0,...r.support.filter(s=>s.kind==='shield').map(s=>s.pctMaxHp)),healPct:Math.max(0,...r.support.filter(s=>s.kind==='heal').map(s=>s.pctMaxHp)),heals:r.support.filter(s=>s.kind==='heal').length,crits:[...r.targets.values()].flatMap(t=>t.direct).filter(h=>h.critical).length}
++}
++const nearRel=(a:number,b:number,tol:number)=>Math.abs(a-b)<=Math.max(.5,Math.abs(b)*tol)
++type Verdict={ok:boolean|null;expected:string;actual:string}
++/** v9 기대값 1개를 실제 기록과 비교. 피해 계수는 v9 성장 배율(spec.growth)을 곱한 값과 비교한다. */
++function judge(e:SpecEffect,a:Actual,r:CastRecord):Verdict{
++ const mult=spec?.growth?.stageMultiplier?.[String(r.stage)]??1
++ const tol=Math.max(.05,spec?.tolerance?.coefRelative??0)
++ const durTol=Math.max(.3,spec?.tolerance?.durationSeconds??0)
++ const candidates=(base:number[],growth:SpecEffect['growth'])=>growth===true?base.map(v=>v*mult):growth==='either'?[...base,...base.map(v=>v*mult)]:base
++ const pctList=(v:number[])=>[...new Set(v.map(x=>`${(x*100).toFixed(0)}%`))].join(' 또는 ')
++ if(e.observable===false||e.probe)return {ok:null,expected:e.note??e.kind,actual:'이 화면에서 관찰 불가'}
++ if(e.absent){const hit=a.statuses.some(s=>s.key===(e.status??e.kind));return {ok:!hit,expected:`${statusKo(e.status??e.kind)} 없음`,actual:hit?'적용됨':'없음'}}
++ switch(e.kind){
++  case 'damage':{
++   if(e.coef===undefined)return {ok:null,expected:'피해',actual:`${a.maxTargetPct.toFixed(0)}%`}
++   const base=e.range?[e.range[0],e.range[1]]:[e.coef,...(e.accept??[])]
++   const want=candidates(base,e.growth??true)
++   const ok=e.range?a.maxTargetPct>=e.range[0]*mult*100*(1-tol)&&a.maxTargetPct<=e.range[1]*mult*100*(1+tol):want.some(v=>nearRel(a.maxTargetPct,v*100,tol))
++   return {ok:a.maxTargetPct>0&&ok,expected:`대상당 ${e.range?`${(e.range[0]*mult*100).toFixed(0)}~${(e.range[1]*mult*100).toFixed(0)}%`:pctList(want)}${e.targets?` · ${e.targets}명`:''}${e.hitsPerTarget&&e.hitsPerTarget>1?` · ${e.hitsPerTarget}타`:''}`,actual:`대상당 ${a.maxTargetPct.toFixed(0)}% · ${a.targetsHit}명`}
++  }
++  case 'zone':{
++   const want=candidates([e.perTick??0],e.growth??true)
++   if(!a.zone)return {ok:false,expected:`장판 틱당 ${pctList(want)}${e.duration?` · ${e.duration}초`:''}`,actual:'장판 틱 없음'}
++   const ok=want.some(v=>nearRel(a.zone!.perTick,v*100,tol))&&(e.ticks==null||Math.abs(a.zone.ticks-e.ticks)<=1)
++   return {ok,expected:`장판 틱당 ${pctList(want)}${e.ticks?` × ${e.ticks}틱`:''}`,actual:`틱당 ${a.zone.perTick.toFixed(0)}% × ${a.zone.ticks}틱`}
++  }
++  case 'dot':{
++   const want=candidates([e.perTick??0],e.growth??'either')
++   const s=a.statuses.find(x=>x.key===e.status)
++   const label=`${statusKo(e.status??'dot')} 틱당 ${pctList(want)}${e.duration?` · ${e.duration}초`:''}`
++   if(!s)return {ok:false,expected:label,actual:a.dot?`상태 없음(틱 ${a.dot.perTick.toFixed(0)}%)`:'적용 안 됨'}
++   const per=s.value!==undefined?s.value/r.attack*100:a.dot?.perTick??0
++   const ok=want.some(v=>nearRel(per,v*100,tol))&&(e.duration==null||s.duration===undefined||Math.abs(s.duration-e.duration)<=durTol)
++   return {ok,expected:label,actual:`틱당 ${per.toFixed(0)}% · ${s.duration?.toFixed(1)??'?'}초`}
++  }
++  case 'shield':case 'heal':{
++   const want=candidates([e.coef??0],e.growth??'either')
++   // 회복·보호막은 단계(연쇄·마무리 등)가 섞이므로, 기대값과 맞는 이벤트가 하나라도 있으면 일치로 본다.
++   const values=r.support.filter(x=>x.kind===e.kind&&(e.select!=='self'||x.targetId===heroId)).map(x=>x.pctMaxHp)
++   const label=`${e.kind==='shield'?'보호막':'회복'} 최대체력 ${pctList(want)}${e.pulses?` · ${e.pulses}회`:''}${e.duration?` · ${e.duration}초`:''}`
++   if(!values.length)return {ok:false,expected:label,actual:'없음'}
++   const ok=values.some(got=>want.some(v=>nearRel(got,v*100,tol)))&&(!e.pulses||a.heals>=e.pulses)
++   const distinct=[...new Set(values.map(v=>v.toFixed(1)))].slice(0,4).join('/')
++   return {ok,expected:label,actual:`${distinct}%${e.kind==='heal'?` · ${a.heals}회(잃은 체력 상한)`:''}`}
++  }
++  case 'summon':return {ok:r.summons.size>=(e.count??1),expected:`소환 ${e.count??1}${e.duration?` · ${e.duration}초`:''}`,actual:r.summons.size?`${r.summons.size}기`:'소환 없음'}
++  case 'energy':{
++   if(e.startEnergy)return {ok:null,expected:'시작 기력',actual:'이 화면에서 관찰 불가'}
++   const total=a.statuses.filter(s=>s.key==='energy').reduce((n,s)=>n+(s.value??0),0)
++   return {ok:total>0&&(e.amount===undefined||Math.abs(total/Math.max(1,a.statuses.filter(s=>s.key==='energy').length)-e.amount)<=.6),expected:`기력 +${e.amount??'?'}`,actual:total?`기력 +${Math.round(total)} (합계)`:'없음'}
++  }
++  case 'cleanse':case 'dispel':case 'displace':return {ok:null,expected:e.note??e.kind,actual:'자동 판정 미지원'}
++ }
++ if(e.aura||e.maxHpBonus)return {ok:null,expected:e.note??`${statusKo(e.status??e.kind)} (상시)`,actual:'상시 효과 — 판정 생략'}
++ const keys=e.statusAny??[e.status??e.kind]
++ const s=a.statuses.find(x=>keys.includes(x.key))
++ const label=`${keys.map(statusKo).join('/')}${e.value!==undefined?` ${fmtValue(e.value)}`:''}${e.duration?` · ${e.duration}초`:''}`
++ if(!s)return {ok:false,expected:label,actual:'적용 안 됨'}
++ const okVal=e.value===undefined||s.value===undefined||Math.abs(s.value-e.value)<=Math.max(.01,Math.abs(e.value)*tol)
++ const okDur=e.duration==null||s.duration===undefined||Math.abs(s.duration-e.duration)<=durTol
++ return {ok:okVal&&okDur,expected:label,actual:`${statusKo(s.key)} ${s.value!==undefined?fmtValue(s.value):''} · ${s.duration!==undefined?s.duration.toFixed(1)+'초':'?'}`}
++}
++function renderChecks(r:CastRecord){
++ const cases=specCases(heroId,r.stage)
++ if(!cases)return ''
++ const a=summarize(r)
++ const applicable=cases.filter(c=>caseApplies(c).ok),skipped=cases.filter(c=>!caseApplies(c).ok)
++ const body=applicable.map(c=>`<li class="case">케이스 <code>${esc(c.id)}</code>${c.scenario?.layout?` · ${esc(LAYOUT_KO[String(c.scenario.layout)]??c.scenario.layout)}`:''}</li>`+c.expect.filter(e=>c.damageChecks!==false||!['damage','zone','dot'].includes(e.kind)).map(e=>{const j=judge(e,a,r);return `<li class="${j.ok===true?'ok':j.ok===false?'ng':'na'}"><span class="mark">${j.ok===true?'✓':j.ok===false?'✗':'?'}</span>${e.ambiguous?'<span class="chip sm">모호</span> ':''}기대 ${esc(j.expected)} / 실제 ${esc(j.actual)}${e.note?`<br><small>${esc(e.note)}</small>`:''}</li>`}).join('')).join('')
++ const skip=skipped.length?`<li class="na"><small>이 화면에서 판정하지 않은 케이스: ${skipped.map(c=>`${esc(c.id)}(${esc(caseApplies(c).why)})`).join(', ')}</small></li>`:''
++ return `<ul class="chk">${body}${skip}</ul>`
++}
++const fmtValue=(v:number)=>Math.abs(v)<=3?`${Math.round(v*1000)/10}%`:`${Math.round(v)}`
++const TICK_KEYS=new Set(['burn','poison','bleed','hot'])
++/** 지속 피해·회복 상태의 value는 틱당 절대량이므로 시전자 공격력 대비 %로 함께 보여 준다. */
++const fmtStatusValue=(s:StatusRow,attack:number)=>s.value===undefined?'—':TICK_KEYS.has(s.key)?`틱당 ${Math.round(s.value)} (공격력 ${(s.value/attack*100).toFixed(0)}%)`:fmtValue(s.value)
++
++// ───────────────────────── 화면 구성 ─────────────────────────
++const picker=document.querySelector<HTMLElement>('#sr-picker')!
++const skillPanel=document.querySelector<HTMLElement>('#sr-skill')!
++const toolbar=document.querySelector<HTMLElement>('#sr-toolbar')!
++const controls=document.querySelector<HTMLElement>('#sr-controls')!
++const inspector=document.querySelector<HTMLElement>('#sr-inspector')!
++const meterPanel=document.querySelector<HTMLElement>('#sr-meter')!
++const esc=(s:unknown)=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]!))
++const rarityChip=(r:string)=>`<span class="chip r-${esc(r)}">${esc(r)}</span>`
++
++function urlWith(changes:Record<string,string|null>){
++ const url=new URL(location.href)
++ for(const [k,v] of Object.entries(changes)){if(v===null)url.searchParams.delete(k);else url.searchParams.set(k,v)}
++ return url
++}
++function syncUrl(){history.replaceState(null,'',urlWith({hero:heroId,star:String(stage),enemy:enemySetup,speed:String(playRate),allyHp:String(allyHp),enemyHp:enemyLow?'low':null,allies:withCompanions?null:'0',auto:autoSkill?'1':null}))}
++
++function renderPicker(){
++ const sorted=[...V3_CHARACTERS].sort((a,b)=>(RARITY_ORDER[a.rarity]??9)-(RARITY_ORDER[b.rarity]??9)||a.name.localeCompare(b.name,'ko'))
++ picker.innerHTML=`<h1>영웅 스킬 검수 <small>85종 · 저장 반영 없음</small></h1>
++ <div class="sr-current">${rarityChip(hero.rarity)}<strong>${esc(hero.name)}</strong><span class="chip">${esc(v9?.classKo??hero.role)}</span><span class="chip faction">${esc(hero.faction)}</span><code>${esc(hero.id)}</code></div>
++ <input type="search" id="sr-search" placeholder="이름·ID·등급·직업·진영 검색" aria-label="영웅 검색" autocomplete="off">
++ <div class="sr-filter" role="group" aria-label="등급 필터">${['전체','SSR','SR','R','N','C'].map(r=>`<button type="button" data-rarity="${r}" aria-pressed="${r==='전체'}">${r}</button>`).join('')}</div>
++ <ul class="sr-list" id="sr-list">${sorted.map(h=>{const v=V9_HEROES[h.id];return `<li><a href="${esc(urlWith({hero:h.id}).search)}" data-id="${esc(h.id)}" data-rarity="${esc(h.rarity)}" data-search="${esc(`${h.name} ${h.id} ${h.rarity} ${v?.classKo??''} ${h.role} ${h.faction}`.toLowerCase())}" ${h.id===heroId?'aria-current="true"':''}>${rarityChip(h.rarity)}<span class="nm">${esc(h.name)}</span><span class="chip sm">${esc(v?.classKo??h.role)}</span><span class="chip sm faction">${esc(h.faction)}</span></a></li>`}).join('')}</ul>`
++ const search=picker.querySelector<HTMLInputElement>('#sr-search')!
++ let rarity='전체'
++ const filter=()=>{const term=search.value.trim().toLowerCase();for(const a of picker.querySelectorAll<HTMLAnchorElement>('#sr-list a'))a.parentElement!.hidden=!((rarity==='전체'||a.dataset.rarity===rarity)&&(!term||a.dataset.search!.includes(term)))}
++ search.oninput=filter
++ for(const b of picker.querySelectorAll<HTMLButtonElement>('[data-rarity]'))b.onclick=()=>{rarity=b.dataset.rarity!;for(const o of picker.querySelectorAll('[data-rarity]'))o.setAttribute('aria-pressed',String(o===b));filter()}
++ // 선택 링크는 현재 단계·적 구성 등 설정을 유지한다.
++ for(const a of picker.querySelectorAll<HTMLAnchorElement>('#sr-list a'))a.onclick=ev=>{ev.preventDefault();location.assign(urlWith({hero:a.dataset.id!}).href)}
++ picker.querySelector('[aria-current="true"]')?.scrollIntoView({block:'nearest'})
++}
++
++function renderSkillPanel(){
++ const tier=(st:Stage,label:string,body:string|undefined)=>`<li class="${stage>=st?'on':'off'}"><b>${label}</b><span>${esc(body||'—')}</span><em>${stage>=st?'적용 중':'미적용'}</em></li>`
++ const upgrades=hero.upgrades?.length?`<details><summary>스킬 레벨 강화(현재 데이터)</summary><ul class="sr-upg">${hero.upgrades.map(u=>`<li>Lv${u.level} · ${esc(u.text)}</li>`).join('')}</ul></details>`:''
++ skillPanel.innerHTML=`<h2>스킬 설명 <small>${stage}성 선택</small></h2>
++ <div class="sr-stage" role="group" aria-label="승급 단계">${([0,3,5] as const).map(s=>`<button type="button" data-stage="${s}" aria-pressed="${s===stage}">${s}성</button>`).join('')}</div>
++ <p class="sr-note">${stage}성 = 승급 ${stage}단계(저장 별 ${stage+1}) · 스킬 레벨 ${Math.min(5,stage+1)} · 스킬 피해 배율 ×${promotionDamage(stage)} · 회복/보호막 배율 ×${promotionSupport(stage)}${stage>=3&&hero.kit!=='named'?' · 3성 이상 공통 피해 ×1.05':''}. 엔진은 promotion 값으로 3성·5성 효과를 켭니다${hero.rarity!=='SSR'?' (5성 전용 분기 중 일부는 SSR만 적용)':''}.</p>
++ <h3>v9 기획 <small>${esc(v9?.classKo??'')} · 기본공격 ${esc(v9?.basic??'')}</small></h3>
++ <ol class="sr-tiers">${tier(0,'0성',v9?.s0)}${tier(3,'3성',v9?.s3)}${tier(5,'5성',v9?.s5)}</ol>
++ ${v9?.note?`<p class="sr-note">기획 메모: ${esc(v9.note)}</p>`:''}
++ <h3>현재 게임 설명 <small>v3Characters (런타임 문구)</small></h3>
++ <ol class="sr-tiers current">${tier(0,'스킬',hero.active)}${tier(3,'3성',hero.passive)}${tier(5,'5성',hero.star5)}</ol>
++ ${upgrades}
++ <p class="sr-note warn">v9 문구와 현재 게임 문구가 다르면 아직 v9 기준으로 구현되지 않은 것입니다. 아래 이벤트 검사 값은 현재 엔진의 실제 결과입니다.</p>`
++ for(const b of skillPanel.querySelectorAll<HTMLButtonElement>('[data-stage]'))b.onclick=()=>{stage=parseStage(b.dataset.stage!);syncUrl();renderSkillPanel();restart()}
++}
++
++function renderToolbar(){
++ toolbar.innerHTML=`<label>적 구성 <select id="sr-enemy"><option value="dummy">허수아비 1</option><option value="cluster">밀집 5</option><option value="boss">보스 1</option></select></label>
++ <label>아군 체력 <select id="sr-allyhp"><option value="100">100%</option><option value="60">60%</option><option value="30">30%</option></select></label>
++ <label><input type="checkbox" id="sr-enemylow"> 적 체력 30%</label>
++ <label><input type="checkbox" id="sr-companions"> 동료 2명</label>
++ <label><input type="checkbox" id="sr-auto"> 자동 스킬</label>`
++ const enemy=toolbar.querySelector<HTMLSelectElement>('#sr-enemy')!;enemy.value=enemySetup
++ enemy.onchange=()=>{enemySetup=enemy.value as EnemySetup;syncUrl();restart()}
++ const hp=toolbar.querySelector<HTMLSelectElement>('#sr-allyhp')!;hp.value=String(allyHp)
++ hp.onchange=()=>{allyHp=Number(hp.value);syncUrl();restart()}
++ const low=toolbar.querySelector<HTMLInputElement>('#sr-enemylow')!;low.checked=enemyLow
++ low.onchange=()=>{enemyLow=low.checked;syncUrl();restart()}
++ const comp=toolbar.querySelector<HTMLInputElement>('#sr-companions')!;comp.checked=withCompanions
++ comp.onchange=()=>{withCompanions=comp.checked;syncUrl();location.assign(location.href)}
++ const auto=toolbar.querySelector<HTMLInputElement>('#sr-auto')!;auto.checked=autoSkill
++ auto.onchange=()=>{autoSkill=auto.checked;syncUrl()}
++}
++
++function renderControls(){
++ controls.innerHTML=`<div class="row main"><button type="button" class="primary" id="sr-cast">스킬 사용</button><button type="button" id="sr-basic" aria-pressed="false">평타만 보기</button><button type="button" id="sr-pause" aria-pressed="false">잠시 멈춤</button><button type="button" id="sr-replay">다시 보기</button></div>
++ <div class="row speed" role="group" aria-label="재생 속도">${[.25,.5,1].map(v=>`<button type="button" data-speed="${v}" aria-pressed="${v===playRate}">속도 ${v}×</button>`).join('')}<span id="sr-status" role="status"></span></div>`
++ controls.querySelector<HTMLButtonElement>('#sr-cast')!.onclick=()=>{skillRequested=true;if(basicOnly){basicOnly=false;controls.querySelector('#sr-basic')!.setAttribute('aria-pressed','false')}if(pausedByUser)setPause(false)}
++ const basic=controls.querySelector<HTMLButtonElement>('#sr-basic')!
++ basic.onclick=()=>{basicOnly=!basicOnly;skillRequested=false;basic.setAttribute('aria-pressed',String(basicOnly));dirty=true}
++ controls.querySelector<HTMLButtonElement>('#sr-pause')!.onclick=()=>setPause(!pausedByUser)
++ controls.querySelector<HTMLButtonElement>('#sr-replay')!.onclick=()=>restart()
++ for(const b of controls.querySelectorAll<HTMLButtonElement>('[data-speed]'))b.onclick=()=>{playRate=Number(b.dataset.speed);for(const o of controls.querySelectorAll('[data-speed]'))o.setAttribute('aria-pressed',String(o===b));syncUrl()}
++}
++function setPause(value:boolean){
++ pausedByUser=value
++ const b=controls.querySelector<HTMLButtonElement>('#sr-pause')!
++ b.setAttribute('aria-pressed',String(value));b.textContent=value?'계속 재생':'잠시 멈춤'
++}
++
++function renderInspector(){
++ const shown=records.filter(r=>basicOnly?r.kind==='basic':r.kind==='skill').slice(0,basicOnly?6:4)
++ const head=`<h2>이벤트 검사 <small>${basicOnly?'평타':'스킬'} · 시전자 공격력 기준</small></h2>`
++ const specNote=!spec?`<p class="sr-note">기대값 파일(src/data/heroSkillSpec.v9.json)이 없어 실제 결과만 표시합니다.</p>`:specCases(heroId,stage)?`<p class="sr-note">v9 기대값 ${esc(spec.version??'')} 연결됨 · 피해 기대치는 v9 성장 배율 ×${spec.growth?.stageMultiplier?.[String(stage)]??1} 적용 · 허용 오차 5%</p>`:`<p class="sr-note">기대값 파일에 이 영웅 항목이 없습니다.</p>`
++ if(!shown.length){inspector.innerHTML=head+specNote+`<p class="sr-empty">${basicOnly?'평타가 맞으면 여기에 기록됩니다.':'‘스킬 사용’을 누르면 시전 1회의 실제 결과가 여기에 기록됩니다.'}</p>`;return}
++ inspector.innerHTML=head+specNote+shown.map(r=>{
++  const a=summarize(r)
++  const rows=[...r.targets.entries()].map(([,t])=>{
++   const direct=t.direct.reduce((s,h)=>s+h.pct,0),ticks=t.ticks.reduce((s,h)=>s+h.pct,0)
++   const span=t.ticks.length?t.ticks[t.ticks.length-1].time-t.ticks[0].time+1:0
++   return `<tr><td>${esc(t.name)}${t.ally?' <i>(아군)</i>':''}</td><td>${t.direct.length?`${direct.toFixed(0)}% <small>(${t.direct.map(h=>`${h.pct.toFixed(0)}${h.critical?'★':''}`).join('+')})</small>`:'—'}</td><td>${t.ticks.length?`${ticks.toFixed(0)}% <small>${t.ticks.length}틱·${span.toFixed(0)}초</small>`:'—'}</td></tr>`
++  }).join('')
++  const statuses=r.statuses.map(s=>`<li><b>${esc(statusKo(s.key))}</b> <code>${esc(s.key)}</code> → ${esc(s.targetName)}${s.ally?'(아군)':''} · 값 ${fmtStatusValue(s,r.attack)} · 지속 ${s.duration!==undefined?s.duration.toFixed(1)+'초':'—'}</li>`).join('')
++  const support=r.support.map(s=>`<li><b>${s.kind==='heal'?'회복':'보호막'}</b> → ${esc(s.targetName)} · ${Math.round(s.amount)} (최대체력 ${s.pctMaxHp.toFixed(1)}%)${s.phase?` <code>${esc(s.phase)}</code>`:''}</li>`).join('')
++  const checks=r.kind==='skill'?renderChecks(r):''
++  return `<article class="sr-rec"><header><b>#${r.no} ${r.kind==='skill'?'스킬':'평타'}</b> <span>${r.stage}성 · ${r.start.toFixed(1)}초 · 공격력 ${r.attack.toFixed(0)}</span></header>
++  <p class="sum">적중 ${a.targetsHit}명 · 대상당 최대 ${a.maxTargetPct.toFixed(0)}% · 합계 ${a.totalPct.toFixed(0)}% · 치명 ${a.crits}회${r.summons.size?` · 소환 ${r.summons.size}기`:''}${a.zone?` · 장판 틱당 ${a.zone.perTick.toFixed(0)}%×${a.zone.ticks}`:''}${a.dot?` · 지속피해 틱당 ${a.dot.perTick.toFixed(0)}%`:''}</p>
++  ${rows?`<table><thead><tr><th>대상</th><th>직접 피해(%공격력)</th><th>지속 피해</th></tr></thead><tbody>${rows}</tbody></table>`:''}
++  ${statuses?`<ul class="st">${statuses}</ul>`:''}${support?`<ul class="st">${support}</ul>`:''}
++  ${checks}
++  ${!rows&&!statuses&&!support?'<p class="sr-empty">기록된 효과가 없습니다(대상 없음 또는 사거리 밖).</p>':''}</article>`
++ }).join('')
++}
++
++function renderMeter(){
++ const rows=[...meter.entries()].sort((a,b)=>b[1].damage-a[1].damage)
++ const max=Math.max(1,...rows.map(([,r])=>r.damage))
++ meterPanel.innerHTML=`<h2>피해 미터 <small>‘다시 보기’까지 누적</small></h2>${rows.length?`<ul>${rows.map(([id,r])=>`<li class="${id===heroId?'me':''}"><span class="nm">${esc(r.name)}</span><span class="bar"><i style="width:${(r.damage/max*100).toFixed(1)}%"></i></span><span class="v">${Math.round(r.damage).toLocaleString('ko-KR')}</span><small>회복 ${Math.round(r.healing)} · 보호막 ${Math.round(r.shield)} · 스킬 ${r.casts}</small></li>`).join('')}</ul>`:'<p class="sr-empty">아직 기록 없음</p>'}`
++}
++
++// ───────────────────────── 전투 장면 ─────────────────────────
++function createBattle():FieldBattle{
++ const ids=[heroId,...(withCompanions?companionIds():[])]
++ const party=ids.map(id=>{
++  const h=V3_CHARACTER_BY_ID[id],role=fieldRoleOf(h)
++  return {id,name:h.name,role,hp:roleHpDenominator(id),atk:roleAttack(role),baseAtk:roleAttack(role),skillLevel:id===heroId?Math.min(5,stage+1):undefined,star:id===heroId?stage:undefined,promotion:id===heroId?stage:undefined,baseCrit:.12,baseCritDamage:1.5}
++ })
++ const b=createFieldEncounter(party,1,true)
++ b.obstacles=[];b.enemyAbilities=undefined
++ const allies=b.units.filter(u=>u.ally)
++ allies.forEach((u,i)=>{
++  const slots=[{x:400,y:600},{x:350,y:565},{x:350,y:640}]
++  Object.assign(u,slots[i]??slots[0])
++  u.energy=0;u.cooldown=.3
++  u.hp=Math.max(1,Math.round(u.maxHp*allyHp/100))
++  if(u.id===heroId)u.presentationTiming=fieldSkillTiming(u.id)??u.presentationTiming
++ })
++ const template=b.units.find(u=>!u.ally)!
++ const enemy=(i:number,x:number,y:number,boss:boolean):FieldUnit=>{
++  const maxHp=boss?400000:200000
++  return {...structuredClone(template),id:`review-${boss?'boss':'dummy'}-${i}`,name:boss?'검수용 보스':'검수용 허수아비',enemyArt:boss?'chief':(['spear','shield','charger'] as const)[i%3],role:'guard',x,y,face:-1,hp:enemyLow?Math.round(maxHp*.3):maxHp,maxHp,attackScale:.05,cooldown:999,energy:0,action:null,moveSpeedScale:0,targetId:null,skillState:undefined,statuses:undefined}
++ }
++ const foes=enemySetup==='boss'?[enemy(0,500,600,true)]:enemySetup==='cluster'?[[0,0],[26,-24],[26,24],[52,0],[0,48]].map(([dx,dy],i)=>enemy(i,490+dx,588+dy-12,false)):[enemy(0,490,600,false)]
++ b.units=[...allies,...foes]
++ records=[];castNo=0;meter.clear();dirty=true;skillRequested=false
++ return b
++}
++/** 매 tick 후: 적은 제자리·무반격, 동료는 스킬 없이 평타만, 선택 영웅은 요청 시에만 기력 100. */
++function holdReviewUnits(s:FieldBattle){
++ const latest=records.find(r=>r.kind==='skill')
++ if(latest)for(const u of s.units)if(u.abilitySummonOwner===heroId&&!latest.summons.has(u.id)){latest.summons.add(u.id);dirty=true}
++ for(const u of s.units){
++  if(!u.ally){if(!u.abilitySummonOwner){u.cooldown=Math.max(u.cooldown,5);u.moveSpeedScale=0;if(u.action&&!u.action.resolved)u.action=null}continue}
++  if(u.abilitySummonOwner)continue
++  if(u.id!==heroId){u.energy=Math.min(u.energy,50);continue}
++  if(u.action?.skill)continue
++  if(basicOnly)u.energy=0
++  else if(skillRequested)u.energy=100
++  else if(!autoSkill)u.energy=Math.min(u.energy,95)
++ }
++}
++
++const status=()=>controls.querySelector<HTMLElement>('#sr-status')
++function restart(){
++ const button=document.querySelector<HTMLButtonElement>('#app #restart')
++ if(button){button.disabled=false;button.click()}
++ dirty=true
++}
++
++renderPicker();renderSkillPanel();renderToolbar();renderControls();renderInspector();renderMeter();syncUrl()
++/** 로딩 단계 표시(자동 검사·문제 추적용). */
++function markStage(name:string){document.body.dataset.skillReviewStage=name}
++const appEl=document.querySelector<HTMLElement>('#app')!
++appEl.textContent=`${hero.name} 전투 준비 중…`
++try{
++ markStage('rig')
++ const rig=await (window as unknown as {approvedRigReady:Promise<RigRenderer>}).approvedRigReady
++ const ids=[heroId,...(withCompanions?companionIds():[])]
++ // 승인 프레임 자원이 깨진 영웅(예: 디코딩 실패)이 있어도 화면 전체가 멈추지 않도록 리그 → 정지 그림 순으로 대체한다.
++ const fallbacks:string[]=[]
++ markStage('authored')
++ const authored=new Map((await Promise.all(ids.filter((id):id is AuthoredHero=>id in FRAME_CONTRACTS).map(async id=>{
++  try{return [[id,await loadApprovedFrameRenderer('/battle/approved-frames-review-v1/',id)] as const]}
++  catch(error){console.warn(`${id} 승인 프레임을 불러오지 못해 대체 그림을 씁니다`,error);fallbacks.push(id);return []}
++ }))).flat())
++ await Promise.all(ids.filter(id=>!STARTERS.has(id)&&!authored.has(id as AuthoredHero)&&!(id in YELLOW_TURBAN_RECRUIT_ART)).map(id=>rig.load(id).catch(error=>{console.warn(`${id} 리그 없음 — 정지 그림 사용`,error)})))
++ markStage('production')
++ const production=heroId==='wonso'||heroId==='sogyo'?await loadProductionRigRenderer(heroId):null
++ // 5성 시전 타이밍(다단 히트)은 동작 검토 화면과 같은 계약값을 사용한다.
++ const timingFor=(id:string)=>{
++  const t=fieldSkillTiming(id),frames=authored.get(id as AuthoredHero)
++  if(t||!frames)return t
++  return {skill:{contact:frames.contract.impact?.time??.26,duration:frames.contract.clips.skill.duration,hitTimes:stage===5?frames.contract.impactVariants?.fiveStar:frames.contract.impactVariants?.base}}
++ }
++ markStage('spec')
++ await specLoad
++ const fieldOptions:Parameters<typeof mountField>[0]={
++  createBattle:()=>{const b=createBattle();for(const u of b.units)if(u.ally&&!STARTERS.has(u.id))u.presentationTiming=timingFor(u.id);return b},
++  prepareReviewUnits:holdReviewUnits,
++  cameraTarget:()=>heroId,
++  onCombatActions:onActions,
++  onCombatEffects:onEffects,
++  extraAssets:Object.fromEntries(ids.filter(id=>!STARTERS.has(id)&&!(id in YELLOW_TURBAN_RECRUIT_ART)).map(id=>[id,LOBBY_ART.has(id)?`/heroes/breed-approved/lobby/${id}.png`:`/battle/approved-motion-review-v1/assets/${id}.png`])),
++  drawHero:(ctx,u,time,damageAge)=>{
++   if(u.ally&&u.id===heroId&&production)return production.draw(ctx,u,time,damageAge)
++   if(authored.get(u.id as AuthoredHero)?.draw(ctx,u,time,damageAge))return true
++   if(STARTERS.has(u.id)||!rig.has(u.id))return false
++   const clip=u.action?(u.action.skill?'skill':'attack01'):u.moving?'walk':'idle'
++   rig.draw(ctx,u.id,clip,u.action?.age??time,{x:0,y:3,scale:60/1536,distance:u.moving?u.distance/(60/1536):undefined})
++   return true
++  },
++ }
++ // 헤드리스/저사양 환경에서 큰 이미지 decode()가 가끔 EncodingError로 실패해 필드 준비가 통째로 실패한다.
++ // 같은 화면을 최대 3번까지 다시 만든다(필드 자체 코드는 그대로).
++ let view:ReturnType<typeof mountField>|undefined
++ for(let attempt=1;;attempt++){
++  markStage(`mount-${attempt}`)
++  const candidate=mountField(fieldOptions)
++  try{await candidate.ready;view=candidate;break}
++  catch(error){candidate.dispose();if(attempt>=3)throw error;console.warn(`필드 준비 실패, 다시 시도합니다(${attempt}/3)`,error)}
++ }
++ markStage('ready')
++ const h1=appEl.querySelector('h1');if(h1)h1.textContent=`${hero.name} 스킬 검수`
++ if(fallbacks.length){const warn=document.createElement('p');warn.className='sr-note warn';warn.textContent=`승인 프레임 자원 오류로 대체 그림 사용: ${fallbacks.map(id=>V3_CHARACTER_BY_ID[id]?.name??id).join(', ')} (전투 판정은 동일)`;toolbar.append(warn)}
++ const eyebrow=appEl.querySelector('.eyebrow');if(eyebrow)eyebrow.textContent='삼국냥전 · SKILL REVIEW'
++ const cards=appEl.querySelector('.cards')
++ if(cards)cards.innerHTML=ids.map(id=>{const h=V3_CHARACTER_BY_ID[id];return `<div class="card" id="card-${id}">${portrait(id,h.name)}<div class="card-name">${esc(h.name)}</div><div class="card-bars"><div class="bar"><i class="health"></i><i class="shield"></i></div><div class="bar energy"><i></i></div><div class="role">${id===heroId?`${stage}성`:'동료'}</div></div></div>`}).join('')
++ appEl.querySelector('.stage')?.setAttribute('aria-label',`${hero.name} 실제 필드 전투`)
++ const timer=window.setInterval(()=>{
++  const st=view.getState(),me=st.units.find(u=>u.id===heroId)
++  const s=status();if(s)s.textContent=me?`${st.time.toFixed(1)}초 · 기력 ${Math.round(me.energy)} · ${me.action?me.action.skill?'스킬 동작':'평타 동작':me.moving?'이동':'대기'}${skillRequested?' · 스킬 대기 중(사거리 진입 시 시전)':''}`:''
++  if(!dirty)return
++  dirty=false;renderInspector();renderMeter()
++  const role=appEl.querySelector(`#card-${heroId} .role`);if(role)role.textContent=`${stage}성`
++ },200)
++ Object.assign(window,{skillReview:{getState:view.getState,records:()=>records,meter:()=>Object.fromEntries(meter),cast:()=>{skillRequested=true},setStage:(s:Stage)=>{stage=s;syncUrl();renderSkillPanel();restart()},spec:()=>spec}})
++ window.addEventListener('pagehide',()=>{window.clearInterval(timer);rig.dispose();production?.dispose()},{once:true})
++}catch(error){appEl.textContent=`스킬 검수 화면을 불러오지 못했습니다. (${error instanceof Error?error.message:String(error)})`;console.error(error);Object.assign(window,{skillReviewError:String((error as {stack?:string})?.stack??error)})}
