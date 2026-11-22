@@ -1,0 +1,424 @@
+{
+  "title": "Why 90% of Canada is Completely Empty",
+  "episode": "EP.01 — PILOT OPENING",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "transitionFrames": 14,
+  "totalFrames": 885,
+  "totalSec": 29.5,
+  "scenes": [
+    {
+      "id": "intro",
+      "type": "titleCard",
+      "text": "",
+      "audio": null,
+      "audioDurationSec": 0,
+      "audioDurationFrames": 0,
+      "leadInFrames": 0,
+      "durationFrames": 108,
+      "startFrame": 0,
+      "words": [],
+      "lines": [],
+      "cues": {},
+      "params": {
+        "kicker": "GEOGRAPHY EXPLAINED",
+        "subtitleKo": "왜 캐나다의 90%는 텅 비어 있을까"
+      }
+    },
+    {
+      "id": "scene1",
+      "type": "mapZoom",
+      "text": "Canada is the second largest country on Earth. Yet almost nobody actually lives there.",
+      "audio": "audio/scene1.mp3",
+      "audioDurationSec": 4.944,
+      "audioDurationFrames": 149,
+      "leadInFrames": 21,
+      "durationFrames": 212,
+      "startFrame": 108,
+      "words": [
+        {
+          "text": "Canada",
+          "start": 0.095,
+          "end": 0.548
+        },
+        {
+          "text": "is",
+          "start": 0.631,
+          "end": 0.738
+        },
+        {
+          "text": "the",
+          "start": 0.75,
+          "end": 0.833
+        },
+        {
+          "text": "second",
+          "start": 0.845,
+          "end": 1.25
+        },
+        {
+          "text": "largest",
+          "start": 1.262,
+          "end": 1.643
+        },
+        {
+          "text": "country",
+          "start": 1.655,
+          "end": 1.976
+        },
+        {
+          "text": "on",
+          "start": 1.988,
+          "end": 2.107
+        },
+        {
+          "text": "Earth",
+          "start": 2.119,
+          "end": 2.452
+        },
+        {
+          "text": "Yet",
+          "start": 2.845,
+          "end": 2.952
+        },
+        {
+          "text": "almost",
+          "start": 2.964,
+          "end": 3.298
+        },
+        {
+          "text": "nobody",
+          "start": 3.31,
+          "end": 3.69
+        },
+        {
+          "text": "actually",
+          "start": 3.702,
+          "end": 4.012
+        },
+        {
+          "text": "lives",
+          "start": 4.024,
+          "end": 4.321
+        },
+        {
+          "text": "there",
+          "start": 4.333,
+          "end": 4.595
+        }
+      ],
+      "lines": [
+        {
+          "en": "Canada is the second largest country on Earth.",
+          "ko": "캐나다는 지구상에서 두 번째로 큰 나라입니다.",
+          "start": 0.095,
+          "end": 2.845
+        },
+        {
+          "en": "Yet almost nobody actually lives there.",
+          "ko": "하지만 실제로는 거의 아무도 살지 않습니다.",
+          "start": 2.845,
+          "end": 4.944
+        }
+      ],
+      "cues": {
+        "fill": 0.845,
+        "stat": 1.262,
+        "density": 3.31
+      },
+      "params": {
+        "altitudeFromKm": 400,
+        "altitudeToKm": 50,
+        "statLabel": "9.98M KM²  ·  #2 ON EARTH",
+        "densityLabel": "≈ 4 PEOPLE / KM²"
+      }
+    },
+    {
+      "id": "scene2",
+      "type": "borderStrip",
+      "text": "Draw a line just 100 miles north of the US border. Over 70 percent of all Canadians are squeezed into this tiny strip.",
+      "audio": "audio/scene2.mp3",
+      "audioDurationSec": 7.584,
+      "audioDurationFrames": 228,
+      "leadInFrames": 21,
+      "durationFrames": 291,
+      "startFrame": 320,
+      "words": [
+        {
+          "text": "Draw",
+          "start": 0.095,
+          "end": 0.25
+        },
+        {
+          "text": "a",
+          "start": 0.262,
+          "end": 0.321
+        },
+        {
+          "text": "line",
+          "start": 0.333,
+          "end": 0.738
+        },
+        {
+          "text": "just",
+          "start": 0.81,
+          "end": 1.048
+        },
+        {
+          "text": "100 miles",
+          "start": 1.06,
+          "end": 1.821
+        },
+        {
+          "text": "north",
+          "start": 1.833,
+          "end": 2.155
+        },
+        {
+          "text": "of",
+          "start": 2.167,
+          "end": 2.226
+        },
+        {
+          "text": "the",
+          "start": 2.238,
+          "end": 2.286
+        },
+        {
+          "text": "US",
+          "start": 2.298,
+          "end": 2.631
+        },
+        {
+          "text": "border",
+          "start": 2.643,
+          "end": 3.048
+        },
+        {
+          "text": "Over",
+          "start": 3.44,
+          "end": 3.643
+        },
+        {
+          "text": "70 percent",
+          "start": 3.655,
+          "end": 4.405
+        },
+        {
+          "text": "of",
+          "start": 4.417,
+          "end": 4.5
+        },
+        {
+          "text": "all",
+          "start": 4.512,
+          "end": 4.714
+        },
+        {
+          "text": "Canadians",
+          "start": 4.726,
+          "end": 5.262
+        },
+        {
+          "text": "are",
+          "start": 5.274,
+          "end": 5.417
+        },
+        {
+          "text": "squeezed",
+          "start": 5.429,
+          "end": 6.048
+        },
+        {
+          "text": "into",
+          "start": 6.107,
+          "end": 6.309
+        },
+        {
+          "text": "this",
+          "start": 6.321,
+          "end": 6.512
+        },
+        {
+          "text": "tiny",
+          "start": 6.524,
+          "end": 6.857
+        },
+        {
+          "text": "strip",
+          "start": 6.869,
+          "end": 7.238
+        }
+      ],
+      "lines": [
+        {
+          "en": "Draw a line just 100 miles north of the US border.",
+          "ko": "미국 국경에서 북쪽으로 딱 100마일만 선을 그어보세요.",
+          "start": 0.095,
+          "end": 3.655
+        },
+        {
+          "en": "Over 70 percent of all Canadians are squeezed into this tiny strip.",
+          "ko": "전체 캐나다인의 70% 이상이 이 좁은 띠 안에 몰려 있습니다.",
+          "start": 3.655,
+          "end": 7.584
+        }
+      ],
+      "cues": {
+        "strip": 0.333,
+        "counter": 3.44,
+        "cardTop": 4.726,
+        "cardBottom": 6.524,
+        "dim": 1.06
+      },
+      "params": {
+        "stripMiles": 100,
+        "countTo": 70,
+        "counterLabel": "POPULATION",
+        "cardTop": "THE SOUTHERN STRIP",
+        "cardTopSub": "TORONTO · MONTRÉAL · VANCOUVER",
+        "cardBottom": "THE EMPTY NORTH",
+        "cardBottomSub": "BOREAL FOREST · TUNDRA · ICE"
+      }
+    },
+    {
+      "id": "scene3",
+      "type": "glacierSection",
+      "text": "Everything above it? Millions of square miles of empty rock and freezing forest. And the reason isn't just the cold.",
+      "audio": "audio/scene3.mp3",
+      "audioDurationSec": 7.032,
+      "audioDurationFrames": 211,
+      "leadInFrames": 21,
+      "durationFrames": 274,
+      "startFrame": 611,
+      "words": [
+        {
+          "text": "Everything",
+          "start": 0.095,
+          "end": 0.441
+        },
+        {
+          "text": "above",
+          "start": 0.452,
+          "end": 0.702
+        },
+        {
+          "text": "it",
+          "start": 0.714,
+          "end": 0.881
+        },
+        {
+          "text": "Millions",
+          "start": 1.274,
+          "end": 1.714
+        },
+        {
+          "text": "of",
+          "start": 1.726,
+          "end": 1.81
+        },
+        {
+          "text": "square",
+          "start": 1.821,
+          "end": 2.238
+        },
+        {
+          "text": "miles",
+          "start": 2.25,
+          "end": 2.631
+        },
+        {
+          "text": "of",
+          "start": 2.643,
+          "end": 2.738
+        },
+        {
+          "text": "empty",
+          "start": 2.881,
+          "end": 3.167
+        },
+        {
+          "text": "rock",
+          "start": 3.179,
+          "end": 3.571
+        },
+        {
+          "text": "and",
+          "start": 3.714,
+          "end": 3.798
+        },
+        {
+          "text": "freezing",
+          "start": 3.81,
+          "end": 4.262
+        },
+        {
+          "text": "forest",
+          "start": 4.274,
+          "end": 4.786
+        },
+        {
+          "text": "And",
+          "start": 5.179,
+          "end": 5.238
+        },
+        {
+          "text": "the",
+          "start": 5.25,
+          "end": 5.321
+        },
+        {
+          "text": "reason",
+          "start": 5.333,
+          "end": 5.667
+        },
+        {
+          "text": "isn't",
+          "start": 5.726,
+          "end": 5.988
+        },
+        {
+          "text": "just",
+          "start": 6.0,
+          "end": 6.202
+        },
+        {
+          "text": "the",
+          "start": 6.214,
+          "end": 6.286
+        },
+        {
+          "text": "cold",
+          "start": 6.298,
+          "end": 6.667
+        }
+      ],
+      "lines": [
+        {
+          "en": "Everything above it? Millions of square miles of empty rock and freezing forest.",
+          "ko": "그 위쪽 전부요? 수백만 제곱마일의 빈 바위와 얼어붙은 숲뿐입니다.",
+          "start": 0.095,
+          "end": 5.179
+        },
+        {
+          "en": "And the reason isn't just the cold.",
+          "ko": "그리고 그 이유는 단순히 추위 때문만은 아닙니다.",
+          "start": 5.179,
+          "end": 7.032
+        }
+      ],
+      "cues": {
+        "glacier": 1.274,
+        "scrape": 3.179,
+        "reveal": 5.333
+      },
+      "params": {
+        "glacierLabel": "ICE AGE GLACIER",
+        "topsoilLabel": "TOPSOIL",
+        "bedrockLabel": "EXPOSED GRANITE BEDROCK",
+        "sectionTitle": "THE CANADIAN SHIELD — CROSS SECTION"
+      }
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "title": "Why 90% of Canada is Completely Empty",
+  "episode": "EP.01 — PILOT OPENING",
+  "voice": "en-US-AndrewNeural",
+  "rate": "+5%",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "leadInSec": 0.7,
+  "tailSec": 1.4,
+  "transitionFrames": 14,
+  "scenes": [
+    {
+      "id": "intro",
+      "type": "titleCard",
+      "durationSec": 3.6,
+      "lines": [],
+      "params": {
+        "kicker": "GEOGRAPHY EXPLAINED",
+        "subtitleKo": "왜 캐나다의 90%는 텅 비어 있을까"
+      }
+    },
+    {
+      "id": "scene1",
+      "type": "mapZoom",
+      "lines": [
+        {
+          "en": "Canada is the second largest country on Earth.",
+          "ko": "캐나다는 지구상에서 두 번째로 큰 나라입니다."
+        },
+        {
+          "en": "Yet almost nobody actually lives there.",
+          "ko": "하지만 실제로는 거의 아무도 살지 않습니다."
+        }
+      ],
+      "params": {
+        "altitudeFromKm": 400,
+        "altitudeToKm": 50,
+        "statLabel": "9.98M KM²  ·  #2 ON EARTH",
+        "densityLabel": "≈ 4 PEOPLE / KM²"
+      },
+      "cues": {
+        "fill": "second",
+        "stat": "largest",
+        "density": "nobody"
+      }
+    },
+    {
+      "id": "scene2",
+      "type": "borderStrip",
+      "lines": [
+        {
+          "en": "Draw a line just 100 miles north of the US border.",
+          "ko": "미국 국경에서 북쪽으로 딱 100마일만 선을 그어보세요."
+        },
+        {
+          "en": "Over 70 percent of all Canadians are squeezed into this tiny strip.",
+          "ko": "전체 캐나다인의 70% 이상이 이 좁은 띠 안에 몰려 있습니다."
+        }
+      ],
+      "params": {
+        "stripMiles": 100,
+        "countTo": 70,
+        "counterLabel": "POPULATION",
+        "cardTop": "THE SOUTHERN STRIP",
+        "cardTopSub": "TORONTO · MONTRÉAL · VANCOUVER",
+        "cardBottom": "THE EMPTY NORTH",
+        "cardBottomSub": "BOREAL FOREST · TUNDRA · ICE"
+      },
+      "cues": {
+        "strip": "line",
+        "counter": "Over",
+        "cardTop": "Canadians",
+        "cardBottom": "tiny",
+        "dim": "100"
+      }
+    },
+    {
+      "id": "scene3",
+      "type": "glacierSection",
+      "lines": [
+        {
+          "en": "Everything above it? Millions of square miles of empty rock and freezing forest.",
+          "ko": "그 위쪽 전부요? 수백만 제곱마일의 빈 바위와 얼어붙은 숲뿐입니다."
+        },
+        {
+          "en": "And the reason isn't just the cold.",
+          "ko": "그리고 그 이유는 단순히 추위 때문만은 아닙니다."
+        }
+      ],
+      "params": {
+        "glacierLabel": "ICE AGE GLACIER",
+        "topsoilLabel": "TOPSOIL",
+        "bedrockLabel": "EXPOSED GRANITE BEDROCK",
+        "sectionTitle": "THE CANADIAN SHIELD — CROSS SECTION"
+      },
+      "cues": {
+        "glacier": "Millions",
+        "scrape": "rock",
+        "reveal": "reason"
+      }
+    }
+  ]
+}
