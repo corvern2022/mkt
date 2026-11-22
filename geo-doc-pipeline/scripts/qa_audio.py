@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from whisper_utils import transcribe_words, wer  # noqa: E402
+from whisper_utils import missing_numbers, transcribe_words, wer  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -27,9 +27,11 @@ def check(max_wer: float):
             continue
         heard, _ = transcribe_words(str(ROOT / "public" / s["audio"]))
         score, diff = wer(s["text"], heard)
-        rows.append({"id": s["id"], "wer": round(score, 3), "ok": score <= max_wer,
+        nums = missing_numbers(s["text"], heard)
+        ok = score <= max_wer and not nums
+        rows.append({"id": s["id"], "wer": round(score, 3), "ok": ok, "missingNumbers": nums,
                      "expected": s["text"], "heard": heard, "diff": diff})
-        print(f"[{'OK ' if score <= max_wer else 'BAD'}] {s['id']}  WER={score:.2%}  {'' if score <= max_wer else diff}")
+        print(f"[{'OK ' if ok else 'BAD'}] {s['id']}  WER={score:.2%}  {'' if ok else diff}  {'NUM MISSING: ' + str(nums) if nums else ''}")
     return rows
 
 

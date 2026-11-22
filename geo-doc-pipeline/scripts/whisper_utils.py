@@ -13,6 +13,8 @@ from functools import lru_cache
 
 import numpy as np
 
+from numwords import spoken
+
 WHISPER_MODEL = os.environ.get("WHISPER_MODEL", "base.en")
 
 _NUM = {
@@ -50,13 +52,23 @@ def transcribe_words(path: str, prompt: str | None = None, model: str = WHISPER_
 
 
 def tokens(text: str) -> list[str]:
-    t = text.lower().replace("%", " percent ").replace("u.s.", "us").replace("—", " ")
+    # digits → words on BOTH sides, so "130,000" vs "one hundred thirty thousand" compare equal
+    t = spoken(text.replace("U.S.", "US")).lower().replace("%", " percent ").replace("—", " ").replace("-", " ")
     out = []
     for w in re.split(r"\s+", t):
         w = re.sub(r"[^a-z0-9']", "", w)
         if w:
-            out.append(_NUM.get(w, w))
+            out.append(w)
     return out
+
+
+_DIGITS = re.compile(r"\d[\d,]*(?:\.\d+)?(?:%|s\b)?")
+
+
+def missing_numbers(ref: str, hyp: str) -> list[str]:
+    """Numbers in the script that were NOT heard exactly — a single wrong number fails QA."""
+    h = " " + " ".join(tokens(hyp)) + " "
+    return [m for m in _DIGITS.findall(ref) if " " + " ".join(tokens(m)) + " " not in h]
 
 
 def wer(ref: str, hyp: str) -> tuple[float, list[str]]:

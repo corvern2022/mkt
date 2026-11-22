@@ -1,6 +1,6 @@
 {
   "title": "Why 90% of Canada is Completely Empty",
-  "episode": "EP.01 — PILOT OPENING",
+  "episode": "EP.01",
   "tts": {
     "engine": "voicebox",
     "edge": {
@@ -19,7 +19,7 @@
       "profileId": "fa42bfed-33ba-4de2-b0a4-9e6b85c5d554",
       "language": "en",
       "modelSize": "1.7B",
-      "seed": 45,
+      "seed": 47,
       "instruct": "Calm documentary narrator. No breath, start on the first syllable."
     },
     "files": {
@@ -100,7 +100,7 @@
     },
     {
       "id": "scene3",
-      "type": "glacierSection",
+      "type": "mapFocus",
       "lines": [
         {
           "en": "Everything above it? Millions of square miles of empty rock and freezing forest.",
@@ -112,15 +112,1186 @@
         }
       ],
       "params": {
+        "cam": {
+          "lon": -96,
+          "lat": 60,
+          "zoom": 0.95
+        },
+        "camFrom": {
+          "lon": -96,
+          "lat": 56,
+          "zoom": 1.1
+        },
+        "region": {
+          "northOf": 54,
+          "kind": "ice",
+          "label": "ALMOST EMPTY",
+          "labelAt": [
+            -100,
+            63
+          ],
+          "at": "region",
+          "labelSize": 64
+        },
+        "badges": [
+          {
+            "big": "ROCK · FOREST · ICE",
+            "small": "THE OTHER 90%",
+            "at": "rock"
+          }
+        ]
+      },
+      "cues": {
+        "region": "Everything",
+        "rock": "rock"
+      }
+    },
+    {
+      "id": "ch1",
+      "type": "chapter",
+      "durationSec": 2.8,
+      "lines": [],
+      "params": {
+        "number": "01",
+        "title": "BY THE NUMBERS",
+        "titleKo": "숫자로 보는 캐나다"
+      }
+    },
+    {
+      "id": "terr",
+      "type": "mapFocus",
+      "lines": [
+        {
+          "en": "Start with the three northern territories: Yukon, the Northwest Territories, and Nunavut.",
+          "ko": "북쪽의 세 준주부터 보죠. 유콘, 노스웨스트 준주, 그리고 누나부트입니다."
+        },
+        {
+          "en": "Together, they cover almost 40 percent of Canada.",
+          "ko": "이 세 곳을 합치면 캐나다 면적의 거의 40%입니다."
+        },
+        {
+          "en": "Yet only about 130,000 people live there. That's less than one percent of the country.",
+          "ko": "그런데 사는 사람은 약 13만 명. 전체 인구의 1%도 안 됩니다."
+        }
+      ],
+      "params": {
+        "cam": {
+          "lon": -105,
+          "lat": 64,
+          "zoom": 1.0
+        },
+        "camFrom": {
+          "lon": -96,
+          "lat": 60,
+          "zoom": 0.95
+        },
+        "provinces": {
+          "codes": [
+            "YT",
+            "NT",
+            "NU"
+          ],
+          "at": "terr"
+        },
+        "labels": [
+          {
+            "text": "YUKON",
+            "lonlat": [
+              -136,
+              63.5
+            ],
+            "at": "yukon",
+            "size": 30
+          },
+          {
+            "text": "N.W.T.",
+            "lonlat": [
+              -120,
+              64.5
+            ],
+            "at": "nwt",
+            "size": 34
+          },
+          {
+            "text": "NUNAVUT",
+            "lonlat": [
+              -95,
+              66
+            ],
+            "at": "nunavut",
+            "size": 40
+          }
+        ],
+        "badges": [
+          {
+            "big": "≈ 40% OF LAND",
+            "small": "3 TERRITORIES COMBINED",
+            "at": "cover"
+          },
+          {
+            "big": "< 1% OF PEOPLE",
+            "small": "≈ 130,000 RESIDENTS",
+            "at": "live",
+            "accent": true
+          }
+        ]
+      },
+      "cues": {
+        "terr": "three",
+        "yukon": "Yukon",
+        "nwt": "Northwest",
+        "nunavut": "Nunavut",
+        "cover": "cover",
+        "live": "live"
+      }
+    },
+    {
+      "id": "nunavut",
+      "type": "statCompare",
+      "lines": [
+        {
+          "en": "Nunavut alone is bigger than Mexico.",
+          "ko": "누나부트 하나만 해도 멕시코보다 큽니다."
+        },
+        {
+          "en": "But Mexico has around 130 million people. Nunavut has about 40,000.",
+          "ko": "그런데 멕시코 인구는 약 1억 3천만 명, 누나부트는 약 4만 명입니다."
+        },
+        {
+          "en": "You could fit everyone into two hockey arenas.",
+          "ko": "하키 경기장 두 곳이면 주민 전부가 들어갑니다."
+        }
+      ],
+      "params": {
+        "heading": "SAME SIZE. DIFFERENT WORLDS.",
+        "left": {
+          "title": "NUNAVUT",
+          "sub": "CANADA",
+          "accent": true,
+          "at": "nunavut",
+          "rows": [
+            {
+              "label": "AREA",
+              "value": "2.09M KM²"
+            },
+            {
+              "label": "PEOPLE",
+              "value": "≈ 40K",
+              "accent": true,
+              "at": "forty"
+            }
+          ]
+        },
+        "right": {
+          "title": "MEXICO",
+          "sub": "NORTH AMERICA",
+          "at": "mexico",
+          "rows": [
+            {
+              "label": "AREA",
+              "value": "1.96M KM²"
+            },
+            {
+              "label": "PEOPLE",
+              "value": "≈ 130M",
+              "at": "million"
+            }
+          ]
+        },
+        "footnote": "APPROX. FIGURES"
+      },
+      "cues": {
+        "nunavut": "Nunavut",
+        "mexico": "Mexico",
+        "million": "million",
+        "forty": "about"
+      }
+    },
+    {
+      "id": "provinces",
+      "type": "barCompare",
+      "lines": [
+        {
+          "en": "So where do Canadians actually live?",
+          "ko": "그럼 캐나다 사람들은 실제로 어디에 살까요?"
+        },
+        {
+          "en": "Ontario and Quebec alone hold about 60 percent of the population.",
+          "ko": "온타리오와 퀘벡 두 주에만 인구의 약 60%가 삽니다."
+        },
+        {
+          "en": "All three territories together? Barely a rounding error.",
+          "ko": "세 준주를 다 합쳐도? 반올림 오차 수준입니다."
+        }
+      ],
+      "params": {
+        "heading": "SHARE OF CANADA'S POPULATION",
+        "sub": "BY PROVINCE / TERRITORY",
+        "at": "live",
+        "max": 46,
+        "bars": [
+          {
+            "label": "ONTARIO",
+            "value": 39,
+            "highlight": true
+          },
+          {
+            "label": "QUEBEC",
+            "value": 22,
+            "highlight": true
+          },
+          {
+            "label": "BRITISH COLUMBIA",
+            "value": 14
+          },
+          {
+            "label": "ALBERTA",
+            "value": 12
+          },
+          {
+            "label": "MANITOBA",
+            "value": 3.6
+          },
+          {
+            "label": "SASKATCHEWAN",
+            "value": 3
+          },
+          {
+            "label": "ATLANTIC (4)",
+            "value": 6.4
+          },
+          {
+            "label": "TERRITORIES (3)",
+            "value": 0.3
+          }
+        ],
+        "decimals": 0,
+        "callout": {
+          "text": "≈ 60%",
+          "at": "Quebec"
+        },
+        "footnote": "APPROX. 2024 ESTIMATES"
+      },
+      "cues": {
+        "live": "live",
+        "Quebec": "Quebec"
+      }
+    },
+    {
+      "id": "ch2",
+      "type": "chapter",
+      "durationSec": 2.8,
+      "lines": [],
+      "params": {
+        "number": "02",
+        "title": "THE ROCK",
+        "titleKo": "바위의 땅"
+      }
+    },
+    {
+      "id": "shield",
+      "type": "mapFocus",
+      "lines": [
+        {
+          "en": "The first culprit is the Canadian Shield.",
+          "ko": "첫 번째 범인은 캐나다 순상지입니다."
+        },
+        {
+          "en": "It's a huge slab of ancient rock that wraps around Hudson Bay.",
+          "ko": "허드슨만을 감싸고 있는 거대한 고대 암반이죠."
+        },
+        {
+          "en": "It covers roughly half of the country, and some of its rocks are among the oldest on Earth.",
+          "ko": "국토의 약 절반을 덮고 있고, 그 일부는 지구에서 가장 오래된 암석에 속합니다."
+        }
+      ],
+      "params": {
+        "cam": {
+          "lon": -90,
+          "lat": 59,
+          "zoom": 1.05
+        },
+        "camFrom": {
+          "lon": -96,
+          "lat": 60,
+          "zoom": 0.95
+        },
+        "shape": {
+          "points": [
+            [
+              -57.0,
+              51.5
+            ],
+            [
+              -66.0,
+              49.8
+            ],
+            [
+              -70.5,
+              47.6
+            ],
+            [
+              -74.5,
+              46.0
+            ],
+            [
+              -77.0,
+              45.2
+            ],
+            [
+              -79.5,
+              44.7
+            ],
+            [
+              -80.6,
+              45.6
+            ],
+            [
+              -82.5,
+              46.2
+            ],
+            [
+              -84.6,
+              46.6
+            ],
+            [
+              -88.0,
+              48.2
+            ],
+            [
+              -91.0,
+              48.3
+            ],
+            [
+              -94.8,
+              49.0
+            ],
+            [
+              -96.3,
+              50.0
+            ],
+            [
+              -97.3,
+              51.5
+            ],
+            [
+              -99.2,
+              53.5
+            ],
+            [
+              -102.0,
+              55.0
+            ],
+            [
+              -106.0,
+              56.5
+            ],
+            [
+              -110.0,
+              58.6
+            ],
+            [
+              -113.0,
+              60.0
+            ],
+            [
+              -116.5,
+              61.3
+            ],
+            [
+              -120.0,
+              63.5
+            ],
+            [
+              -123.5,
+              65.5
+            ],
+            [
+              -118.0,
+              68.0
+            ],
+            [
+              -110.0,
+              68.0
+            ],
+            [
+              -98.0,
+              68.5
+            ],
+            [
+              -90.0,
+              69.5
+            ],
+            [
+              -84.0,
+              70.0
+            ],
+            [
+              -78.0,
+              72.5
+            ],
+            [
+              -68.0,
+              70.0
+            ],
+            [
+              -62.0,
+              66.5
+            ],
+            [
+              -64.5,
+              60.3
+            ],
+            [
+              -61.5,
+              56.0
+            ],
+            [
+              -57.0,
+              51.5
+            ]
+          ],
+          "label": "CANADIAN SHIELD (APPROX.)",
+          "labelAt": [
+            -73.5,
+            53.8
+          ],
+          "at": "shield",
+          "labelSize": 34
+        },
+        "labels": [
+          {
+            "text": "HUDSON BAY",
+            "lonlat": [
+              -85.5,
+              59.5
+            ],
+            "at": "hudson",
+            "size": 28
+          }
+        ],
+        "badges": [
+          {
+            "big": "≈ 50% OF CANADA",
+            "small": "COVERED BY THE SHIELD",
+            "at": "half"
+          },
+          {
+            "big": "BILLIONS OF YEARS",
+            "small": "AMONG EARTH'S OLDEST ROCK",
+            "at": "oldest",
+            "accent": true
+          }
+        ]
+      },
+      "cues": {
+        "shield": "Shield",
+        "hudson": "Hudson",
+        "half": "half",
+        "oldest": "oldest"
+      }
+    },
+    {
+      "id": "glacier",
+      "type": "glacierSection",
+      "lines": [
+        {
+          "en": "During the last Ice Age, glaciers bulldozed this land and scraped away the soil.",
+          "ko": "마지막 빙하기 동안 빙하가 이 땅을 밀어붙이며 흙을 긁어냈습니다."
+        },
+        {
+          "en": "What's left is bare rock, thin soil, and countless lakes.",
+          "ko": "남은 건 맨 바위, 얇은 흙, 그리고 셀 수 없이 많은 호수입니다."
+        },
+        {
+          "en": "Canada has more lakes than any other country on Earth.",
+          "ko": "캐나다는 지구상 어느 나라보다 호수가 많습니다."
+        }
+      ],
+      "params": {
         "glacierLabel": "ICE AGE GLACIER",
         "topsoilLabel": "TOPSOIL",
         "bedrockLabel": "EXPOSED GRANITE BEDROCK",
         "sectionTitle": "THE CANADIAN SHIELD — CROSS SECTION"
       },
       "cues": {
-        "glacier": "Millions",
-        "scrape": "rock",
-        "reveal": "reason"
+        "glacier": "glaciers",
+        "scrape": "scraped",
+        "reveal": "left"
+      }
+    },
+    {
+      "id": "farm",
+      "type": "waffleStat",
+      "lines": [
+        {
+          "en": "That makes farming incredibly hard.",
+          "ko": "그래서 농사가 무척 어렵습니다."
+        },
+        {
+          "en": "Only about 7 percent of Canada's land is used as farmland.",
+          "ko": "캐나다 땅 중 농지로 쓰이는 건 약 7%뿐입니다."
+        },
+        {
+          "en": "And without farms, big towns never had a reason to grow.",
+          "ko": "농장이 없으니 큰 도시가 생길 이유도 없었죠."
+        }
+      ],
+      "params": {
+        "heading": "NOT MUCH TO FARM",
+        "value": 7,
+        "suffix": "%",
+        "label": "OF CANADA'S LAND IS FARMLAND",
+        "note": "1 SQUARE = 1% OF THE COUNTRY",
+        "at": "percent",
+        "footnote": "APPROX."
+      },
+      "cues": {
+        "percent": "Only"
+      }
+    },
+    {
+      "id": "ch3",
+      "type": "chapter",
+      "durationSec": 2.8,
+      "lines": [],
+      "params": {
+        "number": "03",
+        "title": "THE COLD",
+        "titleKo": "얼어붙은 땅"
+      }
+    },
+    {
+      "id": "permafrost",
+      "type": "mapFocus",
+      "lines": [
+        {
+          "en": "Then there's the cold.",
+          "ko": "그리고 추위가 있습니다."
+        },
+        {
+          "en": "Across much of the north, the ground stays frozen all year round.",
+          "ko": "북쪽 대부분 지역은 땅이 1년 내내 얼어 있습니다."
+        },
+        {
+          "en": "This is permafrost, and it lies beneath roughly half of Canada.",
+          "ko": "이것이 영구동토층이고, 캐나다 땅의 약 절반 아래에 깔려 있습니다."
+        }
+      ],
+      "params": {
+        "cam": {
+          "lon": -100,
+          "lat": 62,
+          "zoom": 1.0
+        },
+        "camFrom": {
+          "lon": -96,
+          "lat": 55,
+          "zoom": 1.15
+        },
+        "region": {
+          "northOf": 58,
+          "kind": "ice",
+          "label": "PERMAFROST ZONE (APPROX.)",
+          "labelAt": [
+            -105,
+            66
+          ],
+          "at": "frozen",
+          "labelSize": 46
+        },
+        "badges": [
+          {
+            "big": "FROZEN ALL YEAR",
+            "small": "GROUND NEVER THAWS",
+            "at": "frozen"
+          },
+          {
+            "big": "≈ 50% OF CANADA",
+            "small": "SITS ON PERMAFROST",
+            "at": "half",
+            "accent": true
+          }
+        ]
+      },
+      "cues": {
+        "frozen": "frozen",
+        "half": "half"
+      }
+    },
+    {
+      "id": "build",
+      "type": "bulletList",
+      "lines": [
+        {
+          "en": "Building anything up there is a nightmare.",
+          "ko": "그곳에 뭔가를 짓는 건 악몽입니다."
+        },
+        {
+          "en": "Roads crack and buckle, pipes freeze, and most supplies have to be flown or shipped in.",
+          "ko": "도로는 갈라지고 휘고, 수도관은 얼고, 물자 대부분은 비행기나 배로 들여와야 합니다."
+        },
+        {
+          "en": "So in remote northern towns, groceries can cost two or three times more than in the south.",
+          "ko": "그래서 외딴 북부 마을에선 식료품 값이 남쪽의 두세 배가 되기도 합니다."
+        }
+      ],
+      "params": {
+        "heading": "LIFE ON FROZEN GROUND",
+        "items": [
+          {
+            "title": "ROADS CRACK & BUCKLE",
+            "sub": "THAWING GROUND SHIFTS",
+            "at": "roads"
+          },
+          {
+            "title": "PIPES FREEZE",
+            "sub": "WATER & SEWER ARE HARD",
+            "at": "pipes"
+          },
+          {
+            "title": "EVERYTHING FLOWN IN",
+            "sub": "FEW OR NO ROADS",
+            "at": "flown"
+          }
+        ],
+        "tag": {
+          "text": "GROCERIES 2–3×",
+          "at": "groceries"
+        }
+      },
+      "cues": {
+        "roads": "Roads",
+        "pipes": "pipes",
+        "flown": "flown",
+        "groceries": "groceries"
+      }
+    },
+    {
+      "id": "ch4",
+      "type": "chapter",
+      "durationSec": 2.8,
+      "lines": [],
+      "params": {
+        "number": "04",
+        "title": "THE PULL OF THE SOUTH",
+        "titleKo": "남쪽으로 당기는 힘"
+      }
+    },
+    {
+      "id": "rail",
+      "type": "mapFocus",
+      "lines": [
+        {
+          "en": "History pulled people south as well.",
+          "ko": "역사도 사람들을 남쪽으로 끌어당겼습니다."
+        },
+        {
+          "en": "In the 1880s, the Canadian Pacific Railway was built close to the border, linking the east to the Pacific.",
+          "ko": "1880년대, 캐나다 태평양 철도가 국경 가까이에 놓여 동부와 태평양을 이었습니다."
+        },
+        {
+          "en": "Towns and cities grew up along the tracks.",
+          "ko": "마을과 도시는 이 철길을 따라 자라났습니다."
+        }
+      ],
+      "params": {
+        "cam": {
+          "lon": -99,
+          "lat": 52,
+          "zoom": 1.55
+        },
+        "camFrom": {
+          "lon": -96,
+          "lat": 60,
+          "zoom": 0.95
+        },
+        "route": {
+          "points": [
+            [
+              -73.57,
+              45.5
+            ],
+            [
+              -75.7,
+              45.42
+            ],
+            [
+              -79.46,
+              46.31
+            ],
+            [
+              -81.0,
+              46.49
+            ],
+            [
+              -84.5,
+              47.9
+            ],
+            [
+              -89.25,
+              48.38
+            ],
+            [
+              -94.5,
+              49.77
+            ],
+            [
+              -97.14,
+              49.9
+            ],
+            [
+              -104.6,
+              50.45
+            ],
+            [
+              -110.68,
+              50.04
+            ],
+            [
+              -114.07,
+              51.05
+            ],
+            [
+              -115.57,
+              51.18
+            ],
+            [
+              -117.5,
+              51.3
+            ],
+            [
+              -120.33,
+              50.67
+            ],
+            [
+              -122.3,
+              49.2
+            ],
+            [
+              -123.12,
+              49.28
+            ]
+          ],
+          "label": "CANADIAN PACIFIC RAILWAY",
+          "labelAt": [
+            -88,
+            51.6
+          ],
+          "at": "railway",
+          "durSec": 3.0,
+          "dashed": true
+        },
+        "pins": {
+          "at": "towns",
+          "items": [
+            {
+              "name": "Vancouver",
+              "lonlat": [
+                -123.12,
+                49.28
+              ],
+              "dy": 38
+            },
+            {
+              "name": "Calgary",
+              "lonlat": [
+                -114.07,
+                51.05
+              ]
+            },
+            {
+              "name": "Regina",
+              "lonlat": [
+                -104.6,
+                50.45
+              ],
+              "dy": 38
+            },
+            {
+              "name": "Winnipeg",
+              "lonlat": [
+                -97.14,
+                49.9
+              ]
+            },
+            {
+              "name": "Montréal",
+              "lonlat": [
+                -73.57,
+                45.5
+              ],
+              "dy": 38
+            }
+          ]
+        },
+        "badges": [
+          {
+            "big": "1885",
+            "small": "LAST SPIKE DRIVEN",
+            "at": "Pacific"
+          }
+        ]
+      },
+      "cues": {
+        "railway": "Railway",
+        "Pacific": "Pacific",
+        "towns": "Towns"
+      }
+    },
+    {
+      "id": "corridor",
+      "type": "mapFocus",
+      "lines": [
+        {
+          "en": "The warmest and most fertile land is in the far south, around the Great Lakes and the St. Lawrence River.",
+          "ko": "가장 따뜻하고 비옥한 땅은 최남단, 오대호와 세인트로렌스강 주변에 있습니다."
+        },
+        {
+          "en": "The corridor from Windsor to Quebec City is home to about half of all Canadians.",
+          "ko": "윈저에서 퀘벡시티까지 이어지는 회랑에 캐나다인의 약 절반이 삽니다."
+        }
+      ],
+      "params": {
+        "cam": {
+          "lon": -77.5,
+          "lat": 44.6,
+          "zoom": 3.6
+        },
+        "camFrom": {
+          "lon": -90,
+          "lat": 50,
+          "zoom": 1.4
+        },
+        "flySec": 2.4,
+        "route": {
+          "points": [
+            [
+              -83.03,
+              42.3
+            ],
+            [
+              -81.25,
+              42.98
+            ],
+            [
+              -79.38,
+              43.65
+            ],
+            [
+              -76.48,
+              44.23
+            ],
+            [
+              -73.57,
+              45.5
+            ],
+            [
+              -71.21,
+              46.81
+            ]
+          ],
+          "label": "WINDSOR – QUÉBEC CORRIDOR",
+          "labelAt": [
+            -76.2,
+            42.7
+          ],
+          "at": "corridor",
+          "durSec": 2.4,
+          "width": 22
+        },
+        "pins": {
+          "at": "corridor",
+          "items": [
+            {
+              "name": "Windsor",
+              "lonlat": [
+                -83.03,
+                42.3
+              ],
+              "dy": 38
+            },
+            {
+              "name": "Toronto",
+              "lonlat": [
+                -79.38,
+                43.65
+              ],
+              "dy": -26
+            },
+            {
+              "name": "Ottawa",
+              "lonlat": [
+                -75.7,
+                45.42
+              ]
+            },
+            {
+              "name": "Montréal",
+              "lonlat": [
+                -73.57,
+                45.5
+              ],
+              "dx": 40,
+              "dy": 38
+            },
+            {
+              "name": "Québec City",
+              "lonlat": [
+                -71.21,
+                46.81
+              ]
+            }
+          ]
+        },
+        "labels": [
+          {
+            "text": "GREAT LAKES",
+            "lonlat": [
+              -84.3,
+              45.3
+            ],
+            "at": "lakes",
+            "size": 26
+          },
+          {
+            "text": "ST. LAWRENCE",
+            "lonlat": [
+              -69.5,
+              48.6
+            ],
+            "at": "lakes",
+            "size": 24
+          }
+        ],
+        "badges": [
+          {
+            "big": "≈ 50% OF CANADIANS",
+            "small": "LIVE IN THIS CORRIDOR",
+            "at": "half",
+            "accent": true
+          }
+        ]
+      },
+      "cues": {
+        "lakes": "Great",
+        "corridor": "corridor",
+        "half": "half"
+      }
+    },
+    {
+      "id": "trade",
+      "type": "waffleStat",
+      "lines": [
+        {
+          "en": "And then there's the United States.",
+          "ko": "그리고 미국이 있습니다."
+        },
+        {
+          "en": "Roughly three quarters of Canada's exports go south of the border.",
+          "ko": "캐나다 수출의 약 4분의 3이 국경 너머 남쪽으로 갑니다."
+        },
+        {
+          "en": "Living close to your biggest customer simply makes sense.",
+          "ko": "가장 큰 고객 가까이에 사는 건 당연한 선택이죠."
+        }
+      ],
+      "params": {
+        "heading": "THE BIGGEST CUSTOMER",
+        "value": 75,
+        "suffix": "%",
+        "label": "OF CANADA'S EXPORTS GO TO THE U.S.",
+        "note": "1 SQUARE = 1% OF EXPORTS",
+        "at": "quarters",
+        "footnote": "APPROX."
+      },
+      "cues": {
+        "quarters": "quarters"
+      }
+    },
+    {
+      "id": "ch5",
+      "type": "chapter",
+      "durationSec": 2.8,
+      "lines": [],
+      "params": {
+        "number": "05",
+        "title": "THE ANSWER",
+        "titleKo": "정리"
+      }
+    },
+    {
+      "id": "recap",
+      "type": "bulletList",
+      "lines": [
+        {
+          "en": "So why is 90 percent of Canada so empty?",
+          "ko": "그래서 캐나다의 90%는 왜 이렇게 비어 있을까요?"
+        },
+        {
+          "en": "Ancient rock with almost no soil.",
+          "ko": "흙이 거의 없는 고대 암반."
+        },
+        {
+          "en": "Ground that never thaws.",
+          "ko": "녹지 않는 땅."
+        },
+        {
+          "en": "And a history and economy that pull everyone south.",
+          "ko": "그리고 모두를 남쪽으로 끌어당기는 역사와 경제입니다."
+        }
+      ],
+      "params": {
+        "heading": "WHY CANADA IS EMPTY",
+        "items": [
+          {
+            "title": "THE ROCK",
+            "sub": "CANADIAN SHIELD · ALMOST NO SOIL",
+            "at": "rock"
+          },
+          {
+            "title": "THE COLD",
+            "sub": "PERMAFROST UNDER ~HALF THE LAND",
+            "at": "thaws"
+          },
+          {
+            "title": "THE PULL OF THE SOUTH",
+            "sub": "RAILWAY · FERTILE CORRIDOR · U.S. TRADE",
+            "at": "history"
+          }
+        ]
+      },
+      "cues": {
+        "rock": "rock",
+        "thaws": "thaws",
+        "history": "history"
+      }
+    },
+    {
+      "id": "outro",
+      "type": "mapFocus",
+      "lines": [
+        {
+          "en": "The empty north isn't a failure.",
+          "ko": "텅 빈 북쪽은 실패가 아닙니다."
+        },
+        {
+          "en": "It's what happens when a country is built on some of the oldest rock on Earth, right next door to the world's biggest economy.",
+          "ko": "지구에서 가장 오래된 암반 위에, 세계 최대 경제 대국 바로 옆에 세워진 나라라면 자연스러운 모습이죠."
+        }
+      ],
+      "params": {
+        "cam": {
+          "lon": -96,
+          "lat": 58,
+          "zoom": 0.85
+        },
+        "camFrom": {
+          "lon": -96,
+          "lat": 60,
+          "zoom": 1.05
+        },
+        "flySec": 4,
+        "region": {
+          "northOf": 54,
+          "kind": "ice",
+          "at": "north"
+        },
+        "route": {
+          "points": [
+            [
+              -73.57,
+              45.5
+            ],
+            [
+              -75.7,
+              45.42
+            ],
+            [
+              -79.46,
+              46.31
+            ],
+            [
+              -81.0,
+              46.49
+            ],
+            [
+              -84.5,
+              47.9
+            ],
+            [
+              -89.25,
+              48.38
+            ],
+            [
+              -94.5,
+              49.77
+            ],
+            [
+              -97.14,
+              49.9
+            ],
+            [
+              -104.6,
+              50.45
+            ],
+            [
+              -110.68,
+              50.04
+            ],
+            [
+              -114.07,
+              51.05
+            ],
+            [
+              -115.57,
+              51.18
+            ],
+            [
+              -117.5,
+              51.3
+            ],
+            [
+              -120.33,
+              50.67
+            ],
+            [
+              -122.3,
+              49.2
+            ],
+            [
+              -123.12,
+              49.28
+            ]
+          ],
+          "at": "economy",
+          "durSec": 1.6
+        },
+        "badges": [
+          {
+            "big": "WHY 90% IS EMPTY",
+            "small": "ROCK · COLD · THE SOUTH",
+            "at": "oldest",
+            "accent": true
+          }
+        ]
+      },
+      "cues": {
+        "north": "north",
+        "oldest": "oldest",
+        "economy": "economy"
+      }
+    },
+    {
+      "id": "end",
+      "type": "chapter",
+      "durationSec": 3.2,
+      "lines": [],
+      "params": {
+        "number": "✓",
+        "kicker": "THANKS FOR WATCHING",
+        "title": "SUBSCRIBE",
+        "titleKo": "구독하고 다음 지리 이야기도 함께 봐요"
       }
     }
   ]

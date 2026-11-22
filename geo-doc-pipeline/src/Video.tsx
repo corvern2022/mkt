@@ -11,6 +11,9 @@ import {TitleCard} from './scenes/TitleCard';
 import {MapZoomScene} from './scenes/MapZoomScene';
 import {BorderStripScene} from './scenes/BorderStripScene';
 import {GlacierScene} from './scenes/GlacierScene';
+import {ChapterCard} from './scenes/ChapterCard';
+import {MapFocusScene} from './scenes/MapFocusScene';
+import {BarCompareScene, BulletListScene, StatCompareScene, WaffleStatScene} from './scenes/InfoScenes';
 
 export const timeline = timelineJson as unknown as Timeline;
 
@@ -20,6 +23,12 @@ const REGISTRY: Record<string, React.FC<SceneProps>> = {
   mapZoom: MapZoomScene,
   borderStrip: BorderStripScene,
   glacierSection: GlacierScene,
+  chapter: ChapterCard,
+  mapFocus: MapFocusScene,
+  statCompare: StatCompareScene,
+  barCompare: BarCompareScene,
+  waffleStat: WaffleStatScene,
+  bulletList: BulletListScene,
 };
 
 /** Which scene boundaries get a visual cut (otherwise scenes flow continuously, e.g. map → panel). */

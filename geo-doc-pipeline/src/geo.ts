@@ -5,6 +5,7 @@
  */
 import world from 'world-atlas/countries-50m.json';
 import provincesJson from './data/canada_provinces.json';
+import lakesJson from './data/na_lakes.json';
 import {feature, mesh} from 'topojson-client';
 import {geoCentroid, geoConicConformal, geoGraticule10, geoPath} from 'd3-geo';
 import type {Feature, FeatureCollection, Geometry, MultiLineString} from 'geojson';
@@ -54,6 +55,23 @@ export const canadaD = path(canadaF) ?? '';
 /** Canadian province / territory outlines (Natural Earth 1:50m admin-1, bundled offline). */
 export const provincesD = path(provincesJson as unknown as FeatureCollection<Geometry>) ?? '';
 export const usaD = path(usaF) ?? '';
+/** Large North American lakes (Great Lakes, Great Bear/Slave, Winnipeg, ...) — Natural Earth 1:50m. */
+export const lakesD = path(lakesJson as unknown as FeatureCollection<Geometry>) ?? '';
+const provFC = provincesJson as unknown as FeatureCollection<Geometry>;
+/** One base-space path per province / territory, keyed by postal code (AB, BC, ... YT). */
+export const provinceDs: Record<string, string> = Object.fromEntries(
+  provFC.features.map((f) => [String((f.properties as any).code), path(f) ?? '']),
+);
+/** Base-space centroid per province code. */
+export const provinceCentroid = (code: string): [number, number] => {
+  const f = provFC.features.find((x) => (x.properties as any).code === code);
+  return f ? (path.centroid(f) as [number, number]) : [960, 540];
+};
+/** Polyline through lon/lat points (base space). */
+export const lineD = (pts: [number, number][]) =>
+  pts.map((p, i) => `${i ? 'L' : 'M'}${project(p).map((v) => v.toFixed(1)).join(',')}`).join('');
+/** Closed polygon through lon/lat points (base space). */
+export const polyD = (pts: [number, number][]) => lineD(pts) + 'Z';
 export const graticuleD = path(geoGraticule10()) ?? '';
 export const canadaBounds = path.bounds(canadaF);
 export const canadaCentroid = path.centroid(canadaF) as [number, number];

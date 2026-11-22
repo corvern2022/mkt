@@ -7,6 +7,7 @@ import {
   canadaBounds,
   canadaD,
   graticuleD,
+  lakesD,
   milesToBase,
   northOfLatD,
   provincesD,
@@ -85,6 +86,7 @@ export const MapLayers: React.FC<{
               <RoughSvg paths={hatch} color={theme.hatch} width={1.5} nonScaling opacity={0.55} />
             </g>
           </g>
+          <path d={lakesD} fill={theme.ocean} stroke={theme.ink} strokeWidth={1.4} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
           {/* 100-mile strip: ink rim + red band + hatch, clipped to Canada */}
           {stripReveal > 0 && (
             <g clipPath={`url(#${id('canada')})`}>
@@ -139,6 +141,7 @@ export const MapLayers: React.FC<{
             <path d={canadaD} fill="none" stroke={CY} strokeOpacity={0.22} strokeWidth={9} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
             <path d={canadaD} fill="none" stroke="#9AF3FF" strokeWidth={2.4} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
           </g>
+          <path d={lakesD} fill={theme.ocean} stroke="#3CD2E6" strokeOpacity={0.6} strokeWidth={1.2} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
           {/* scan line that draws Canada in */}
           {canadaReveal > 0.01 && canadaReveal < 0.99 && (
             <line x1={revealX} x2={revealX} y1={-4000} y2={5000} stroke="#9AF3FF" strokeWidth={3} strokeOpacity={0.8} vectorEffect="non-scaling-stroke" />
@@ -216,6 +219,10 @@ export const MapLayers: React.FC<{
           </g>
         );
       })}
+      {/* lakes cut through the paper layers */}
+      <g transform={tf} style={{filter: 'drop-shadow(0px 1px 1px rgba(40,30,20,0.25))'}}>
+        <path d={lakesD} fill={theme.ocean} />
+      </g>
       {/* raised crimson strip */}
       {stripReveal > 0 && (
         <g style={{filter: 'drop-shadow(0px 3px 2px rgba(80,10,15,0.35)) drop-shadow(0px 12px 14px rgba(60,10,10,0.28))'}}>

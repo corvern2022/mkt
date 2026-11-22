@@ -1,7 +1,7 @@
 # geo-doc-pipeline — 지리 다큐 로컬 자동화 파이프라인 (MVP)
 
 API 키 0개 · 비용 0원으로 16:9(1920×1080, 30fps) 유튜브 지리 다큐 MP4를 자동 생성합니다.
-파일럿: **Why 90% of Canada is Completely Empty** — 30초 오프닝, 테마 3종(`tintin`, `paper3d`, `hud`).
+EP.01: **Why 90% of Canada is Completely Empty** — 약 3분 12초 풀 영상(5챕터 · 23씬), 테마 3종(`tintin`, `paper3d`, `hud`).
 
 ## 빠른 실행
 
@@ -78,6 +78,26 @@ out/*.mp4
 - `lines`가 비어 있는 씬은 무음 카드(`durationSec`)로 처리됩니다(인트로 타이틀).
 - 패딩/전환: `leadInSec`, `tailSec`, `transitionFrames`.
 - `python3 scripts/generate_audio.py --skip-existing` 은 텍스트가 바뀌지 않은 씬의 MP3를 재사용합니다.
+
+## 씬 타입 (script.json → `"type"`)
+
+| type | 용도 | 주요 params |
+|---|---|---|
+| `titleCard` | 무음 오프닝 타이틀 | `kicker`, `subtitleKo` |
+| `chapter` | 무음 챕터 구분 카드 | `number`, `title`, `titleKo`, `kicker` |
+| `mapZoom` / `borderStrip` / `glacierSection` | 오프닝 전용 연출 (줌인 · 100마일 띠 · 빙하 단면) | 기존 그대로 |
+| `mapFocus` | 범용 지도 씬 | `cam`/`camFrom`(lon,lat,zoom), `provinces`{codes}, `region`{northOf}, `shape`{points}, `route`{points}, `pins`, `labels`, `badges`, `heading` |
+| `statCompare` | 좌우 비교 카드 (VS) | `left`/`right` {title, sub, rows[{label,value}]} |
+| `barCompare` | 가로 막대 그래프 | `bars[{label,value,highlight}]`, `max`, `callout` |
+| `waffleStat` | 큰 숫자 카운트업 + 10×10 와플 | `value`, `suffix`, `label`, `note` |
+| `bulletList` | 번호 목록 (이유 정리) | `items[{title,sub,at}]`, `tag` |
+
+모든 `at` 값은 씬의 `cues` 키(= 대사 속 단어)이므로 음성이 바뀌어도 타이밍이 자동으로 맞습니다.
+지도 데이터: world-atlas(국가) + Natural Earth 1:50m 주 경계(`src/data/canada_provinces.json`)·호수(`src/data/na_lakes.json`), 모두 퍼블릭 도메인이며 오프라인 번들.
+
+### 숫자 읽기
+클론 음성(Voicebox/Qwen3)은 숫자를 잘못 읽습니다("130,000" → "175"). `scripts/numwords.py`가 TTS로 보낼 때만 숫자를 영어 단어로 풀어 쓰고(자막은 숫자 유지),
+`npm run qa`는 대본의 숫자가 하나라도 다르게 들리면 WER과 무관하게 실패 처리 후 재생성합니다.
 
 ## 3단 레이어 합성
 

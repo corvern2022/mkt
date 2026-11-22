@@ -59,14 +59,16 @@ def tts_config(spec: dict, engine_override: str | None) -> tuple[str, dict]:
 
 
 async def synth(engine: str, cfg: dict, text: str, out: Path, sid: str = "") -> list[dict]:
+    from numwords import spoken
+    tts_text = spoken(text)  # clone voices garble digits; subtitles keep the digits
     if engine == "files":
         words = tts_engines.synth_files(sid, out, cfg, ROOT)
     elif engine == "edge":
-        words = await tts_engines.synth_edge(text, out, cfg)
+        words = await tts_engines.synth_edge(tts_text, out, cfg)
     elif engine == "qwen3":
-        words = tts_engines.synth_qwen3(text, out, cfg, ROOT)
+        words = tts_engines.synth_qwen3(tts_text, out, cfg, ROOT)
     elif engine == "voicebox":
-        words = tts_engines.synth_voicebox(text, out, cfg)
+        words = tts_engines.synth_voicebox(tts_text, out, cfg)
     else:
         raise SystemExit(f"unknown tts engine '{engine}'")
     if not words:  # clone engines don't report timings → align with local whisper
