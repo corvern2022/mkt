@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import {AbsoluteFill, Easing, useCurrentFrame, useVideoConfig} from 'remotion';
 import type {SceneProps} from '../types';
 import {pop, prog} from '../util';
-import {canadaBounds, canadaD} from '../geo';
+import {canadaBounds, canadaD, provincesD} from '../geo';
 import {roughLine, roughPath} from '../rough';
 import {RoughSvg} from '../components/RoughSvg';
 import timeline from '../timeline.json';
@@ -55,6 +55,9 @@ export const TitleCard: React.FC<SceneProps> = ({scene, theme}) => {
               </defs>
               <path d={canadaD} fill={theme.canada} />
               <path d={canadaD} fill="url(#t-grid)" />
+              <g clipPath="url(#t-ca)">
+                <path d={provincesD} fill="none" stroke="#7FE9F5" strokeOpacity={0.7} strokeWidth={1.2} vectorEffect="non-scaling-stroke" />
+              </g>
               <path d={canadaD} fill="none" stroke="#3CD2E6" strokeOpacity={0.25} strokeWidth={10} vectorEffect="non-scaling-stroke" />
               <path d={canadaD} fill="none" stroke="#9AF3FF" strokeWidth={2.6} vectorEffect="non-scaling-stroke" />
             </>

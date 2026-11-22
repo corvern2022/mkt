@@ -21,8 +21,8 @@ TICKS = 10_000_000  # edge-tts offsets are in 100ns ticks
 
 
 def _to_mp3(src: Path, dst: Path, trim_lead: bool = True):
-    """Encode to mp3; optionally strip leading silence/breath so every line starts on the first syllable."""
-    af = ["-af", "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,loudnorm=I=-16:TP=-1.5"] if trim_lead else []
+    """Encode to mp3; strip leading silence/breath and shorten long mid-line pauses (>0.3s → ~0.22s) so narration flows."""
+    af = ["-af", "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05:stop_periods=-1:stop_duration=0.3:stop_threshold=-45dB:stop_silence=0.22,loudnorm=I=-16:TP=-1.5"] if trim_lead else []
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(src), *af, "-ar", "24000", "-b:a", "128k", str(dst)], check=True)
 
 

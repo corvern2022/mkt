@@ -19,7 +19,7 @@
       "profileId": "fa42bfed-33ba-4de2-b0a4-9e6b85c5d554",
       "language": "en",
       "modelSize": "1.7B",
-      "seed": 44,
+      "seed": 45,
       "instruct": "Calm documentary narrator. No breath, start on the first syllable."
     },
     "files": {
@@ -29,8 +29,8 @@
   "fps": 30,
   "width": 1920,
   "height": 1080,
-  "leadInSec": 0.7,
-  "tailSec": 1.4,
+  "leadInSec": 0.35,
+  "tailSec": 0.7,
   "transitionFrames": 14,
   "scenes": [
     {

@@ -9,6 +9,7 @@ import {
   graticuleD,
   milesToBase,
   northOfLatD,
+  provincesD,
   usaD,
   worldPaths,
 } from '../geo';
@@ -131,6 +132,10 @@ export const MapLayers: React.FC<{
           <g clipPath={`url(#${id('reveal')})`}>
             <path d={canadaD} fill={theme.canada} />
             <path d={canadaD} fill={`url(#${id('hudGrid')})`} />
+            <g clipPath={`url(#${id('canada')})`}>
+              <path d={provincesD} fill="none" stroke="#3CD2E6" strokeOpacity={0.18} strokeWidth={6} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+              <path d={provincesD} fill="none" stroke="#7FE9F5" strokeOpacity={0.75} strokeWidth={1.3} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+            </g>
             <path d={canadaD} fill="none" stroke={CY} strokeOpacity={0.22} strokeWidth={9} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
             <path d={canadaD} fill="none" stroke="#9AF3FF" strokeWidth={2.4} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
           </g>

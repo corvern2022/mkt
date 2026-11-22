@@ -4,6 +4,7 @@
  * cameras then move over it with cheap SVG transforms.
  */
 import world from 'world-atlas/countries-50m.json';
+import provincesJson from './data/canada_provinces.json';
 import {feature, mesh} from 'topojson-client';
 import {geoCentroid, geoConicConformal, geoGraticule10, geoPath} from 'd3-geo';
 import type {Feature, FeatureCollection, Geometry, MultiLineString} from 'geojson';
@@ -50,6 +51,8 @@ export const worldPaths = countries.features
   .filter((p) => p.d.length > 0);
 
 export const canadaD = path(canadaF) ?? '';
+/** Canadian province / territory outlines (Natural Earth 1:50m admin-1, bundled offline). */
+export const provincesD = path(provincesJson as unknown as FeatureCollection<Geometry>) ?? '';
 export const usaD = path(usaF) ?? '';
 export const graticuleD = path(geoGraticule10()) ?? '';
 export const canadaBounds = path.bounds(canadaF);
