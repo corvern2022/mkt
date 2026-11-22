@@ -5,8 +5,8 @@
   "width": 1920,
   "height": 1080,
   "transitionFrames": 14,
-  "totalFrames": 907,
-  "totalSec": 30.233,
+  "totalFrames": 889,
+  "totalSec": 29.633,
   "scenes": [
     {
       "id": "intro",
@@ -32,81 +32,121 @@
       "text": "Canada is the second largest country on Earth. Yet almost nobody actually lives there.",
       "engine": "voicebox",
       "audio": "audio/scene1.mp3",
-      "audioDurationSec": 5.44,
-      "audioDurationFrames": 164,
+      "audioDurationSec": 5.28,
+      "audioDurationFrames": 159,
       "leadInFrames": 21,
-      "durationFrames": 227,
+      "durationFrames": 222,
       "startFrame": 108,
       "words": [
         {
           "text": "Canada",
           "start": 0.0,
-          "end": 0.22
+          "end": 0.18
         },
         {
           "text": "is",
-          "start": 0.22,
-          "end": 0.46
+          "start": 0.18,
+          "end": 0.52
         },
         {
           "text": "the",
-          "start": 0.46,
-          "end": 0.58
+          "start": 0.52,
+          "end": 0.68
         },
         {
           "text": "second",
-          "start": 0.58,
-          "end": 0.88
+          "start": 0.68,
+          "end": 1.02
         },
         {
           "text": "largest",
-          "start": 0.88,
-          "end": 1.24
+          "start": 1.02,
+          "end": 1.42
         },
         {
           "text": "country",
-          "start": 1.24,
-          "end": 1.7
+          "start": 1.42,
+          "end": 1.68
         },
         {
           "text": "on",
-          "start": 1.7,
-          "end": 2.12
+          "start": 1.68,
+          "end": 2.06
         },
         {
           "text": "Earth.",
-          "start": 2.12,
-          "end": 2.4
+          "start": 2.06,
+          "end": 2.24
         },
         {
           "text": "Yet",
-          "start": 3.22,
-          "end": 3.48
+          "start": 3.32,
+          "end": 3.32
         },
         {
           "text": "almost",
-          "start": 3.48,
-          "end": 3.78
+          "start": 3.32,
+          "end": 3.7
         },
         {
           "text": "nobody",
-          "start": 3.78,
-          "end": 4.24
+          "start": 3.7,
+          "end": 4.16
         },
         {
           "text": "actually",
-          "start": 4.24,
-          "end": 4.52
+          "start": 4.16,
+          "end": 4.38
         },
         {
           "text": "lives",
-          "start": 4.52,
-          "end": 4.84
+          "start": 4.38,
+          "end": 4.74
         },
         {
           "text": "there.",
-          "start": 4.84,
-          "end": 5.1
+          "start": 4.74,
+          "end": 5.04
+        },
+        {
+          "text": "Canada",
+          "start": 5.04,
+          "end": 5.04
+        },
+        {
+          "text": "is",
+          "start": 5.04,
+          "end": 5.04
+        },
+        {
+          "text": "the",
+          "start": 5.04,
+          "end": 5.04
+        },
+        {
+          "text": "second",
+          "start": 5.04,
+          "end": 5.04
+        },
+        {
+          "text": "largest",
+          "start": 5.04,
+          "end": 5.04
+        },
+        {
+          "text": "country",
+          "start": 5.04,
+          "end": 5.04
+        },
+        {
+          "text": "on",
+          "start": 5.04,
+          "end": 5.18
+        },
+        {
+          "text": "Earth.",
+          "start": 5.18,
+          "end": 5.2
         }
       ],
       "lines": [
@@ -114,19 +154,19 @@
           "en": "Canada is the second largest country on Earth.",
           "ko": "캐나다는 지구상에서 두 번째로 큰 나라입니다.",
           "start": 0.0,
-          "end": 3.22
+          "end": 3.32
         },
         {
           "en": "Yet almost nobody actually lives there.",
           "ko": "하지만 실제로는 거의 아무도 살지 않습니다.",
-          "start": 3.22,
-          "end": 5.44
+          "start": 3.32,
+          "end": 5.28
         }
       ],
       "cues": {
-        "fill": 0.58,
-        "stat": 0.88,
-        "density": 3.78
+        "fill": 0.68,
+        "stat": 1.02,
+        "density": 3.7
       },
       "params": {
         "altitudeFromKm": 400,
@@ -141,246 +181,126 @@
       "text": "Draw a line just 100 miles north of the US border. Over 70 percent of all Canadians are squeezed into this tiny strip.",
       "engine": "voicebox",
       "audio": "audio/scene2.mp3",
-      "audioDurationSec": 7.209,
-      "audioDurationFrames": 217,
+      "audioDurationSec": 7.84,
+      "audioDurationFrames": 236,
       "leadInFrames": 21,
-      "durationFrames": 280,
-      "startFrame": 335,
+      "durationFrames": 299,
+      "startFrame": 330,
       "words": [
         {
           "text": "Draw",
           "start": 0.0,
-          "end": 0.16
+          "end": 0.2
         },
         {
           "text": "a",
-          "start": 0.16,
-          "end": 0.28
+          "start": 0.2,
+          "end": 0.34
         },
         {
           "text": "line",
-          "start": 0.28,
-          "end": 0.44
+          "start": 0.34,
+          "end": 0.64
         },
         {
           "text": "just",
-          "start": 0.44,
-          "end": 0.66
+          "start": 0.64,
+          "end": 0.9
         },
         {
           "text": "10",
-          "start": 0.66,
-          "end": 1.08
+          "start": 0.9,
+          "end": 1.16
         },
         {
           "text": "miles",
-          "start": 1.08,
-          "end": 1.34
+          "start": 1.16,
+          "end": 1.44
         },
         {
           "text": "north",
-          "start": 1.34,
-          "end": 1.64
+          "start": 1.44,
+          "end": 1.82
         },
         {
           "text": "of",
-          "start": 1.64,
-          "end": 1.86
+          "start": 1.82,
+          "end": 2.06
         },
         {
           "text": "the",
-          "start": 1.86,
-          "end": 1.94
+          "start": 2.06,
+          "end": 2.18
         },
         {
           "text": "US",
-          "start": 1.94,
-          "end": 2.16
+          "start": 2.18,
+          "end": 2.4
         },
         {
           "text": "border.",
-          "start": 2.16,
-          "end": 2.44
+          "start": 2.4,
+          "end": 2.72
         },
         {
           "text": "Over",
-          "start": 3.28,
-          "end": 3.44
+          "start": 3.64,
+          "end": 3.64
         },
         {
           "text": "70",
-          "start": 3.44,
-          "end": 3.8
+          "start": 3.64,
+          "end": 3.96
         },
         {
-          "text": "%",
-          "start": 3.8,
-          "end": 4.18
-        },
-        {
-          "text": "of",
-          "start": 4.18,
-          "end": 4.46
-        },
-        {
-          "text": "all",
-          "start": 4.46,
-          "end": 4.62
-        },
-        {
-          "text": "Canadians",
-          "start": 4.62,
-          "end": 4.96
-        },
-        {
-          "text": "are",
-          "start": 4.96,
-          "end": 5.44
-        },
-        {
-          "text": "squeezed",
-          "start": 5.44,
-          "end": 5.72
-        },
-        {
-          "text": "into",
-          "start": 5.72,
-          "end": 6.14
-        },
-        {
-          "text": "this",
-          "start": 6.14,
-          "end": 6.32
-        },
-        {
-          "text": "tiny",
-          "start": 6.32,
-          "end": 6.54
-        },
-        {
-          "text": "strip.",
-          "start": 6.54,
-          "end": 6.92
-        },
-        {
-          "text": "Over",
-          "start": 6.92,
-          "end": 6.92
-        },
-        {
-          "text": "70",
-          "start": 6.92,
-          "end": 6.92
-        },
-        {
-          "text": "%",
-          "start": 6.92,
-          "end": 7.04
+          "text": "percent",
+          "start": 3.96,
+          "end": 4.42
         },
         {
           "text": "of",
-          "start": 7.04,
-          "end": 7.04
+          "start": 4.42,
+          "end": 4.74
         },
         {
           "text": "all",
-          "start": 7.04,
-          "end": 7.04
+          "start": 4.74,
+          "end": 5.02
         },
         {
           "text": "Canadians",
-          "start": 7.04,
-          "end": 7.04
+          "start": 5.02,
+          "end": 5.42
         },
         {
           "text": "are",
-          "start": 7.04,
-          "end": 7.04
+          "start": 5.42,
+          "end": 5.98
         },
         {
           "text": "squeezed",
-          "start": 7.04,
-          "end": 7.04
+          "start": 5.98,
+          "end": 6.28
         },
         {
           "text": "into",
-          "start": 7.04,
-          "end": 7.18
+          "start": 6.28,
+          "end": 6.72
         },
         {
           "text": "this",
-          "start": 7.18,
-          "end": 7.18
+          "start": 6.72,
+          "end": 6.9
         },
         {
           "text": "tiny",
-          "start": 7.18,
-          "end": 7.18
+          "start": 6.9,
+          "end": 7.12
         },
         {
           "text": "strip.",
-          "start": 7.18,
-          "end": 7.18
-        },
-        {
-          "text": "Over",
-          "start": 7.18,
-          "end": 7.18
-        },
-        {
-          "text": "70",
-          "start": 7.18,
-          "end": 7.18
-        },
-        {
-          "text": "%",
-          "start": 7.18,
-          "end": 7.18
-        },
-        {
-          "text": "of",
-          "start": 7.18,
-          "end": 7.18
-        },
-        {
-          "text": "all",
-          "start": 7.18,
-          "end": 7.18
-        },
-        {
-          "text": "Canadians",
-          "start": 7.18,
-          "end": 7.18
-        },
-        {
-          "text": "are",
-          "start": 7.18,
-          "end": 7.18
-        },
-        {
-          "text": "squeezed",
-          "start": 7.18,
-          "end": 7.18
-        },
-        {
-          "text": "into",
-          "start": 7.18,
-          "end": 7.18
-        },
-        {
-          "text": "this",
-          "start": 7.18,
-          "end": 7.18
-        },
-        {
-          "text": "tiny",
-          "start": 7.18,
-          "end": 7.18
-        },
-        {
-          "text": "strip.",
-          "start": 7.18,
-          "end": 7.18
+          "start": 7.12,
+          "end": 7.52
         }
       ],
       "lines": [
@@ -388,20 +308,20 @@
           "en": "Draw a line just 100 miles north of the US border.",
           "ko": "미국 국경에서 북쪽으로 딱 100마일만 선을 그어보세요.",
           "start": 0.0,
-          "end": 3.28
+          "end": 3.64
         },
         {
           "en": "Over 70 percent of all Canadians are squeezed into this tiny strip.",
           "ko": "전체 캐나다인의 70% 이상이 이 좁은 띠 안에 몰려 있습니다.",
-          "start": 3.28,
-          "end": 7.209
+          "start": 3.64,
+          "end": 7.84
         }
       ],
       "cues": {
-        "strip": 0.28,
-        "counter": 3.28,
-        "cardTop": 4.62,
-        "cardBottom": 6.32,
+        "strip": 0.34,
+        "counter": 3.64,
+        "cardTop": 5.02,
+        "cardBottom": 6.9,
         "dim": 0.0
       },
       "params": {
@@ -420,111 +340,111 @@
       "text": "Everything above it? Millions of square miles of empty rock and freezing forest. And the reason isn't just the cold.",
       "engine": "voicebox",
       "audio": "audio/scene3.mp3",
-      "audioDurationSec": 7.613,
-      "audioDurationFrames": 229,
+      "audioDurationSec": 6.556,
+      "audioDurationFrames": 197,
       "leadInFrames": 21,
-      "durationFrames": 292,
-      "startFrame": 615,
+      "durationFrames": 260,
+      "startFrame": 629,
       "words": [
         {
           "text": "Everything",
           "start": 0.0,
-          "end": 0.44
+          "end": 0.26
         },
         {
           "text": "above",
-          "start": 0.44,
-          "end": 0.74
+          "start": 0.26,
+          "end": 0.5
         },
         {
           "text": "it?",
-          "start": 0.74,
-          "end": 1.12
+          "start": 0.5,
+          "end": 0.74
         },
         {
           "text": "Millions",
-          "start": 2.04,
-          "end": 2.04
+          "start": 1.42,
+          "end": 1.58
         },
         {
           "text": "of",
-          "start": 2.04,
-          "end": 2.38
+          "start": 1.58,
+          "end": 1.86
         },
         {
           "text": "square",
-          "start": 2.38,
-          "end": 2.66
+          "start": 1.86,
+          "end": 2.04
         },
         {
           "text": "miles",
-          "start": 2.66,
-          "end": 3.18
+          "start": 2.04,
+          "end": 2.36
         },
         {
           "text": "of",
-          "start": 3.18,
-          "end": 3.48
+          "start": 2.36,
+          "end": 2.76
         },
         {
           "text": "empty",
-          "start": 3.48,
-          "end": 3.76
+          "start": 2.76,
+          "end": 3.04
         },
         {
           "text": "rock",
-          "start": 3.76,
-          "end": 4.06
+          "start": 3.04,
+          "end": 3.3
         },
         {
           "text": "and",
-          "start": 4.06,
-          "end": 4.3
+          "start": 3.3,
+          "end": 3.52
         },
         {
           "text": "freezing",
-          "start": 4.3,
-          "end": 4.56
+          "start": 3.52,
+          "end": 3.76
         },
         {
           "text": "forest.",
-          "start": 4.56,
-          "end": 5.06
+          "start": 3.76,
+          "end": 4.08
         },
         {
           "text": "And",
-          "start": 5.86,
-          "end": 5.9
+          "start": 4.7,
+          "end": 4.74
         },
         {
           "text": "the",
-          "start": 5.9,
-          "end": 6.02
+          "start": 4.74,
+          "end": 4.88
         },
         {
           "text": "reason",
-          "start": 6.02,
-          "end": 6.2
+          "start": 4.88,
+          "end": 5.04
         },
         {
           "text": "isn't",
-          "start": 6.2,
-          "end": 6.78
+          "start": 5.04,
+          "end": 5.36
         },
         {
           "text": "just",
-          "start": 6.78,
-          "end": 6.96
+          "start": 5.36,
+          "end": 5.5
         },
         {
           "text": "the",
-          "start": 6.96,
-          "end": 7.18
+          "start": 5.5,
+          "end": 5.64
         },
         {
           "text": "cold.",
-          "start": 7.18,
-          "end": 7.4
+          "start": 5.64,
+          "end": 5.86
         }
       ],
       "lines": [
@@ -532,19 +452,19 @@
           "en": "Everything above it? Millions of square miles of empty rock and freezing forest.",
           "ko": "그 위쪽 전부요? 수백만 제곱마일의 빈 바위와 얼어붙은 숲뿐입니다.",
           "start": 0.0,
-          "end": 5.86
+          "end": 4.7
         },
         {
           "en": "And the reason isn't just the cold.",
           "ko": "그리고 그 이유는 단순히 추위 때문만은 아닙니다.",
-          "start": 5.86,
-          "end": 7.613
+          "start": 4.7,
+          "end": 6.556
         }
       ],
       "cues": {
-        "glacier": 2.04,
-        "scrape": 3.76,
-        "reveal": 6.02
+        "glacier": 1.42,
+        "scrape": 3.04,
+        "reveal": 4.88
       },
       "params": {
         "glacierLabel": "ICE AGE GLACIER",
