@@ -58,8 +58,10 @@ def tts_config(spec: dict, engine_override: str | None) -> tuple[str, dict]:
     return engine, cfg
 
 
-async def synth(engine: str, cfg: dict, text: str, out: Path) -> list[dict]:
-    if engine == "edge":
+async def synth(engine: str, cfg: dict, text: str, out: Path, sid: str = "") -> list[dict]:
+    if engine == "files":
+        words = tts_engines.synth_files(sid, out, cfg, ROOT)
+    elif engine == "edge":
         words = await tts_engines.synth_edge(text, out, cfg)
     elif engine == "qwen3":
         words = tts_engines.synth_qwen3(text, out, cfg, ROOT)
@@ -134,7 +136,7 @@ async def main(only: list[str] | None, skip_existing: bool, engine_override: str
             print(f"[{sid}] reuse existing audio")
         else:
             print(f"[{sid}] TTS[{engine}]: {text}")
-            words = await synth(engine, cfg, text, mp3)
+            words = await synth(engine, cfg, text, mp3, sid)
         dur = measure_duration(mp3)
         frames = math.ceil((lead + dur + tail) * fps)
         scenes.append({
@@ -173,6 +175,6 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", nargs="*", help="regenerate only these scene ids")
     ap.add_argument("--skip-existing", action="store_true", help="reuse mp3s whose text+engine are unchanged")
-    ap.add_argument("--engine", choices=["edge", "qwen3", "voicebox"], help="override script.json tts.engine")
+    ap.add_argument("--engine", choices=["edge", "qwen3", "voicebox", "files"], help="override script.json tts.engine")
     a = ap.parse_args()
     asyncio.run(main(a.only, a.skip_existing, a.engine))

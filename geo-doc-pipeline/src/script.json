@@ -21,6 +21,9 @@
       "modelSize": "1.7B",
       "seed": 42,
       "instruct": "Calm documentary narrator. No breath, start on the first syllable."
+    },
+    "files": {
+      "dir": "voice/takes"
     }
   },
   "fps": 30,

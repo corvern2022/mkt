@@ -79,6 +79,18 @@ def synth_qwen3(text: str, out: Path, cfg: dict, root: Path) -> list[dict]:
     return []
 
 
+# ---------------------------------------------------------------- files (takes you exported yourself)
+def synth_files(scene_id: str, out: Path, cfg: dict, root: Path) -> list[dict]:
+    """Use a take recorded/exported elsewhere (e.g. Voicebox app → Export): <dir>/<scene_id>.(wav|mp3|m4a|flac)."""
+    d = root / cfg.get("dir", "voice/takes")
+    for ext in ("wav", "mp3", "m4a", "flac", "aac", "ogg"):
+        src = d / f"{scene_id}.{ext}"
+        if src.exists():
+            _to_mp3(src, out)
+            return []
+    raise SystemExit(f"files: no take for '{scene_id}' in {d} (expected {scene_id}.wav/.mp3/...)")
+
+
 # ---------------------------------------------------------------- voicebox (your desktop app)
 def synth_voicebox(text: str, out: Path, cfg: dict) -> list[dict]:
     url = os.environ.get("VOICEBOX_URL", cfg.get("url", "http://127.0.0.1:17493")).rstrip("/")
