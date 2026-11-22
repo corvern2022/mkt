@@ -7,6 +7,7 @@ import {prog, pop} from '../util';
  * Wraps a scene with an entrance and/or exit transition.
  * tintin  → classic cartoon iris (ink black) in/out.
  * paper3d → sheet of paper slides up (in) / lifts away (out).
+ * hud     → cyan radar scan line wipes the scene in / out.
  */
 export const SceneTransition: React.FC<{
   theme: Theme;
@@ -34,6 +35,24 @@ export const SceneTransition: React.FC<{
         </AbsoluteFill>
         <svg width={1920} height={1080} style={{position: 'absolute'}}>
           <circle cx={960} cy={540} r={r} fill="none" stroke={theme.ink} strokeWidth={10} />
+        </svg>
+      </AbsoluteFill>
+    );
+  }
+
+  if (theme.name === 'hud') {
+    // radar-scan wipe: a cyan scan line sweeps across and reveals / conceals the scene
+    const t = Math.min(inT, outT);
+    if (t >= 1) return <AbsoluteFill>{children}</AbsoluteFill>;
+    const x = 1920 * t;
+    const revealing = inT <= outT;
+    const clip = revealing ? `inset(0 ${1920 - x}px 0 0)` : `inset(0 0 0 ${1920 - x}px)`;
+    return (
+      <AbsoluteFill>
+        <AbsoluteFill style={{clipPath: clip}}>{children}</AbsoluteFill>
+        <svg width={1920} height={1080} style={{position: 'absolute'}}>
+          <line x1={revealing ? x : 1920 - x} x2={revealing ? x : 1920 - x} y1={0} y2={1080} stroke="#9AF3FF" strokeWidth={4} opacity={0.9} />
+          <line x1={revealing ? x : 1920 - x} x2={revealing ? x : 1920 - x} y1={0} y2={1080} stroke="#3CD2E6" strokeWidth={22} opacity={0.18} />
         </svg>
       </AbsoluteFill>
     );

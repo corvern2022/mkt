@@ -48,6 +48,7 @@ export const SubtitleOverlay: React.FC<{theme: Theme; mode: SubtitleMode; timeli
   const outT = clamp01((cue.end - frame) / (0.15 * fps));
   const o = Math.min(inT, outT);
   const tintin = theme.name === 'tintin';
+  const hud = theme.name === 'hud';
   const showKo = mode === 'ko' || mode === 'both';
   const showEn = mode === 'en' || mode === 'both';
 
@@ -68,10 +69,10 @@ export const SubtitleOverlay: React.FC<{theme: Theme; mode: SubtitleMode; timeli
         style={{
           maxWidth: 1500,
           padding: tintin ? '14px 34px 16px' : '16px 40px 18px',
-          background: tintin ? '#FFF6D5' : 'rgba(34,36,42,0.86)',
-          border: tintin ? `4px solid ${theme.ink}` : 'none',
-          boxShadow: tintin ? `7px 7px 0 ${theme.ink}` : '0 10px 30px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.2)',
-          borderRadius: tintin ? 4 : 18,
+          background: tintin ? '#FFF6D5' : hud ? 'rgba(4,18,28,0.9)' : 'rgba(34,36,42,0.86)',
+          border: tintin ? `4px solid ${theme.ink}` : hud ? '1.5px solid rgba(60,220,240,0.6)' : 'none',
+          boxShadow: tintin ? `7px 7px 0 ${theme.ink}` : hud ? '0 0 24px rgba(40,200,230,0.25)' : '0 10px 30px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.2)',
+          borderRadius: tintin ? 4 : hud ? 6 : 18,
           textAlign: 'center',
         }}
       >

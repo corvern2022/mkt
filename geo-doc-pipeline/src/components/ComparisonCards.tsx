@@ -6,6 +6,8 @@ import {TintinSkyline} from './illustrations/TintinSkyline';
 import {TintinNorth} from './illustrations/TintinNorth';
 import {PaperSkyline} from './illustrations/PaperSkyline';
 import {PaperNorth} from './illustrations/PaperNorth';
+import {HudSkyline} from './illustrations/HudSkyline';
+import {HudNorth} from './illustrations/HudNorth';
 
 const X = 1218;
 const W = 640;
@@ -52,9 +54,9 @@ const Card: React.FC<{theme: Theme; s: number; y: number; info: CardInfo; tag: s
           position: 'absolute',
           inset: 0,
           background: theme.cardBg,
-          border: tintin ? `6px solid ${theme.ink}` : 'none',
+          border: tintin ? `6px solid ${theme.ink}` : theme.name === 'hud' ? '1.5px solid rgba(60,220,240,0.65)' : 'none',
           boxShadow: tintin ? `11px 11px 0 ${theme.ink}` : 'none',
-          borderRadius: tintin ? 2 : 26,
+          borderRadius: tintin ? 2 : theme.name === 'hud' ? 8 : 26,
           overflow: 'hidden',
         }}
       >
@@ -126,15 +128,16 @@ export const ComparisonCards: React.FC<{theme: Theme; topAt: number; bottomAt: n
   const s1 = pop(frame, fps, topAt, {damping: 10, stiffness: 120});
   const s2 = pop(frame, fps, bottomAt, {damping: 10, stiffness: 120});
   const tintin = theme.name === 'tintin';
+  const hud = theme.name === 'hud';
   const f1 = frame - topAt;
   const f2 = frame - bottomAt;
   return (
     <>
       <Card theme={theme} s={s1} y={TOPS[0]} info={top} tag="70%+" tagColor={theme.accent} tilt={-2.5}>
-        {tintin ? <TintinSkyline theme={theme} frame={f1} /> : <PaperSkyline theme={theme} frame={f1} />}
+        {tintin ? <TintinSkyline theme={theme} frame={f1} /> : hud ? <HudSkyline theme={theme} frame={f1} /> : <PaperSkyline theme={theme} frame={f1} />}
       </Card>
-      <Card theme={theme} s={s2} y={TOPS[1]} info={bottom} tag="< 30%" tagColor={tintin ? '#3F5E73' : '#6E7C89'} tilt={2}>
-        {tintin ? <TintinNorth theme={theme} frame={f2} /> : <PaperNorth theme={theme} frame={f2} />}
+      <Card theme={theme} s={s2} y={TOPS[1]} info={bottom} tag="< 30%" tagColor={theme.tagMuted} tilt={2}>
+        {tintin ? <TintinNorth theme={theme} frame={f2} /> : hud ? <HudNorth theme={theme} frame={f2} /> : <PaperNorth theme={theme} frame={f2} />}
       </Card>
     </>
   );

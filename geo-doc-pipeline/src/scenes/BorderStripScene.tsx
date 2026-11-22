@@ -76,13 +76,15 @@ export const BorderStripScene: React.FC<SceneProps> = ({scene, theme, cue}) => {
         <div
           style={{
             position: 'absolute',
+            border: theme.name === 'hud' ? `1.5px solid rgba(60,220,240,${0.65 * panelT})` : undefined,
+            boxSizing: 'border-box',
             left: rect.x,
             top: rect.y,
             width: rect.w,
             height: rect.h,
             borderRadius: 28 * panelT,
             background: theme.ocean,
-            boxShadow: `0 ${14 * panelT}px ${40 * panelT}px rgba(40,30,20,${0.3 * panelT}), 0 2px 3px rgba(40,30,20,${0.25 * panelT})`,
+            boxShadow: theme.name === 'hud' ? `0 0 ${30 * panelT}px rgba(40,200,230,${0.28 * panelT})` : `0 ${14 * panelT}px ${40 * panelT}px rgba(40,30,20,${0.3 * panelT}), 0 2px 3px rgba(40,30,20,${0.25 * panelT})`,
           }}
         />
       )}

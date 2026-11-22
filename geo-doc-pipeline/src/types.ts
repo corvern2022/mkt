@@ -1,4 +1,4 @@
-export type ThemeName = 'tintin' | 'paper3d';
+export type ThemeName = 'tintin' | 'paper3d' | 'hud';
 export type SubtitleMode = 'ko' | 'en' | 'both' | 'none';
 
 export interface Word {

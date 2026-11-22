@@ -10,7 +10,8 @@
     "studio": "remotion studio",
     "render:tintin": "remotion render GeoDoc out/mvp_canada_tintin.mp4 --props='{\"theme\":\"tintin\",\"subtitleMode\":\"ko\"}'",
     "render:paper3d": "remotion render GeoDoc out/mvp_canada_paper3d.mp4 --props='{\"theme\":\"paper3d\",\"subtitleMode\":\"ko\"}'",
-    "render:all": "npm run render:tintin && npm run render:paper3d",
+    "render:hud": "remotion render GeoDoc out/mvp_canada_hud.mp4 --props='{\"theme\":\"hud\",\"subtitleMode\":\"ko\"}'",
+    "render:all": "npm run render:tintin && npm run render:paper3d && npm run render:hud",
     "build": "npm run audio && npm run qa && npm run render:all",
     "typecheck": "tsc --noEmit"
   },

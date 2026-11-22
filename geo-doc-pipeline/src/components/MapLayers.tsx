@@ -105,6 +105,60 @@ export const MapLayers: React.FC<{
     );
   }
 
+  // ---------------- hud: dark blueprint — wireframe land, glowing outline, orange strip ----------------
+  if (theme.name === 'hud') {
+    const CY = '#3CD2E6';
+    return (
+      <g>
+        {defs}
+        <defs>
+          <pattern id={id('hudGrid')} width={13} height={13} patternUnits="userSpaceOnUse">
+            <path d="M13 0H0V13" fill="none" stroke={CY} strokeWidth={0.9} opacity={0.55} />
+          </pattern>
+          <pattern id={id('hudStrip')} width={9} height={9} patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1={0} y1={0} x2={0} y2={9} stroke="#FFB066" strokeWidth={1.4} opacity={0.55} />
+          </pattern>
+        </defs>
+        <g transform={tf}>
+          <path d={OCEAN} fill={theme.ocean} opacity={0.9} />
+          <path d={graticuleD} fill="none" stroke={CY} strokeOpacity={0.16} strokeWidth={1} vectorEffect="non-scaling-stroke" />
+          {worldPaths.map((p) => (
+            <path key={p.id} d={p.d} fill={theme.land} stroke={CY} strokeOpacity={0.35} strokeWidth={1.2} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+          ))}
+          <path d={usaD} fill={theme.usLand} stroke={CY} strokeOpacity={0.45} strokeWidth={1.4} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+          <path d={usaD} fill={`url(#${id('hudGrid')})`} opacity={0.18} />
+          {/* Canada: scanned-in wireframe */}
+          <g clipPath={`url(#${id('reveal')})`}>
+            <path d={canadaD} fill={theme.canada} />
+            <path d={canadaD} fill={`url(#${id('hudGrid')})`} />
+            <path d={canadaD} fill="none" stroke={CY} strokeOpacity={0.22} strokeWidth={9} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+            <path d={canadaD} fill="none" stroke="#9AF3FF" strokeWidth={2.4} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+          </g>
+          {/* scan line that draws Canada in */}
+          {canadaReveal > 0.01 && canadaReveal < 0.99 && (
+            <line x1={revealX} x2={revealX} y1={-4000} y2={5000} stroke="#9AF3FF" strokeWidth={3} strokeOpacity={0.8} vectorEffect="non-scaling-stroke" />
+          )}
+          {/* 100-mile zone: translucent orange band + glowing border line */}
+          {stripReveal > 0 && (
+            <g clipPath={`url(#${id('canada')})`}>
+              <g clipPath={`url(#${id('wipe')})`}>
+                <path d={borderD} fill="none" stroke={theme.accent} strokeOpacity={0.3} strokeWidth={stripW} strokeLinejoin="round" strokeLinecap="round" />
+                <path d={borderD} fill="none" stroke={`url(#${id('hudStrip')})`} strokeWidth={stripW} strokeLinejoin="round" strokeLinecap="round" />
+                <path d={borderD} fill="none" stroke={theme.accent} strokeOpacity={0.55} strokeWidth={stripW} strokeLinejoin="round" strokeLinecap="round" style={{mixBlendMode: 'screen'}} />
+              </g>
+            </g>
+          )}
+          {stripReveal > 0 && (
+            <g clipPath={`url(#${id('wipe')})`}>
+              <path d={borderD} fill="none" stroke={theme.accent} strokeOpacity={0.35} strokeWidth={14} strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+              <path d={borderD} fill="none" stroke="#FFB066" strokeWidth={4} strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+            </g>
+          )}
+        </g>
+      </g>
+    );
+  }
+
   // ---------------- paper3d: stacked paper sheets, no outlines ----------------
   const lift = 1 - canadaReveal; // 1 = still in the air
   const unit = 1 / cam.k; // 1 screen px in base units

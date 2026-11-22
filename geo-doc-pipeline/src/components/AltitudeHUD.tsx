@@ -41,7 +41,7 @@ export const AltitudeHUD: React.FC<{
             <rect x={0} y={0} width={W} height={H} fill="#FFF6D5" stroke={theme.ink} strokeWidth={4} />
           </>
         ) : (
-          <rect x={0} y={0} width={W} height={H} rx={22} fill={theme.cardBg} />
+          <rect x={0} y={0} width={W} height={H} rx={theme.name === 'hud' ? 6 : 22} fill={theme.cardBg} stroke={theme.name === 'hud' ? 'rgba(60,220,240,0.65)' : 'none'} strokeWidth={1.5} />
         )}
         <text x={24} y={46} fontFamily={font} fontSize={tintin ? 30 : 22} fontWeight={800} letterSpacing={3} fill={theme.ink}>
           ALTITUDE

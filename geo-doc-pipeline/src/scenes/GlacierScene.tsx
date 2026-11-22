@@ -45,7 +45,7 @@ const GlacierLabel: React.FC<{theme: Theme; x: number; y: number; s: number; tex
   if (s <= 0.001) return null;
   const tintin = theme.name === 'tintin';
   const fs = small ? (tintin ? 30 : 22) : tintin ? 40 : 30;
-  const w = text.length * fs * (tintin ? 0.5 : 0.68) + 40;
+  const w = text.length * fs * (tintin ? 0.5 : theme.name === 'hud' ? 0.78 : 0.68) + 40;
   const h = fs + 24;
   const bg = tone === 'accent' ? theme.accent : tintin ? '#FFF6D5' : theme.cardBg;
   const fg = tone === 'accent' ? '#FFFFFF' : theme.ink;
@@ -59,7 +59,7 @@ const GlacierLabel: React.FC<{theme: Theme; x: number; y: number; s: number; tex
       )}
       <g transform={`translate(${x},${y}) scale(${s})`} style={{filter: tintin ? undefined : theme.paperShadowSoft}}>
         {tintin && <rect x={-w / 2 + 6} y={-h / 2 + 6} width={w} height={h} fill={theme.ink} />}
-        <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={tintin ? 2 : h / 2} fill={bg} stroke={tintin ? theme.ink : 'none'} strokeWidth={4} />
+        <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={tintin ? 2 : h / 2} fill={bg} stroke={tintin ? theme.ink : theme.name === 'hud' ? 'rgba(60,220,240,0.7)' : 'none'} strokeWidth={tintin ? 4 : 1.5} />
         <text
           textAnchor="middle"
           dominantBaseline="central"
@@ -83,6 +83,8 @@ export const GlacierScene: React.FC<SceneProps> = ({scene, theme, cue}) => {
   const {fps} = useVideoConfig();
   const p = scene.params;
   const tintin = theme.name === 'tintin';
+  const pal = theme.glacier;
+  const hud = theme.name === 'hud';
 
   const g0 = cue('glacier') - 12;
   const g1 = cue('reveal');
@@ -185,7 +187,9 @@ export const GlacierScene: React.FC<SceneProps> = ({scene, theme, cue}) => {
             width={BOX.x1 - BOX.x0}
             height={BOX.y1 - BOX.y0}
             rx={28}
-            fill="#E4E9EC"
+            fill={pal.panel}
+            stroke={hud ? 'rgba(60,220,240,0.65)' : 'none'}
+            strokeWidth={2}
             opacity={sectionOpacity}
             style={{filter: theme.paperShadow}}
           />
@@ -194,14 +198,14 @@ export const GlacierScene: React.FC<SceneProps> = ({scene, theme, cue}) => {
         <g clipPath="url(#g-box)">
           {/* bedrock */}
           <g transform={`translate(0,${rise(1)})`} style={{filter: tintin ? undefined : theme.paperShadow}}>
-            <polygon points={bedrock} fill={tintin ? '#B8B6B0' : '#9FA6AD'} stroke={tintin ? theme.ink : 'none'} strokeWidth={4} strokeLinejoin="round" />
+            <polygon points={bedrock} fill={tintin ? '#B8B6B0' : pal.bedrock} stroke={tintin ? theme.ink : 'none'} strokeWidth={4} strokeLinejoin="round" />
           </g>
           {!tintin &&
             [70, 150, 230].map((d, i) => (
               <g key={d} transform={`translate(0,${rise(2 + i)})`} style={{filter: 'drop-shadow(0px -3px 3px rgba(30,30,40,0.25))'}}>
                 <polygon
                   points={[...pts((x) => S(x) + d + 10 * Math.sin(x / (90 + i * 30) + i), BOX.x0 - 40, BOX.x1 + 40, 10), `${BOX.x1 + 40},${BOX.y1 + 40}`, `${BOX.x0 - 40},${BOX.y1 + 40}`].join(' ')}
-                  fill={['#929AA2', '#858D96', '#79818A'][i]}
+                  fill={pal.layers[i]}
                 />
               </g>
             ))}
@@ -217,10 +221,10 @@ export const GlacierScene: React.FC<SceneProps> = ({scene, theme, cue}) => {
               </g>
             )}
             {specks.map((s, i) => (
-              <circle key={i} cx={s.x} cy={s.y} r={s.r} fill={s.c} opacity={tintin ? 0.8 : 0.55} />
+              <circle key={i} cx={s.x} cy={s.y} r={s.r} fill={hud ? pal.stone : s.c} opacity={tintin ? 0.8 : hud ? 0.5 : 0.55} />
             ))}
             {cracks.map((d, i) => (
-              <path key={i} d={d} fill="none" stroke={tintin ? theme.ink : '#6C747C'} strokeWidth={tintin ? 3 : 2.5} strokeLinecap="round" strokeLinejoin="round" />
+              <path key={i} d={d} fill="none" stroke={tintin ? theme.ink : pal.crack} strokeWidth={tintin ? 3 : 2.5} strokeLinecap="round" strokeLinejoin="round" />
             ))}
           </g>
 
@@ -235,7 +239,7 @@ export const GlacierScene: React.FC<SceneProps> = ({scene, theme, cue}) => {
                 cy={S(lx) - 2}
                 rx={46 * s}
                 ry={9 * s}
-                fill={tintin ? '#7FB7D0' : '#8FB5C8'}
+                fill={tintin ? '#7FB7D0' : pal.lake}
                 stroke={tintin ? theme.ink : 'none'}
                 strokeWidth={3}
                 style={{filter: tintin ? undefined : theme.paperShadowSoft}}
@@ -246,8 +250,8 @@ export const GlacierScene: React.FC<SceneProps> = ({scene, theme, cue}) => {
           {/* topsoil ahead of the glacier */}
           <g transform={`translate(0,${rise(0)})`} clipPath="url(#g-soil-ahead)">
             <g style={{filter: tintin ? undefined : theme.paperShadowSoft}}>
-              <polygon points={soil} fill={tintin ? '#9A6234' : '#9C6B43'} stroke={tintin ? theme.ink : 'none'} strokeWidth={3.5} strokeLinejoin="round" />
-              {!tintin && <polygon points={[...pts((x) => T(x) - 6, BOX.x0 - 40, BOX.x1 + 40, 8), ...pts((x) => T(x) + 8, BOX.x1 + 40, BOX.x0 - 40, 8)].join(' ')} fill="#86A86E" />}
+              <polygon points={soil} fill={tintin ? '#9A6234' : pal.soil} stroke={tintin ? theme.ink : 'none'} strokeWidth={3.5} strokeLinejoin="round" />
+              {!tintin && <polygon points={[...pts((x) => T(x) - 6, BOX.x0 - 40, BOX.x1 + 40, 8), ...pts((x) => T(x) + 8, BOX.x1 + 40, BOX.x0 - 40, 8)].join(' ')} fill={pal.grass} />}
             </g>
             {tintin && rough && <RoughSvg paths={rough.soilDots} fill="#3B2412" opacity={0.45} />}
             {tintin &&
@@ -261,9 +265,9 @@ export const GlacierScene: React.FC<SceneProps> = ({scene, theme, cue}) => {
           {/* bulldozed moraine */}
           {moraineH > 1 && melt < 1 && (
             <g style={{filter: tintin ? undefined : theme.paperShadowSoft}}>
-              <polygon points={moraine} fill={tintin ? '#8A5428' : '#8E5E3A'} stroke={tintin ? theme.ink : 'none'} strokeWidth={3.5} strokeLinejoin="round" />
+              <polygon points={moraine} fill={tintin ? '#8A5428' : pal.moraine} stroke={tintin ? theme.ink : 'none'} strokeWidth={3.5} strokeLinejoin="round" />
               {Array.from({length: 10}).map((_, i) => (
-                <circle key={i} cx={X + 8 + ((i * 37) % (MORAINE_W - 30))} cy={T(X) - 4 - ((i * 13) % Math.max(4, moraineH - 6))} r={4 + (i % 3) * 2} fill={tintin ? '#7D7B76' : '#8C939A'} stroke={tintin ? theme.ink : 'none'} strokeWidth={2} />
+                <circle key={i} cx={X + 8 + ((i * 37) % (MORAINE_W - 30))} cy={T(X) - 4 - ((i * 13) % Math.max(4, moraineH - 6))} r={4 + (i % 3) * 2} fill={tintin ? '#7D7B76' : pal.stone} stroke={tintin ? theme.ink : 'none'} strokeWidth={2} />
               ))}
             </g>
           )}
@@ -293,19 +297,20 @@ export const GlacierScene: React.FC<SceneProps> = ({scene, theme, cue}) => {
                 </>
               ) : (
                 <g style={{filter: theme.paperShadow}}>
-                  <polygon points={icePoly} fill="#BFD9E6" transform="translate(0,10)" />
-                  <polygon points={icePoly} fill="#D9EBF3" transform="translate(0,5)" />
-                  <polygon points={icePoly} fill="#FAFDFE" />
+                  <polygon points={icePoly} fill={pal.ice[0]} transform="translate(0,10)" />
+                  <polygon points={icePoly} fill={pal.ice[1]} transform="translate(0,5)" />
+                  <polygon points={icePoly} fill={pal.ice[2]} />
+                  {hud && <polygon points={icePoly} fill="none" stroke="#9AF3FF" strokeWidth={3} strokeLinejoin="round" />}
                   <g clipPath="url(#g-ice)">
                     {[0.2, 0.42, 0.64].map((f, i) => {
                       const cx = X - ICE_L * f;
                       const ty = iceTop(cx);
-                      return <path key={i} d={`M${cx - 10},${ty} L${cx + 10},${ty} L${cx + 2},${ty + 90} Z`} fill="#CFE3EE" />;
+                      return <path key={i} d={`M${cx - 10},${ty} L${cx + 10},${ty} L${cx + 2},${ty + 90} Z`} fill={pal.iceBump} />;
                     })}
                     {Array.from({length: 16}).map((_, i) => {
                       const dx = 30 + ((i * 53) % 640);
                       const cx = X - dx;
-                      return <circle key={i} cx={cx} cy={S(cx) - 9 - ((i * 7) % 20)} r={4 + (i % 3)} fill="#9C6B43" />;
+                      return <circle key={i} cx={cx} cy={S(cx) - 9 - ((i * 7) % 20)} r={4 + (i % 3)} fill={pal.soil} />;
                     })}
                   </g>
                 </g>
@@ -343,7 +348,7 @@ export const GlacierScene: React.FC<SceneProps> = ({scene, theme, cue}) => {
 
         {/* era tag */}
         <g transform={`translate(${BOX.x0 + 30},${BOX.y0 + 26})`} opacity={sectionOpacity}>
-          <rect width={300} height={54} rx={tintin ? 2 : 27} fill={isToday ? theme.accent : tintin ? theme.ink : '#2B2D33'} />
+          <rect width={300} height={54} rx={tintin ? 2 : 27} fill={isToday ? theme.accent : tintin ? theme.ink : pal.pill} />
           <text x={150} y={36} textAnchor="middle" fontFamily={theme.monoFont} fontWeight={700} fontSize={24} fill="#FFFFFF" letterSpacing={1}>
             {isToday ? 'TODAY' : '≈ 20,000 YRS AGO'}
           </text>
@@ -367,8 +372,8 @@ export const GlacierScene: React.FC<SceneProps> = ({scene, theme, cue}) => {
           style={{
             padding: tintin ? '8px 30px 10px' : '12px 34px',
             background: tintin ? '#FFF6D5' : theme.cardBg,
-            border: tintin ? `5px solid ${theme.ink}` : 'none',
-            boxShadow: tintin ? `8px 8px 0 ${theme.ink}` : '0 8px 24px rgba(40,30,20,0.22), 0 2px 3px rgba(40,30,20,0.2)',
+            border: tintin ? `5px solid ${theme.ink}` : hud ? '1.5px solid rgba(60,220,240,0.65)' : 'none',
+            boxShadow: tintin ? `8px 8px 0 ${theme.ink}` : hud ? '0 0 22px rgba(40,200,230,0.3)' : '0 8px 24px rgba(40,30,20,0.22), 0 2px 3px rgba(40,30,20,0.2)',
             borderRadius: tintin ? 2 : 999,
             fontFamily: theme.displayFont,
             fontWeight: 800,
@@ -386,7 +391,7 @@ export const GlacierScene: React.FC<SceneProps> = ({scene, theme, cue}) => {
         <g transform={`translate(1660,300) scale(${insetS}) translate(-1660,-300)`} opacity={Math.min(1, insetS)}>
           <rect x={1500} y={200} width={316} height={196} rx={tintin ? 2 : 18} fill={tintin ? '#FFFDF6' : theme.cardBg} stroke={tintin ? theme.ink : 'none'} strokeWidth={4} style={{filter: tintin ? undefined : theme.paperShadow}} />
           <g transform={`translate(${insetTx},${insetTy}) scale(${insetK})`}>
-            <path d={canadaD} fill={tintin ? '#CFD6DA' : '#8A96A2'} stroke={tintin ? theme.ink : 'none'} strokeWidth={2.2 / insetK} />
+            <path d={canadaD} fill={tintin ? '#CFD6DA' : pal.inset} stroke={tintin ? theme.ink : 'none'} strokeWidth={2.2 / insetK} />
             <g clipPath="url(#g-inset-ca)">
               <path d={borderD} fill="none" stroke={theme.accent} strokeWidth={milesToBase(100) * 2} />
             </g>

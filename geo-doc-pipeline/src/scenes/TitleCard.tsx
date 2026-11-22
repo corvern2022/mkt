@@ -46,7 +46,19 @@ export const TitleCard: React.FC<SceneProps> = ({scene, theme}) => {
           opacity={Math.min(1, mapT * 1.5)}
           style={{filter: tintin ? undefined : theme.paperShadow}}
         >
-          {tintin ? (
+          {theme.name === 'hud' ? (
+            <>
+              <defs>
+                <pattern id="t-grid" width={13} height={13} patternUnits="userSpaceOnUse">
+                  <path d="M13 0H0V13" fill="none" stroke="#3CD2E6" strokeWidth={0.9} opacity={0.55} />
+                </pattern>
+              </defs>
+              <path d={canadaD} fill={theme.canada} />
+              <path d={canadaD} fill="url(#t-grid)" />
+              <path d={canadaD} fill="none" stroke="#3CD2E6" strokeOpacity={0.25} strokeWidth={10} vectorEffect="non-scaling-stroke" />
+              <path d={canadaD} fill="none" stroke="#9AF3FF" strokeWidth={2.6} vectorEffect="non-scaling-stroke" />
+            </>
+          ) : tintin ? (
             <>
               <path d={canadaD} fill="#FBF8F0" />
               <g clipPath="url(#t-ca)">
@@ -77,7 +89,7 @@ export const TitleCard: React.FC<SceneProps> = ({scene, theme}) => {
             fontWeight: 800,
             fontSize: tintin ? 36 : 24,
             letterSpacing: 6,
-            borderRadius: tintin ? 2 : 999,
+            borderRadius: tintin ? 2 : theme.name === 'hud' ? 4 : 999,
           }}
         >
           {p.kicker} · {(timeline as any).episode}
@@ -96,9 +108,9 @@ export const TitleCard: React.FC<SceneProps> = ({scene, theme}) => {
               display: 'inline-block',
               padding: tintin ? '18px 34px 24px' : '26px 40px 30px',
               background: tintin ? '#FFF6D5' : theme.cardBg,
-              border: tintin ? `6px solid ${theme.ink}` : 'none',
+              border: tintin ? `6px solid ${theme.ink}` : theme.name === 'hud' ? '1.5px solid rgba(60,220,240,0.65)' : 'none',
               boxShadow: tintin ? `12px 12px 0 ${theme.ink}` : 'none',
-              borderRadius: tintin ? 2 : 30,
+              borderRadius: tintin ? 2 : theme.name === 'hud' ? 8 : 30,
               fontFamily: theme.displayFont,
               fontWeight: 800,
               fontSize: tintin ? 104 : 84,

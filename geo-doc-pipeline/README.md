@@ -1,7 +1,7 @@
 # geo-doc-pipeline — 지리 다큐 로컬 자동화 파이프라인 (MVP)
 
 API 키 0개 · 비용 0원으로 16:9(1920×1080, 30fps) 유튜브 지리 다큐 MP4를 자동 생성합니다.
-파일럿: **Why 90% of Canada is Completely Empty** — 30초 오프닝, 테마 2종(`tintin`, `paper3d`).
+파일럿: **Why 90% of Canada is Completely Empty** — 30초 오프닝, 테마 3종(`tintin`, `paper3d`, `hud`).
 
 ## 빠른 실행
 
@@ -14,6 +14,7 @@ npm run build                       # = 오디오 생성 + whisper 검수 + 두 
 npm run audio                       # src/script.json → public/audio/*.mp3 + src/timeline.json
 npm run render:tintin               # out/mvp_canada_tintin.mp4
 npm run render:paper3d              # out/mvp_canada_paper3d.mp4
+npm run render:hud                  # out/mvp_canada_hud.mp4 (다크 블루프린트 / 전술 HUD)
 npm run studio                      # Remotion Studio 미리보기
 ```
 
@@ -21,7 +22,7 @@ npm run studio                      # Remotion Studio 미리보기
 ```bash
 npx remotion render GeoDoc out/x.mp4 --props='{"theme":"paper3d","subtitleMode":"both"}'
 ```
-- `theme`: `"tintin" | "paper3d"`
+- `theme`: `"tintin" | "paper3d" | "hud"`
 - `subtitleMode`: `"ko" | "en" | "both" | "none"` (검수 기본값 `ko`)
 
 > `edge-tts`는 키가 필요 없지만 Microsoft Edge 읽어주기 서버에 접속하므로 **오디오 생성 단계만 인터넷이 필요**합니다.
@@ -96,6 +97,8 @@ out/*.mp4
 | scene3 | 9.1s | 캐나다 순상지 단면도: 빙하가 남쪽으로 밀며 표토 제거(퇴석 누적) → 해빙 후 노출된 화강암 + 호수, 위치 인셋 지도 |
 
 ## 테마별 일러스트
+
+- `hud` (다크 블루프린트): 네이비 격자 + 레이더 링, 청록 와이어프레임 지도(스캔 라인으로 등장), 주황 발광 100마일 띠, 시안 글로우 카드/자막, 레이더 스캔 전환. 일러스트는 `HudSkyline` / `HudNorth`(네온 윤곽선).
 
 비교 카드는 테마마다 별도 SVG 컴포넌트입니다 (`src/components/illustrations/`).
 - `TintinSkyline` / `TintinNorth`: 균일한 검은 펜선 + 플랫 채색 + roughjs 빗금 음영 (Ligne Claire), 구름·페리·눈 애니메이션, "POP. 0" 표지판

@@ -94,7 +94,7 @@ export const CityPins: React.FC<{theme: Theme; cam: Cam; appear: (i: number, x: 
                   fontSize={22}
                   letterSpacing={2}
                   fill={theme.ink}
-                  stroke="#FBF9F5"
+                  stroke={theme.halo}
                   strokeWidth={6}
                   paintOrder="stroke"
                 >
