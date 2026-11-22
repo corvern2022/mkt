@@ -2,7 +2,7 @@
   "title": "Why 90% of Canada is Completely Empty",
   "episode": "EP.01 — PILOT OPENING",
   "tts": {
-    "engine": "edge",
+    "engine": "voicebox",
     "edge": {
       "voice": "en-US-AndrewNeural",
       "rate": "+5%"
@@ -16,10 +16,10 @@
     },
     "voicebox": {
       "url": "http://127.0.0.1:17493",
-      "profileId": "",
+      "profileId": "5eeaae21-fccd-410d-aed9-305f373191cb",
       "language": "en",
       "modelSize": "1.7B",
-      "seed": 42,
+      "seed": 44,
       "instruct": "Calm documentary narrator. No breath, start on the first syllable."
     },
     "files": {
