@@ -1,0 +1,6 @@
+{
+  "env": {
+    "WATCH_ENGINE": "local",
+    "WATCH_WHISPER_BACKEND": "none"
+  }
+}

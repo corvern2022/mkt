@@ -7,9 +7,9 @@ API 키 0개 · 비용 0원으로 16:9(1920×1080, 30fps) 유튜브 지리 다�
 
 ```bash
 cd geo-doc-pipeline
-pip install -r requirements.txt     # edge-tts, mutagen  (ffprobe 권장)
+pip install -r requirements.txt     # edge-tts, mutagen, faster-whisper, yt-dlp (ffmpeg 필요)
 npm install
-npm run build                       # = 오디오 생성 + 두 테마 렌더
+npm run build                       # = 오디오 생성 + whisper 검수 + 두 테마 렌더
 # 개별 실행
 npm run audio                       # src/script.json → public/audio/*.mp3 + src/timeline.json
 npm run render:tintin               # out/mvp_canada_tintin.mp4
@@ -26,6 +26,39 @@ npx remotion render GeoDoc out/x.mp4 --props='{"theme":"paper3d","subtitleMode":
 
 > `edge-tts`는 키가 필요 없지만 Microsoft Edge 읽어주기 서버에 접속하므로 **오디오 생성 단계만 인터넷이 필요**합니다.
 > 프록시/사내 CA 환경이면 `HTTPS_PROXY`, `SSL_CERT_FILE`을 자동으로 사용합니다. 렌더링은 완전 오프라인(지도·폰트 모두 npm 패키지에 포함).
+
+## 제작 워크플로 (전부 무료 · 오픈소스)
+
+```
+1. 소재 조사   npm run research -- "why is canada empty" "canada population border"
+               → research/<slug>/brief.md  (경쟁 영상 조회수·포화도 + 근거 자막 + "조사 내용만 써" 프롬프트)
+2. 대본       src/script.json 편집 (brief.md 근거만 사용)
+3. 음성       npm run audio      (tts.engine: edge | qwen3 | voicebox)
+4. 검수       npm run qa         (로컬 whisper로 받아쓰기 → 대본과 WER 비교 → 틀린 씬만 자동 재생성)
+5. 렌더       npm run render:all
+   (1~5 한 번에: npm run build — 조사 제외)
+```
+
+### 목소리 엔진 (`src/script.json` → `tts.engine`)
+
+| 엔진 | 용도 | 준비물 |
+|---|---|---|
+| `edge` (기본) | 무료 Microsoft 음성, 단어 타이밍 내장 | 없음 (인터넷만) |
+| `qwen3` | **내 목소리 클론** (Qwen3-TTS, 로컬 실행, CPU 가능·GPU면 훨씬 빠름) | `voice/my_voice.wav` 10~15초 녹음 + `tts.qwen3.refText`에 녹음 문장 정확히 입력 → [voice/README.md](voice/README.md) |
+| `voicebox` | 내 PC에 설치한 [Voicebox](https://github.com/jamiepine/voicebox) 앱의 로컬 API 호출 (앱에서 만든 목소리 프로필 사용) | Voicebox 실행 + `tts.voicebox.profileId` (`http://127.0.0.1:17493/docs` → `GET /profiles`) |
+
+- 클론 엔진은 단어 타이밍이 없어서 **faster-whisper로 자동 정렬**합니다 → 애니메이션 큐가 그대로 동작.
+- 시드 고정(`seed`), 앞 무음/숨소리 자동 제거(ffmpeg silenceremove), 음량 정규화(loudnorm)로 씬 간 톤을 맞춥니다.
+  Voicebox는 `instruct`("No breath, start on the first syllable")도 전달합니다.
+- `npm run qa`가 실패한 씬은 시드를 바꿔 최대 3번 다시 뽑습니다. 결과: `out/qa_report.json`.
+- 이 클라우드 환경(CPU 4코어)에서 qwen3 0.6B로 3개 씬 생성 ≈ 1분 50초, QA WER 0% 확인.
+
+### 조사 도구 주의
+- 클라우드 서버 IP에서는 YouTube가 자막/영상 다운로드를 봇으로 차단합니다(검색은 됨). **자막 수집·`yt-dlp` 클립 추출은 집 PC에서** 실행하세요.
+  필요하면 `yt-dlp --cookies-from-browser chrome ...`.
+- Reddit은 Agent-Reach에서 로그인(`agent-reach login reddit`)이 필요한 선택 채널입니다.
+- 한 번에 많이 긁으면 IP가 막힙니다. `research.py`는 요청 사이 2초 쉬어갑니다(`--pause`).
+- 클립 일부만 받기: `yt-dlp --download-sections "*00:01:10-00:01:16" -f mp4 <URL>` — 남의 영상 사용은 저작권/공정이용 범위 확인 필수.
 
 ## 데이터 주도 구조
 
@@ -71,7 +104,9 @@ out/*.mp4
 ## 디렉터리
 
 ```
-scripts/generate_audio.py
+scripts/generate_audio.py, tts_engines.py, whisper_utils.py, qa_audio.py, research.py
+voice/            내 목소리 레퍼런스 (gitignore)
+research/         조사 결과 (brief.md, videos.json)
 src/script.json, src/timeline.json
 src/Root.tsx, src/Video.tsx, src/theme.ts, src/geo.ts, src/rough.ts, src/fonts.ts
 src/scenes/       TitleCard, MapZoomScene, BorderStripScene, GlacierScene

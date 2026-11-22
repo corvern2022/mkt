@@ -1,8 +1,28 @@
 {
   "title": "Why 90% of Canada is Completely Empty",
   "episode": "EP.01 — PILOT OPENING",
-  "voice": "en-US-AndrewNeural",
-  "rate": "+5%",
+  "tts": {
+    "engine": "edge",
+    "edge": {
+      "voice": "en-US-AndrewNeural",
+      "rate": "+5%"
+    },
+    "qwen3": {
+      "model": "Qwen/Qwen3-TTS-12Hz-0.6B-Base",
+      "refAudio": "voice/my_voice.wav",
+      "refText": "(여기에 녹음한 문장을 정확히 적으세요)",
+      "language": "English",
+      "seed": 42
+    },
+    "voicebox": {
+      "url": "http://127.0.0.1:17493",
+      "profileId": "",
+      "language": "en",
+      "modelSize": "1.7B",
+      "seed": 42,
+      "instruct": "Calm documentary narrator. No breath, start on the first syllable."
+    }
+  },
   "fps": 30,
   "width": 1920,
   "height": 1080,

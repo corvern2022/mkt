@@ -1,2 +1,12 @@
+# core (edge-tts narration + timing)
 edge-tts>=7.0
 mutagen>=1.47
+# QA + word alignment for clone voices (local whisper, CPU ok)
+faster-whisper>=1.1
+numpy
+# research (trend / competitor scan) — install Agent-Reach from GitHub, NOT the PyPI package of the same name:
+#   pip install git+https://github.com/Panniantong/Agent-Reach
+yt-dlp
+# optional: local voice clone (engine "qwen3"). CPU-only torch:
+#   pip install torch torchaudio --index-url https://download.pytorch.org/whl/cpu
+#   pip install qwen-tts soundfile

@@ -4,12 +4,14 @@
   "private": true,
   "description": "Local, API-key-free geography documentary video pipeline (Remotion + edge-tts)",
   "scripts": {
-    "audio": "python3 scripts/generate_audio.py",
+    "research": "python3 scripts/research.py",
+    "audio": "python3 scripts/generate_audio.py --skip-existing",
+    "qa": "python3 scripts/qa_audio.py --regen",
     "studio": "remotion studio",
     "render:tintin": "remotion render GeoDoc out/mvp_canada_tintin.mp4 --props='{\"theme\":\"tintin\",\"subtitleMode\":\"ko\"}'",
     "render:paper3d": "remotion render GeoDoc out/mvp_canada_paper3d.mp4 --props='{\"theme\":\"paper3d\",\"subtitleMode\":\"ko\"}'",
     "render:all": "npm run render:tintin && npm run render:paper3d",
-    "build": "npm run audio && npm run render:all",
+    "build": "npm run audio && npm run qa && npm run render:all",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

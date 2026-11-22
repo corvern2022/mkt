@@ -2,12 +2,13 @@
 """Generate narration MP3s + timeline.json from src/script.json.
 
 Data-driven: edit src/script.json (any number of scenes) and re-run.
-No API keys: uses Microsoft Edge's free read-aloud voice via `edge-tts`.
+No API keys. Engine is chosen by script.json "tts.engine" (or --engine):
+  edge (default) | qwen3 (local voice clone) | voicebox (your Voicebox app)   — see tts_engines.py
 
 Outputs
   public/audio/<scene_id>.mp3
   src/timeline.json   (exact durations in seconds and frames, word timings,
-                       subtitle line timings, global start frames)
+                       subtitle line timings, cue frames, global start frames)
 """
 from __future__ import annotations
 
@@ -15,29 +16,18 @@ import argparse
 import asyncio
 import json
 import math
-import os
 import re
-import ssl
 import subprocess
 import sys
 from pathlib import Path
 
-import edge_tts
-import edge_tts.communicate as _comm
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import tts_engines  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPT = ROOT / "src" / "script.json"
 TIMELINE = ROOT / "src" / "timeline.json"
 AUDIO_DIR = ROOT / "public" / "audio"
-TICKS = 10_000_000  # edge-tts offsets are in 100ns ticks
-
-
-def _configure_network() -> str | None:
-    """Honour corporate/sandbox proxies + custom CA bundles if present."""
-    ca = os.environ.get("SSL_CERT_FILE") or os.environ.get("REQUESTS_CA_BUNDLE")
-    if ca and Path(ca).exists():
-        _comm._SSL_CTX = ssl.create_default_context(cafile=ca)
-    return os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy")
 
 
 def measure_duration(path: Path) -> float:
@@ -58,20 +48,28 @@ def norm(w: str) -> str:
     return re.sub(r"[^a-z0-9%]", "", w.lower())
 
 
-async def synth(text: str, voice: str, rate: str, out: Path, proxy: str | None):
-    comm = edge_tts.Communicate(text, voice, rate=rate, boundary="WordBoundary", proxy=proxy)
-    words = []
-    with open(out, "wb") as f:
-        async for chunk in comm.stream():
-            if chunk["type"] == "audio":
-                f.write(chunk["data"])
-            elif chunk["type"] == "WordBoundary":
-                start = chunk["offset"] / TICKS
-                words.append({
-                    "text": chunk["text"],
-                    "start": round(start, 3),
-                    "end": round(start + chunk["duration"] / TICKS, 3),
-                })
+def tts_config(spec: dict, engine_override: str | None) -> tuple[str, dict]:
+    tts = spec.get("tts") or {}
+    engine = engine_override or tts.get("engine", "edge")
+    cfg = dict(tts.get(engine) or {})
+    if engine == "edge":  # backwards compatible top-level keys
+        cfg.setdefault("voice", spec.get("voice", "en-US-AndrewNeural"))
+        cfg.setdefault("rate", spec.get("rate", "+0%"))
+    return engine, cfg
+
+
+async def synth(engine: str, cfg: dict, text: str, out: Path) -> list[dict]:
+    if engine == "edge":
+        words = await tts_engines.synth_edge(text, out, cfg)
+    elif engine == "qwen3":
+        words = tts_engines.synth_qwen3(text, out, cfg, ROOT)
+    elif engine == "voicebox":
+        words = tts_engines.synth_voicebox(text, out, cfg)
+    else:
+        raise SystemExit(f"unknown tts engine '{engine}'")
+    if not words:  # clone engines don't report timings → align with local whisper
+        from whisper_utils import transcribe_words
+        _, words = transcribe_words(str(out), prompt=text)
     return words
 
 
@@ -81,10 +79,7 @@ def time_lines(lines, words, duration):
     for i, line in enumerate(lines):
         n = len([t for t in line["en"].split() if norm(t)])
         seg = words[wi: wi + n]
-        if seg:
-            start = seg[0]["start"]
-        else:  # fallback: proportional
-            start = duration * i / len(lines)
+        start = seg[0]["start"] if seg else duration * i / len(lines)
         wi += n
         timed.append({**line, "start": round(start, 3)})
     for i, t in enumerate(timed):
@@ -106,12 +101,12 @@ def resolve_cues(cues: dict, words):
     return out
 
 
-async def main(only: list[str] | None, skip_existing: bool):
+async def main(only: list[str] | None, skip_existing: bool, engine_override: str | None):
     spec = json.loads(SCRIPT.read_text(encoding="utf-8"))
     fps = spec["fps"]
     lead, tail = spec.get("leadInSec", 0.5), spec.get("tailSec", 0.8)
+    engine, cfg = tts_config(spec, engine_override)
     AUDIO_DIR.mkdir(parents=True, exist_ok=True)
-    proxy = _configure_network()
 
     old = {}
     if TIMELINE.exists():
@@ -131,20 +126,22 @@ async def main(only: list[str] | None, skip_existing: bool):
             continue
         mp3 = AUDIO_DIR / f"{sid}.mp3"
         text = " ".join(l["en"] for l in sc["lines"])
-        reuse = (skip_existing and mp3.exists() and sid in old and old[sid].get("text") == text) \
-            or (only and sid not in only and sid in old)
+        prev = old.get(sid, {})
+        same = mp3.exists() and prev.get("text") == text and prev.get("engine", "edge") == engine
+        reuse = (skip_existing and same) or (only and sid not in only and sid in old)
         if reuse:
-            words = old[sid]["words"]
+            words = prev["words"]
             print(f"[{sid}] reuse existing audio")
         else:
-            print(f"[{sid}] TTS {spec['voice']} {spec['rate']}: {text}")
-            words = await synth(text, spec["voice"], spec["rate"], mp3, proxy)
+            print(f"[{sid}] TTS[{engine}]: {text}")
+            words = await synth(engine, cfg, text, mp3)
         dur = measure_duration(mp3)
         frames = math.ceil((lead + dur + tail) * fps)
         scenes.append({
             "id": sid,
             "type": sc["type"],
             "text": text,
+            "engine": engine if not reuse else prev.get("engine", engine),
             "audio": f"audio/{sid}.mp3",
             "audioDurationSec": round(dur, 3),
             "audioDurationFrames": math.ceil(dur * fps),
@@ -175,6 +172,7 @@ async def main(only: list[str] | None, skip_existing: bool):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", nargs="*", help="regenerate only these scene ids")
-    ap.add_argument("--skip-existing", action="store_true", help="reuse mp3s whose text is unchanged")
+    ap.add_argument("--skip-existing", action="store_true", help="reuse mp3s whose text+engine are unchanged")
+    ap.add_argument("--engine", choices=["edge", "qwen3", "voicebox"], help="override script.json tts.engine")
     a = ap.parse_args()
-    asyncio.run(main(a.only, a.skip_existing))
+    asyncio.run(main(a.only, a.skip_existing, a.engine))
